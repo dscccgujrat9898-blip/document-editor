@@ -1,0 +1,840 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>DS Resume Builder Pro</title>
+
+<style>
+  :root{
+    --ui-bg:#0b1220; --ui-card:#0f1b34; --ui-txt:#e9f0ff; --ui-muted:#a9b7d0;
+    --ui-line:rgba(255,255,255,.10); --ui-shadow:0 14px 40px rgba(0,0,0,.35);
+    --ui-r:18px;
+
+    /* Resume theme vars */
+    --accent:#2563eb;     /* primary */
+    --accent2:#7c3aed;    /* secondary */
+    --ink:#0b1220;        /* text */
+    --muted:#4b5563;
+    --paper:#ffffff;
+    --soft:#f3f4f6;
+  }
+
+  *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial}
+  body{margin:0;background:radial-gradient(1200px 650px at 18% 0%,#162b55 0%,#0b1220 55%,#070b14 100%);color:var(--ui-txt)}
+  header{
+    position:sticky;top:0;z-index:50;
+    backdrop-filter: blur(10px);
+    background: rgba(11,18,32,.75);
+    border-bottom:1px solid rgba(255,255,255,.08);
+    padding:14px 18px;
+    display:flex;align-items:center;gap:12px;justify-content:space-between;
+  }
+  header .brand{display:flex;align-items:center;gap:10px}
+  .logo{
+    width:38px;height:38px;border-radius:12px;
+    background:linear-gradient(135deg,#2b5cff,#7c3aed);
+    display:grid;place-items:center;font-weight:900;
+    box-shadow:0 12px 30px rgba(43,92,255,.25);
+  }
+  header h1{font-size:16px;margin:0}
+  header .sub{font-size:12px;color:var(--ui-muted);margin-top:2px}
+  .top-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+  .btn{
+    border:1px solid rgba(255,255,255,.14);
+    background:rgba(255,255,255,.06);
+    color:var(--ui-txt); padding:9px 12px;border-radius:14px;
+    cursor:pointer; font-weight:650; font-size:13px;
+    transition:.15s transform,.15s background,.15s border;
+  }
+  .btn:hover{transform:translateY(-1px);background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.22)}
+  .btn.primary{background:linear-gradient(135deg,#2b5cff,#7c3aed);border:none}
+  .btn.good{background:linear-gradient(135deg,#22c55e,#16a34a);border:none}
+  .btn.danger{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.35)}
+
+  .wrap{padding:18px}
+  .grid{display:grid;grid-template-columns: 420px 1fr; gap:16px; align-items:start}
+  @media(max-width:980px){.grid{grid-template-columns:1fr}}
+
+  .card{
+    background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:var(--ui-r);
+    box-shadow:var(--ui-shadow);
+    overflow:hidden;
+  }
+  .card .hd{
+    padding:14px 14px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    display:flex;align-items:center;justify-content:space-between;gap:10px
+  }
+  .card .hd strong{font-size:14px}
+  .card .bd{padding:14px}
+
+  .row{display:grid;grid-template-columns:1fr 1fr; gap:10px}
+  @media(max-width:980px){.row{grid-template-columns:1fr}}
+  label{display:block;font-size:12px;color:var(--ui-muted);margin:2px 0 6px}
+  input, textarea, select{
+    width:100%; padding:10px 10px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(7,11,20,.55);
+    color:var(--ui-txt);
+    outline:none;
+  }
+  textarea{min-height:92px;resize:vertical}
+  .mini{font-size:11px;color:var(--ui-muted);margin-top:6px}
+  .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);font-size:12px;color:var(--ui-txt)}
+  .switch{display:flex;align-items:center;gap:10px}
+  .switch input{width:auto}
+  .sep{height:1px;background:rgba(255,255,255,.08);margin:12px 0}
+  .hint{font-size:12px;color:var(--ui-muted)}
+
+  /* Preview area */
+  .preview-wrap{background:#f3f4f6;padding:18px}
+  .pages{display:flex;flex-direction:column;gap:14px;align-items:center}
+
+  /* A4 page */
+  .page{
+    width: 210mm;
+    min-height: 297mm;
+    background:var(--paper);
+    color:var(--ink);
+    border-radius:14px;
+    box-shadow:0 18px 50px rgba(0,0,0,.25);
+    overflow:hidden;
+    position:relative;
+  }
+  .page .inner{padding:18mm 16mm 16mm 16mm}
+  .watermark{
+    position:absolute; inset:auto 12mm 10mm auto;
+    font-size:10px; color:#9ca3af;
+  }
+
+  /* Common resume typography */
+  .r-name{font-size:28px;font-weight:900;line-height:1.1;margin:0}
+  .r-role{font-size:13.5px;color:var(--muted);margin-top:6px}
+  .r-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .r-chip{font-size:12px;padding:6px 10px;border-radius:999px;background:var(--soft);border:1px solid #e5e7eb}
+  .r-sec{margin-top:14px}
+  .r-sec h3{
+    margin:0 0 8px;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink);
+  }
+  .r-sec p{margin:0;color:var(--ink);font-size:13px;line-height:1.6}
+  .r-item{margin:10px 0}
+  .r-item .head{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+  .r-item .head strong{font-size:13.4px}
+  .r-item .head em{font-size:12px;color:#6b7280;font-style:normal}
+  .r-ul{margin:8px 0 0 18px;padding:0}
+  .r-ul li{margin:5px 0;font-size:13px;line-height:1.55}
+  .r-skillwrap{display:flex;flex-wrap:wrap;gap:8px}
+  .r-skill{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid #e5e7eb;background:#fff}
+
+  /* Template shells */
+  .tpl-classic .hdr{border-bottom:1px solid #e5e7eb;padding-bottom:12px}
+  .tpl-minimal .hdr{padding-bottom:10px}
+  .tpl-minimal .r-sec h3{border-bottom:1px solid #e5e7eb;padding-bottom:6px}
+  .tpl-executive .hdr{
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff; border-radius:12px; padding:14px 14px;
+  }
+  .tpl-executive .r-role{color:rgba(255,255,255,.85)}
+  .tpl-executive .r-chip{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);color:#fff}
+  .tpl-executive .inner{padding-top:14mm}
+  .tpl-modern .hdr{
+    background:#111827;color:#fff;border-radius:12px;padding:14px 14px;
+    border-left:6px solid var(--accent);
+  }
+  .tpl-modern .r-role{color:#cbd5e1}
+  .tpl-modern .r-chip{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.16);color:#fff}
+  .tpl-creative .hdr{
+    border-radius:12px; padding:14px 14px;
+    background:linear-gradient(135deg, rgba(37,99,235,.12), rgba(124,58,237,.12));
+    border:1px solid rgba(37,99,235,.25);
+  }
+  .tpl-sidebar .layout{display:grid;grid-template-columns: 64mm 1fr; gap:12mm}
+  .tpl-sidebar .side{
+    background:linear-gradient(180deg, rgba(37,99,235,.08), rgba(124,58,237,.06));
+    border:1px solid rgba(37,99,235,.18);
+    border-radius:12px; padding:10mm 8mm;
+  }
+  .tpl-sidebar .main{padding-top:2mm}
+  .tpl-sidebar .r-chip{background:#fff}
+  .tpl-sidebar .r-sec h3{color:var(--accent)}
+
+  /* Photo */
+  .avatar{width:86px;height:86px;border-radius:999px;background:#e5e7eb;overflow:hidden;flex:0 0 auto;border:3px solid #fff;box-shadow:0 10px 25px rgba(0,0,0,.15)}
+  .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+  .hdr-row{display:flex;gap:14px;align-items:center}
+
+  /* Print/PDF */
+  @media print{
+    body{background:#fff}
+    header,.form-card,.tips{display:none !important}
+    .wrap{padding:0}
+    .preview-wrap{padding:0;background:#fff}
+    .page{box-shadow:none;border-radius:0}
+  }
+</style>
+</head>
+
+<body>
+<header>
+  <div class="brand">
+    <div class="logo">DS</div>
+    <div>
+      <h1>DS Resume Builder Pro</h1>
+      <div class="sub">6 Templates • Color Themes • Auto 2-Page Split • 10 Objectives</div>
+    </div>
+  </div>
+  <div class="top-actions">
+    <button class="btn" id="btnLoad">Load Saved</button>
+    <button class="btn" id="btnSave">Save</button>
+    <button class="btn danger" id="btnReset">Reset</button>
+    <button class="btn" id="btnPrint">Print</button>
+    <button class="btn good" id="btnPDF">Download PDF</button>
+    <button class="btn primary" id="btnShare">Copy Share Link</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="grid">
+
+    <!-- Form -->
+    <div class="card form-card">
+      <div class="hd">
+        <strong>Resume Details</strong>
+        <span class="pill">Auto-save ON</span>
+      </div>
+      <div class="bd">
+
+        <div class="row">
+          <div>
+            <label>Template</label>
+            <select id="template">
+              <option value="classic">Classic (ATS)</option>
+              <option value="modern">Modern Dark Header</option>
+              <option value="minimal">Minimal Clean</option>
+              <option value="sidebar">Sidebar Pro</option>
+              <option value="executive">Executive Gradient</option>
+              <option value="creative">Creative Soft</option>
+            </select>
+          </div>
+          <div>
+            <label>Color Theme</label>
+            <select id="theme">
+              <option value="blue">Blue</option>
+              <option value="green">Green</option>
+              <option value="purple">Purple</option>
+              <option value="orange">Orange</option>
+              <option value="red">Red</option>
+              <option value="teal">Teal</option>
+              <option value="custom">Custom (use below)</option>
+            </select>
+            <div class="mini">Custom = choose your own accent colors.</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>Custom Primary Accent (optional)</label>
+            <input id="customAccent" placeholder="#2563eb"/>
+          </div>
+          <div>
+            <label>Custom Secondary Accent (optional)</label>
+            <input id="customAccent2" placeholder="#7c3aed"/>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>Photo (optional)</label>
+            <input id="photo" type="file" accept="image/*"/>
+            <div class="mini">Tip: Passport size photo works best.</div>
+          </div>
+          <div>
+            <label>Brand watermark (optional)</label>
+            <input id="brand" placeholder="DS Computer Classes"/>
+            <div class="mini">PDF/Print page corner watermark.</div>
+          </div>
+        </div>
+
+        <div class="sep"></div>
+
+        <div class="row">
+          <div>
+            <label>Full Name</label>
+            <input id="name" placeholder="e.g., Rahul Patel"/>
+          </div>
+          <div>
+            <label>Professional Title</label>
+            <input id="role" placeholder="e.g., Accountant / Data Entry / Designer"/>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>Phone</label>
+            <input id="phone" placeholder="e.g., 98987xxxxx"/>
+          </div>
+          <div>
+            <label>Email</label>
+            <input id="email" placeholder="e.g., name@gmail.com"/>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>City, State</label>
+            <input id="location" placeholder="e.g., Surat, Gujarat"/>
+          </div>
+          <div>
+            <label>Links (optional)</label>
+            <input id="links" placeholder="LinkedIn / Portfolio / GitHub (comma separated)"/>
+          </div>
+        </div>
+
+        <!-- Objective templates -->
+        <label>Objective Templates (Pick 1)</label>
+        <select id="objectiveTpl">
+          <option value="">-- Select Objective --</option>
+          <option value="o1">1) Fresher / Entry Level (General)</option>
+          <option value="o2">2) Computer Operator / Data Entry</option>
+          <option value="o3">3) Accountant / Tally + GST</option>
+          <option value="o4">4) Graphic Designer</option>
+          <option value="o5">5) Textile / Digital Textile Designer</option>
+          <option value="o6">6) Video Editor</option>
+          <option value="o7">7) Sales / Telecalling</option>
+          <option value="o8">8) IT Support / Office Assistant</option>
+          <option value="o9">9) Java / BCA Student</option>
+          <option value="o10">10) Teacher / Trainer</option>
+        </select>
+        <div class="mini">Select karte hi Objective box me auto-fill ho jayega (edit bhi kar sakte ho).</div>
+
+        <label>Career Summary / Objective</label>
+        <textarea id="summary" placeholder="2–4 lines about you (ATS friendly)."></textarea>
+
+        <div class="sep"></div>
+
+        <label>Skills (comma separated)</label>
+        <input id="skills" placeholder="Tally, Excel, Photoshop, Java, Communication..."/>
+
+        <div class="sep"></div>
+
+        <label>Education (one per line)</label>
+        <textarea id="education" placeholder="BCA (2024–2027) – XYZ College, Surat&#10;12th (2023) – GSEB"></textarea>
+
+        <div class="sep"></div>
+
+        <div class="switch">
+          <input type="checkbox" id="toggleExp" checked/>
+          <label style="margin:0">Show Experience</label>
+        </div>
+        <textarea id="experience" placeholder="Example:&#10;Computer Operator – ABC Company (2024–2025)&#10;- Billing & GST entries in Tally&#10;- Excel reporting"></textarea>
+
+        <div class="sep"></div>
+
+        <div class="switch">
+          <input type="checkbox" id="toggleProj" checked/>
+          <label style="margin:0">Show Projects</label>
+        </div>
+        <textarea id="projects" placeholder="Example:&#10;Resume Builder Web App&#10;- HTML/CSS/JS based resume builder with PDF export&#10;Tally GST Practice Set&#10;- 5 companies, vouchers, GSTR-3B summary"></textarea>
+
+        <div class="sep"></div>
+
+        <div class="switch">
+          <input type="checkbox" id="toggleCert" checked/>
+          <label style="margin:0">Show Certifications</label>
+        </div>
+        <textarea id="certs" placeholder="Example:&#10;Tally Prime with GST – DS Computer Classes&#10;Photoshop Basics – Online"></textarea>
+
+        <div class="sep"></div>
+
+        <label>Languages (comma separated)</label>
+        <input id="langs" placeholder="Hindi, English, Gujarati"/>
+
+        <label>Hobbies / Interests (comma separated)</label>
+        <input id="hobbies" placeholder="Teaching, Designing, Computers"/>
+
+        <div class="sep"></div>
+
+        <div class="hint">✅ Long content auto 2-page split. “Download PDF” best results.</div>
+      </div>
+    </div>
+
+    <!-- Preview -->
+    <div class="card">
+      <div class="hd">
+        <strong>Live Preview (Auto 2 Pages)</strong>
+        <span class="pill">A4 • Ready</span>
+      </div>
+
+      <div class="preview-wrap">
+        <div class="pages" id="pages"></div>
+
+        <div class="tips" style="max-width:860px;margin:12px auto 0;color:#0b1220;opacity:.75;font-size:12px">
+          Tip: Template/Theme change karo → resume look premium ho jayega. Long content automatically Page-2 me flow.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PDF library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script>
+  const $ = (id)=>document.getElementById(id);
+
+  const state = {
+    template: "classic",
+    theme: "blue",
+    customAccent: "",
+    customAccent2: "",
+    brand: "DS Computer Classes",
+    photoDataUrl: "",
+
+    name: "",
+    role: "",
+    phone: "",
+    email: "",
+    location: "",
+    links: "",
+    objectiveTpl: "",
+    summary: "",
+    skills: "",
+    education: "",
+    experience: "",
+    projects: "",
+    certs: "",
+    langs: "",
+    hobbies: "",
+
+    toggleExp: true,
+    toggleProj: true,
+    toggleCert: true
+  };
+
+  const KEY = "ds_resume_builder_pro_v3";
+
+  const THEMES = {
+    blue:   { a:"#2563eb", b:"#7c3aed" },
+    green:  { a:"#16a34a", b:"#0ea5e9" },
+    purple: { a:"#7c3aed", b:"#2563eb" },
+    orange: { a:"#f97316", b:"#eab308" },
+    red:    { a:"#ef4444", b:"#f97316" },
+    teal:   { a:"#14b8a6", b:"#0ea5e9" }
+  };
+
+  const OBJECTIVES = {
+    o1: "To secure an entry-level position where I can apply my strong learning ability, communication skills, and dedication to deliver high-quality work and grow with the organization.",
+    o2: "To work as a Computer Operator/Data Entry Executive where I can use my typing accuracy, MS Office skills, and attention to detail to maintain error-free records and support daily operations efficiently.",
+    o3: "To obtain an Accountant/Tally Executive role where I can apply my knowledge of Tally Prime, GST billing, voucher entries, and reconciliation to ensure accurate financial reporting and compliance.",
+    o4: "To join as a Graphic Designer where I can create impactful visuals using tools like Photoshop/CorelDRAW/Illustrator and contribute to branding, social media creatives, and marketing growth.",
+    o5: "To work as a Textile/Digital Textile Designer where I can apply my creative sense, color understanding, and design software skills to develop modern, production-ready textile patterns and motifs.",
+    o6: "To work as a Video Editor where I can craft engaging videos using CapCut/Premiere/After Effects, focusing on clean cuts, storytelling, and social media-optimized content for maximum reach.",
+    o7: "To build a career in Sales/Telecalling where I can use my communication, persuasion, and customer-handling skills to achieve targets, improve customer satisfaction, and drive business growth.",
+    o8: "To work as an IT Support/Office Assistant where I can use my troubleshooting skills, documentation ability, and office software knowledge to ensure smooth day-to-day operations.",
+    o9: "To start my career as a Java/BCA Fresher where I can apply my programming fundamentals, problem-solving skills, and project experience to contribute to software development and learn industry best practices.",
+    o10:"To work as a Teacher/Trainer where I can explain concepts clearly, guide students practically, and help learners build job-ready skills with discipline and motivation."
+  };
+
+  function escapeHtml(s){
+    return (s||"").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+  function splitComma(s){
+    return (s||"").split(",").map(x=>x.trim()).filter(Boolean);
+  }
+  function lines(s){
+    return (s||"").split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+  }
+
+  function parseBlockToItems(text){
+    const blocks = (text||"").split(/\n\s*\n/).map(b=>b.trim()).filter(Boolean);
+    return blocks.map(b=>{
+      const ls = b.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+      const head = ls[0] || "";
+      const bullets = ls.slice(1).filter(x=>x.startsWith("-")).map(x=>x.replace(/^-+\s*/,""));
+      const descLines = ls.slice(1).filter(x=>!x.startsWith("-"));
+      return { head, bullets, descLines };
+    });
+  }
+
+  function readFormToState(){
+    state.template = $("template").value;
+    state.theme = $("theme").value;
+    state.customAccent = $("customAccent").value.trim();
+    state.customAccent2 = $("customAccent2").value.trim();
+    state.brand = $("brand").value.trim();
+
+    state.name = $("name").value.trim();
+    state.role = $("role").value.trim();
+    state.phone = $("phone").value.trim();
+    state.email = $("email").value.trim();
+    state.location = $("location").value.trim();
+    state.links = $("links").value.trim();
+
+    state.objectiveTpl = $("objectiveTpl").value;
+    state.summary = $("summary").value.trim();
+
+    state.skills = $("skills").value.trim();
+    state.education = $("education").value.trim();
+    state.experience = $("experience").value.trim();
+    state.projects = $("projects").value.trim();
+    state.certs = $("certs").value.trim();
+    state.langs = $("langs").value.trim();
+    state.hobbies = $("hobbies").value.trim();
+
+    state.toggleExp = $("toggleExp").checked;
+    state.toggleProj = $("toggleProj").checked;
+    state.toggleCert = $("toggleCert").checked;
+  }
+
+  function writeStateToForm(){
+    $("template").value = state.template || "classic";
+    $("theme").value = state.theme || "blue";
+    $("customAccent").value = state.customAccent || "";
+    $("customAccent2").value = state.customAccent2 || "";
+    $("brand").value = state.brand || "DS Computer Classes";
+
+    $("name").value = state.name || "";
+    $("role").value = state.role || "";
+    $("phone").value = state.phone || "";
+    $("email").value = state.email || "";
+    $("location").value = state.location || "";
+    $("links").value = state.links || "";
+
+    $("objectiveTpl").value = state.objectiveTpl || "";
+    $("summary").value = state.summary || "";
+
+    $("skills").value = state.skills || "";
+    $("education").value = state.education || "";
+    $("experience").value = state.experience || "";
+    $("projects").value = state.projects || "";
+    $("certs").value = state.certs || "";
+    $("langs").value = state.langs || "";
+    $("hobbies").value = state.hobbies || "";
+
+    $("toggleExp").checked = !!state.toggleExp;
+    $("toggleProj").checked = !!state.toggleProj;
+    $("toggleCert").checked = !!state.toggleCert;
+  }
+
+  function saveLocal(){ localStorage.setItem(KEY, JSON.stringify(state)); }
+  function loadLocal(){
+    const raw = localStorage.getItem(KEY);
+    if(!raw) return false;
+    try{ Object.assign(state, JSON.parse(raw)); return true; }
+    catch(e){ return false; }
+  }
+
+  function loadFromShare(){
+    const url = new URL(window.location.href);
+    const d = url.searchParams.get("d");
+    if(!d) return false;
+    try{
+      const json = decodeURIComponent(escape(atob(d)));
+      Object.assign(state, JSON.parse(json));
+      return true;
+    }catch(e){ return false; }
+  }
+
+  function encodeShareLink(){
+    const data = {...state};
+    data.photoDataUrl = ""; // exclude photo (size)
+    const json = JSON.stringify(data);
+    const b64 = btoa(unescape(encodeURIComponent(json)));
+    const url = new URL(window.location.href);
+    url.searchParams.set("d", b64);
+    return url.toString();
+  }
+
+  function applyThemeVars(pageEl){
+    let a = THEMES.blue.a, b = THEMES.blue.b;
+    if(state.theme !== "custom"){
+      const t = THEMES[state.theme] || THEMES.blue;
+      a = t.a; b = t.b;
+    }else{
+      if(state.customAccent) a = state.customAccent;
+      if(state.customAccent2) b = state.customAccent2;
+    }
+    pageEl.style.setProperty("--accent", a);
+    pageEl.style.setProperty("--accent2", b);
+  }
+
+  function buildHeader(){
+    const meta = [];
+    if(state.phone) meta.push("📞 " + escapeHtml(state.phone));
+    if(state.email) meta.push("✉️ " + escapeHtml(state.email));
+    if(state.location) meta.push("📍 " + escapeHtml(state.location));
+    splitComma(state.links).forEach(l => meta.push("🔗 " + escapeHtml(l)));
+
+    const photoHTML = state.photoDataUrl
+      ? `<div class="avatar"><img src="${state.photoDataUrl}" alt="photo"></div>`
+      : `<div class="avatar" style="display:grid;place-items:center;color:#9ca3af;font-weight:800">IMG</div>`;
+
+    return `
+      <div class="hdr">
+        <div class="hdr-row">
+          ${photoHTML}
+          <div style="flex:1">
+            <p class="r-name">${escapeHtml(state.name || "Your Name")}</p>
+            <div class="r-role">${escapeHtml(state.role || "Your Title")}</div>
+            <div class="r-meta">
+              ${meta.map(m=>`<span class="r-chip">${m}</span>`).join("")}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function sectionHTML(title, inner){
+    return `<div class="r-sec block">
+      <h3>${escapeHtml(title)}</h3>
+      ${inner}
+    </div>`;
+  }
+
+  function listLinesAsItems(text){
+    const ls = lines(text);
+    if(!ls.length) return `<p>—</p>`;
+    return ls.map(x=>`<div class="r-item"><div class="head"><strong>${escapeHtml(x)}</strong></div></div>`).join("");
+  }
+
+  function blockItemsHTML(text){
+    const items = parseBlockToItems(text);
+    if(!items.length) return `<p>—</p>`;
+    return items.map(it=>{
+      const head = escapeHtml(it.head);
+      const desc = it.descLines.length ? `<p>${escapeHtml(it.descLines.join(" "))}</p>` : "";
+      const bullets = it.bullets.length ? `<ul class="r-ul">${it.bullets.map(b=>`<li>${escapeHtml(b)}</li>`).join("")}</ul>` : "";
+      return `<div class="r-item block-item">
+        <div class="head"><strong>${head}</strong><em></em></div>
+        ${desc}
+        ${bullets}
+      </div>`;
+    }).join("");
+  }
+
+  function skillsChips(text){
+    const arr = splitComma(text);
+    if(!arr.length) return `<span class="r-skill">—</span>`;
+    return arr.map(x=>`<span class="r-skill">${escapeHtml(x)}</span>`).join("");
+  }
+
+  function buildBodyHTML(){
+    const summary = sectionHTML("Objective", `<p>${escapeHtml(state.summary || "Write a short objective here.")}</p>`);
+    const education = sectionHTML("Education", listLinesAsItems(state.education));
+
+    const experience = state.toggleExp ? sectionHTML("Experience", blockItemsHTML(state.experience)) : "";
+    const projects = state.toggleProj ? sectionHTML("Projects", blockItemsHTML(state.projects)) : "";
+    const certs = state.toggleCert ? sectionHTML("Certifications", listLinesAsItems(state.certs)) : "";
+
+    const skills = sectionHTML("Skills", `<div class="r-skillwrap">${skillsChips(state.skills)}</div>`);
+    const langs = sectionHTML("Languages", `<div class="r-skillwrap">${skillsChips(state.langs)}</div>`);
+    const hobbies = sectionHTML("Interests", `<div class="r-skillwrap">${skillsChips(state.hobbies)}</div>`);
+
+    if(state.template === "sidebar"){
+      return `
+        <div class="layout">
+          <div class="side">
+            ${skills}
+            ${langs}
+            ${hobbies}
+          </div>
+          <div class="main">
+            ${summary}
+            ${education}
+            ${experience}
+            ${projects}
+            ${certs}
+          </div>
+        </div>
+      `;
+    }
+
+    return `
+      ${summary}
+      ${education}
+      ${experience}
+      ${projects}
+      ${certs}
+      ${skills}
+      ${langs}
+      ${hobbies}
+    `;
+  }
+
+  function pageShell(pageNo){
+    const cls = `page tpl-${state.template}`;
+    return `
+      <div class="${cls}" data-page="${pageNo}">
+        <div class="inner">
+          <div class="content"></div>
+        </div>
+        <div class="watermark">${escapeHtml(state.brand || "")}</div>
+      </div>
+    `;
+  }
+
+  function renderPages(){
+    const pagesEl = $("pages");
+    pagesEl.innerHTML = pageShell(1) + pageShell(2);
+
+    const p1 = pagesEl.querySelector('[data-page="1"]');
+    const p2 = pagesEl.querySelector('[data-page="2"]');
+
+    applyThemeVars(p1); applyThemeVars(p2);
+
+    const p1Content = p1.querySelector(".content");
+    const p2Content = p2.querySelector(".content");
+    p1Content.innerHTML = "";
+    p2Content.innerHTML = "";
+
+    // Header on both pages
+    const headerHTML = buildHeader();
+    p1Content.insertAdjacentHTML("beforeend", headerHTML);
+    p2Content.insertAdjacentHTML("beforeend", headerHTML);
+
+    // Body containers
+    const p1Body = document.createElement("div");
+    const p2Body = document.createElement("div");
+    p1Body.className = "body";
+    p2Body.className = "body";
+    p1Content.appendChild(p1Body);
+    p2Content.appendChild(p2Body);
+
+    // temp blocks
+    const tmp = document.createElement("div");
+    tmp.innerHTML = buildBodyHTML();
+    tmp.className = "body";
+    tmp.classList.add(`tpl-${state.template}`);
+
+    const blocks = Array.from(tmp.querySelectorAll(".block"));
+
+    const p1Inner = p1.querySelector(".inner");
+    const p2Inner = p2.querySelector(".inner");
+
+    function isOverflow(inner){ return inner.scrollHeight > inner.clientHeight + 1; }
+
+    // Fill page-1 then overflow to page-2
+    for(const b of blocks){
+      const clone = b.cloneNode(true);
+      p1Body.appendChild(clone);
+      if(isOverflow(p1Inner)){
+        p1Body.removeChild(clone);
+        p2Body.appendChild(clone);
+      }
+    }
+  }
+
+  function renderAll(){ renderPages(); }
+
+  // Auto update listeners
+  const formIds = [
+    "template","theme","customAccent","customAccent2","brand","objectiveTpl",
+    "name","role","phone","email","location","links","summary","skills","education",
+    "experience","projects","certs","langs","hobbies","toggleExp","toggleProj","toggleCert"
+  ];
+
+  formIds.forEach(id=>{
+    $(id).addEventListener("input", ()=>{
+      readFormToState(); renderAll(); saveLocal();
+    });
+    $(id).addEventListener("change", ()=>{
+      readFormToState(); renderAll(); saveLocal();
+    });
+  });
+
+  // Objective template auto-fill
+  $("objectiveTpl").addEventListener("change", () => {
+    const key = $("objectiveTpl").value;
+    if(!key) return;
+    const current = $("summary").value.trim();
+
+    if(!current || confirm("Objective replace karna hai?")){
+      $("summary").value = OBJECTIVES[key];
+      readFormToState(); renderAll(); saveLocal();
+    }
+  });
+
+  // Photo upload
+  $("photo").addEventListener("change", (e)=>{
+    const file = e.target.files && e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = ()=>{
+      state.photoDataUrl = reader.result;
+      renderAll(); saveLocal();
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // Buttons
+  $("btnSave").addEventListener("click", ()=>{
+    readFormToState(); saveLocal();
+    alert("Saved in browser ✅");
+  });
+
+  $("btnLoad").addEventListener("click", ()=>{
+    const ok = loadLocal();
+    if(!ok) return alert("No saved data found.");
+    writeStateToForm(); renderAll();
+    alert("Loaded ✅");
+  });
+
+  $("btnReset").addEventListener("click", ()=>{
+    if(!confirm("Reset all fields?")) return;
+    const keepBrand = state.brand || "DS Computer Classes";
+    Object.keys(state).forEach(k=>{
+      if(typeof state[k]==="boolean") state[k]=true;
+      else state[k]="";
+    });
+    state.template="classic";
+    state.theme="blue";
+    state.brand=keepBrand;
+    state.toggleExp=true; state.toggleProj=true; state.toggleCert=true;
+    state.objectiveTpl="";
+    state.photoDataUrl="";
+    writeStateToForm(); renderAll(); saveLocal();
+  });
+
+  $("btnPrint").addEventListener("click", ()=>window.print());
+
+  $("btnPDF").addEventListener("click", ()=>{
+    const element = $("pages");
+    const filename = (state.name ? state.name.replace(/\s+/g,"_") : "resume") + "_DS.pdf";
+    const opt = {
+      margin: 0,
+      filename,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff" },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak: { mode: ['css','legacy'] }
+    };
+    html2pdf().set(opt).from(element).save();
+  });
+
+  $("btnShare").addEventListener("click", async ()=>{
+    readFormToState();
+    const link = encodeShareLink();
+    try{
+      await navigator.clipboard.writeText(link);
+      alert("Share link copied ✅ (photo not included)");
+    }catch(e){
+      prompt("Copy this link:", link);
+    }
+  });
+
+  // Init
+  const fromShare = loadFromShare();
+  if(!fromShare) loadLocal();
+  writeStateToForm();
+  renderAll();
+  saveLocal();
+</script>
+</body>
+</html>
