@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>DS Resume Builder PRO v5 (A4 Print/PDF Fixed + Auto Page 2 + No Cut)</title>
+<title>DS Resume Builder PRO (A4 Print + PDF Fixed)</title>
 
 <style>
   :root{
@@ -47,7 +47,6 @@
   .btn.primary{background:linear-gradient(135deg,#2b5cff,#7c3aed);border:none}
   .btn.good{background:linear-gradient(135deg,#22c55e,#16a34a);border:none}
   .btn.danger{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.35)}
-
   .wrap{padding:18px}
   .grid{display:grid;grid-template-columns: 460px 1fr; gap:16px; align-items:start}
   @media(max-width:980px){.grid{grid-template-columns:1fr}}
@@ -79,23 +78,20 @@
     outline:none;
   }
   textarea{min-height:92px;resize:vertical}
-  .mini{font-size:11px;color:var(--ui-muted);margin-top:6px}
+  .hint{font-size:12px;color:var(--ui-muted);margin-top:6px;line-height:1.35}
+  .sep{height:1px;background:rgba(255,255,255,.08);margin:12px 0}
   .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);font-size:12px;color:var(--ui-txt)}
   .switch{display:flex;align-items:center;gap:10px;margin-top:6px}
   .switch input{width:auto}
-  .sep{height:1px;background:rgba(255,255,255,.08);margin:12px 0}
 
-  .hint{font-size:12px;color:var(--ui-muted);margin-top:6px;line-height:1.35}
-
-  /* Preview */
   .preview-wrap{background:#f3f4f6;padding:18px}
   .pages{display:flex;flex-direction:column;gap:14px;align-items:center}
 
-  /* A4 page */
+  /* Preview A4 page */
   .page{
-    width: 210mm;
-    height: 297mm;
-    min-height: 297mm;
+    width:210mm;
+    height:297mm;
+    min-height:297mm;
     background:var(--paper);
     color:var(--ink);
     border-radius:14px;
@@ -106,14 +102,13 @@
   .page .inner{
     padding:16mm 14mm 14mm 14mm;
     height:297mm;
-    overflow:hidden;   /* IMPORTANT for overflow measuring */
+    overflow:hidden;
   }
   .watermark{
     position:absolute; inset:auto 12mm 10mm auto;
     font-size:10px; color:#9ca3af;
   }
 
-  /* Base typography */
   .r-name{font-size:28px;font-weight:900;line-height:1.1;margin:0}
   .r-role{font-size:13.5px;color:var(--muted);margin-top:6px}
   .r-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
@@ -132,7 +127,6 @@
   .avatar img{width:100%;height:100%;object-fit:cover;display:block}
   .hdr-row{display:flex;gap:14px;align-items:center}
 
-  /* Header styles */
   .hdr{padding:12px 12px;border-radius:12px}
   .hdr.classic{border:1px solid var(--line);background:#fff}
   .hdr.line{border:1px solid var(--line);background:#fff;border-left:6px solid var(--accent)}
@@ -142,12 +136,8 @@
   .hdr.grad{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:0}
   .hdr.grad .r-role{color:rgba(255,255,255,.86)}
   .hdr.grad .r-chip{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);color:#fff}
-  .hdr.soft{background:linear-gradient(135deg, rgba(0,0,0,.02), rgba(0,0,0,.00));border:1px solid rgba(0,0,0,.10)}
-  .hdr.glass{background:linear-gradient(135deg, rgba(255,255,255,.90), rgba(255,255,255,.78));border:1px solid rgba(0,0,0,.10)}
-  .hdr.mono{background:#fff;border:2px solid #111827}
-  .hdr.mono .r-name{letter-spacing:.03em}
 
-  /* Page decoration */
+  /* Decoration */
   .page::before{content:"";position:absolute;inset:0;pointer-events:none}
   .page[data-deco="none"]::before{display:none}
   .page[data-deco="corner"]::before{
@@ -155,51 +145,11 @@
       radial-gradient(200px 200px at 0% 0%, rgba(0,0,0,.04), transparent 60%),
       radial-gradient(240px 240px at 100% 0%, rgba(0,0,0,.03), transparent 60%);
   }
-  .page[data-deco="bands"]::before{
-    background:
-      linear-gradient(90deg, rgba(0,0,0,.03) 0 10%, transparent 10% 100%),
-      linear-gradient(135deg, rgba(0,0,0,.02), transparent 55%);
-  }
   .page[data-deco="accentbar"]::before{
     background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 18%, transparent) 0 7mm, transparent 7mm 100%);
   }
-  .page[data-deco="dots"]::before{
-    background: radial-gradient(circle at 18% 16%, rgba(0,0,0,.04) 0 2px, transparent 3px) 0 0/18px 18px;
-    opacity:.55;
-  }
-  .page[data-deco="wave"]::before{
-    background:
-      radial-gradient(600px 220px at 50% -10%, rgba(0,0,0,.04), transparent 65%),
-      radial-gradient(500px 220px at 70% 5%, rgba(0,0,0,.025), transparent 65%);
-  }
 
-  /* Sidebar layout */
-  .layout-two{display:grid;grid-template-columns: 64mm 1fr; gap:10mm}
-  .side{
-    background:linear-gradient(180deg, color-mix(in srgb, var(--accent) 10%, transparent), color-mix(in srgb, var(--accent2) 6%, transparent));
-    border:1px solid rgba(0,0,0,.08);
-    border-radius:12px;
-    padding:10mm 8mm;
-  }
-  .main{padding-top:2mm}
-  .divider{height:1px;background:var(--line);margin:8px 0}
-  .side .r-sec{margin-top:12px}
-
-  /* Fresher full look */
-  .fresher-fill .r-sec{margin-top:13px}
-  .fresher-fill .r-item{margin:12px 0}
-
-  /* Signature block */
-  .sig-wrap{
-    margin-top:14px;
-    display:flex;justify-content:space-between;gap:14px;align-items:flex-end;
-    font-size:13px;
-  }
-  .sig-box{min-width:72mm;text-align:right}
-  .sig-line{margin-top:6px;height:1px;background:var(--line)}
-  .sig-img{display:block;margin-left:auto;width:45mm;height:16mm;object-fit:contain}
-
-  /* CV / Traditional */
+  /* CV look */
   .cv-titlebar{
     margin-bottom:10mm;
     text-align:center;
@@ -211,11 +161,6 @@
     border:1px solid #c9c9c9;
     background:#d6cfb3;
   }
-  .cv-titlebar.white{
-    background:#fff;
-    border:none;
-    text-decoration: underline;
-  }
   .secbar{
     margin-top:12px;
     border:1px solid #bdbdbd;
@@ -225,19 +170,8 @@
     font-weight:800;
     letter-spacing:.02em;
   }
-  .cv .r-sec{margin-top:12px}
-  .cv .r-sec h3{display:none}
   .cv p,.cv li,.cv .r-item strong{font-family:"Times New Roman", Georgia, serif}
-  .cv .r-item .head strong{font-size:14px}
-  .cv .r-ul{margin-left:20px}
-  .cv .r-chip{font-family:"Times New Roman", Georgia, serif;background:#fff;border:1px solid #d1d5db}
   .cv .hdr{border-radius:0}
-  .cv .hdr.classic{border:0;border-bottom:2px solid #111}
-  .cv .avatar{border-radius:8px;width:78px;height:78px}
-
-  table.edutab{width:100%;border-collapse:collapse;margin-top:6px;font-size:13px}
-  table.edutab th, table.edutab td{border:1px solid #111827;padding:6px 8px;vertical-align:top}
-  table.edutab th{background:#111827;color:#fff;font-weight:800}
 
   .modern .r-sec h3{
     margin:0 0 8px;font-size:12.2px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);
@@ -247,28 +181,34 @@
     content:"";position:absolute;left:0;bottom:0;width:44px;height:3px;background:var(--accent);border-radius:99px;opacity:.85;
   }
 
-  /* ===== PRINT/PDF GUARANTEE ===== */
+  /* Print A4 */
   @page{ size:A4; margin:0; }
-
-  .block{ break-inside: avoid; page-break-inside: avoid; }
 
   @media print{
     header,.form-card,.tips{display:none !important}
     body,.preview-wrap{background:#fff !important}
     .wrap{padding:0 !important}
-    #pages,.pages{display:block !important; width:auto !important; align-items:stretch !important}
+    #pages,.pages{display:block !important}
+
+    /* SAFE print area (avoids extra blank pages even if user keeps default margins) */
     .page{
-      width:210mm !important;
-      height:297mm !important;
-      min-height:297mm !important;
-      margin:0 !important;
+      width:190mm !important;
+      height:277mm !important;
+      min-height:277mm !important;
+      margin:0 auto !important;
+
       border-radius:0 !important;
       box-shadow:none !important;
       overflow:hidden !important;
+
       page-break-after:always !important;
       break-after:page !important;
     }
-    .page:last-child{page-break-after:auto !important;break-after:auto !important}
+    #pages .page:last-of-type{
+      page-break-after:auto !important;
+      break-after:auto !important;
+    }
+    .page[style*="display: none"]{display:none !important}
   }
 
   body.pdf-mode{background:#fff !important}
@@ -293,7 +233,7 @@
     <div class="logo">DS</div>
     <div>
       <h1>DS Resume Builder PRO</h1>
-      <div class="sub">A4 Print/PDF Fixed • Auto Page 2 • No Cut • 20 Templates • 20 Themes • ATS</div>
+      <div class="sub">A4 Print Fixed • PDF Download Fixed • Manual Address Only</div>
     </div>
   </div>
   <div class="top-actions">
@@ -302,7 +242,6 @@
     <button class="btn danger" id="btnReset">Reset</button>
     <button class="btn" id="btnPrint">Print</button>
     <button class="btn good" id="btnPDF">Download PDF</button>
-    <button class="btn primary" id="btnShare">Copy Share Link</button>
   </div>
 </header>
 
@@ -319,12 +258,12 @@
 
         <div class="row">
           <div>
-            <label>Template (20)</label>
+            <label>Template</label>
             <select id="template"></select>
-            <div class="hint">Fresher Full templates keep the resume looking filled even for freshers.</div>
+            <div class="hint">CV templates look like traditional resumes. ATS Mode makes it clean.</div>
           </div>
           <div>
-            <label>Color Theme (20)</label>
+            <label>Color Theme</label>
             <select id="theme"></select>
           </div>
         </div>
@@ -346,7 +285,7 @@
           <input type="checkbox" id="atsMode"/>
           <label style="margin:0">ATS Mode (simple, clean resume)</label>
         </div>
-        <div class="hint">ATS Mode removes decorations and disables photo automatically.</div>
+        <div class="hint">ATS Mode disables decorations and keeps resume clean for job portals.</div>
 
         <div class="row">
           <div>
@@ -356,12 +295,11 @@
               <label style="margin:0">Photo ON/OFF</label>
             </div>
             <input id="photo" type="file" accept="image/*"/>
-            <div class="hint">If ATS Mode is ON, photo will stay OFF.</div>
           </div>
           <div>
             <label>Brand watermark</label>
             <input id="brand" placeholder="DS Computer Classes"/>
-            <div class="hint">Shows a small watermark on the PDF/print.</div>
+            <div class="hint">Small watermark on print/PDF.</div>
           </div>
         </div>
 
@@ -369,9 +307,9 @@
 
         <div class="switch">
           <input type="checkbox" id="enablePage2" checked/>
-          <label style="margin:0">Enable Page 2 (Add/Close)</label>
+          <label style="margin:0">Enable Page 2</label>
         </div>
-        <div class="hint">If content overflows, Page 2 will auto-enable and nothing will be cut.</div>
+        <div class="hint">If content overflows, Page 2 auto activates and nothing will be cut.</div>
 
         <div class="sep"></div>
 
@@ -410,12 +348,12 @@
 
         <div class="sep"></div>
 
-        <label>Objective Templates (30)</label>
+        <label>Objective Templates</label>
         <select id="objectiveTpl"></select>
         <div class="hint">Selecting an objective will auto-fill the Objective box (you can edit it).</div>
 
         <label>Career Objective</label>
-        <textarea id="summary" placeholder="2–4 lines ATS-friendly objective"></textarea>
+        <textarea id="summary" placeholder="Write a short objective here."></textarea>
 
         <div class="sep"></div>
 
@@ -426,11 +364,6 @@
 
         <label>Education (one per line)</label>
         <textarea id="education" placeholder="BCA (2024–2027) – XYZ College, Surat&#10;12th (2023) – GSEB"></textarea>
-
-        <div class="switch">
-          <input type="checkbox" id="eduTable"/>
-          <label style="margin:0">Education Table (only for CV templates)</label>
-        </div>
 
         <div class="sep"></div>
 
@@ -475,119 +408,22 @@ Job – Company (Year)
 
         <div class="sep"></div>
 
-        <strong style="display:block;margin:0 0 8px">Address (India)</strong>
+        <strong style="display:block;margin:0 0 8px">Address (Manual Only)</strong>
 
         <div class="switch">
           <input type="checkbox" id="sameAddress"/>
-          <label style="margin:0">Permanent address same as Current</label>
-        </div>
-
-        <div class="hint">State/District selection is optional. You can type manually.</div>
-
-        <div class="sep"></div>
-        <div style="font-weight:700;font-size:12px;color:var(--ui-muted);margin-bottom:6px">Current Address</div>
-
-        <div class="row">
-          <div>
-            <label>State (optional select)</label>
-            <select id="c_state_sel"></select>
-            <input id="c_state_txt" placeholder="Type State (optional)" style="margin-top:8px"/>
-          </div>
-          <div>
-            <label>District (optional select)</label>
-            <select id="c_dist_sel"></select>
-            <input id="c_dist_txt" placeholder="Type District (optional)" style="margin-top:8px"/>
-          </div>
-        </div>
-
-        <div class="row">
-          <div>
-            <label>Police Station (optional)</label>
-            <input list="psList" id="c_ps_txt" placeholder="Type / select Police Station (optional)"/>
-            <datalist id="psList"></datalist>
-          </div>
-          <div>
-            <label>Pincode</label>
-            <input id="c_pin" placeholder="e.g., 395004"/>
-          </div>
-        </div>
-
-        <div class="row">
-          <div>
-            <label>Village / Mohalla</label>
-            <input id="c_village" placeholder="Village / Mohalla / Area"/>
-          </div>
-          <div>
-            <label>Full Address Line (optional)</label>
-            <input id="c_full" placeholder="House No, Street, Landmark (optional)"/>
-          </div>
+          <label style="margin:0">Permanent address same as Temporary</label>
         </div>
 
         <div class="sep"></div>
+
+        <div style="font-weight:700;font-size:12px;color:var(--ui-muted);margin-bottom:6px">Temporary Address</div>
+        <textarea id="tempAddress" placeholder="House No, Street, Area, Police Station, District, State, Pincode"></textarea>
+
+        <div class="sep"></div>
+
         <div style="font-weight:700;font-size:12px;color:var(--ui-muted);margin-bottom:6px">Permanent Address</div>
-
-        <div id="permBlock">
-          <div class="row">
-            <div>
-              <label>State (optional select)</label>
-              <select id="p_state_sel"></select>
-              <input id="p_state_txt" placeholder="Type State (optional)" style="margin-top:8px"/>
-            </div>
-            <div>
-              <label>District (optional select)</label>
-              <select id="p_dist_sel"></select>
-              <input id="p_dist_txt" placeholder="Type District (optional)" style="margin-top:8px"/>
-            </div>
-          </div>
-
-          <div class="row">
-            <div>
-              <label>Police Station (optional)</label>
-              <input id="p_ps_txt" placeholder="Type Police Station (optional)"/>
-            </div>
-            <div>
-              <label>Pincode</label>
-              <input id="p_pin" placeholder="e.g., 800001"/>
-            </div>
-          </div>
-
-          <div class="row">
-            <div>
-              <label>Village / Mohalla</label>
-              <input id="p_village" placeholder="Village / Mohalla / Area"/>
-            </div>
-            <div>
-              <label>Full Address Line (optional)</label>
-              <input id="p_full" placeholder="House No, Street, Landmark (optional)"/>
-            </div>
-          </div>
-        </div>
-
-        <div class="sep"></div>
-
-        <strong style="display:block;margin:0 0 8px">Signature / Date / Place</strong>
-
-        <div class="row">
-          <div>
-            <label>Place</label>
-            <input id="place" placeholder="e.g., Surat"/>
-          </div>
-          <div>
-            <label>Date</label>
-            <input id="date" type="date"/>
-          </div>
-        </div>
-
-        <div class="row">
-          <div>
-            <label>Signature Name (optional)</label>
-            <input id="sigName" placeholder="Name under signature"/>
-          </div>
-          <div>
-            <label>Signature Image (optional)</label>
-            <input id="sigImg" type="file" accept="image/*"/>
-          </div>
-        </div>
+        <textarea id="permAddress" placeholder="House No, Street, Area, Police Station, District, State, Pincode"></textarea>
 
       </div>
     </div>
@@ -602,7 +438,7 @@ Job – Company (Year)
       <div class="preview-wrap">
         <div class="pages" id="pages"></div>
         <div class="tips" style="max-width:860px;margin:12px auto 0;color:#0b1220;opacity:.75;font-size:12px">
-          Tip: For strict ATS, enable ATS Mode. For CV style, choose CV templates.
+          Print Tip: Choose A4 in print dialog. If user selects Letter, print will still fit but may scale.
         </div>
       </div>
     </div>
@@ -610,15 +446,14 @@ Job – Company (Year)
   </div>
 </div>
 
-<!-- IMPORTANT: html2canvas needed for stable per-page PDF -->
+<!-- PDF libs -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<!-- Keep html2pdf (brings jsPDF too) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
 (() => {
   const $ = (id)=>document.getElementById(id);
-  const KEY = "ds_resume_builder_pro_v5";
+  const KEY = "ds_resume_builder_manual_address_v1";
 
   const THEMES = {
     blue:{label:"Blue",a:"#2563eb",b:"#7c3aed"},
@@ -628,93 +463,35 @@ Job – Company (Year)
     red:{label:"Red",a:"#ef4444",b:"#f97316"},
     teal:{label:"Teal",a:"#14b8a6",b:"#0ea5e9"},
     navy:{label:"Navy",a:"#1d4ed8",b:"#0f172a"},
-    cyan:{label:"Cyan",a:"#06b6d4",b:"#3b82f6"},
     pink:{label:"Pink",a:"#ec4899",b:"#8b5cf6"},
-    indigo:{label:"Indigo",a:"#4f46e5",b:"#0ea5e9"},
-    amber:{label:"Amber",a:"#f59e0b",b:"#ef4444"},
-    lime:{label:"Lime",a:"#84cc16",b:"#22c55e"},
     slate:{label:"Slate",a:"#334155",b:"#64748b"},
-    chocolate:{label:"Chocolate",a:"#7c2d12",b:"#f97316"},
-    grape:{label:"Grape",a:"#6d28d9",b:"#db2777"},
-    forest:{label:"Forest",a:"#14532d",b:"#22c55e"},
-    sky:{label:"Sky",a:"#0284c7",b:"#22c55e"},
-    rose:{label:"Rose",a:"#e11d48",b:"#fb7185"},
     gold:{label:"Gold",a:"#b45309",b:"#f59e0b"},
-    ocean:{label:"Ocean",a:"#0ea5e9",b:"#1d4ed8"},
     custom:{label:"Custom (use below)",a:"",b:""}
   };
 
   const TEMPLATES = {
-    t01:{name:"Modern Classic ATS",header:"classic",layout:"single",deco:"none",fresher:false,style:"modern"},
-    t02:{name:"Modern Line Accent",header:"line",layout:"single",deco:"corner",fresher:false,style:"modern"},
-    t03:{name:"Modern Dark Header",header:"dark",layout:"single",deco:"none",fresher:false,style:"modern"},
-    t04:{name:"Modern Gradient Header",header:"grad",layout:"single",deco:"corner",fresher:false,style:"modern"},
-    t05:{name:"Modern Soft Clean",header:"soft",layout:"single",deco:"none",fresher:false,style:"modern"},
-    t06:{name:"Modern Glass Header",header:"glass",layout:"single",deco:"wave",fresher:false,style:"modern"},
-    t07:{name:"Modern Mono Border",header:"mono",layout:"single",deco:"none",fresher:false,style:"modern"},
-    t08:{name:"Modern Accent Bar Page",header:"classic",layout:"single",deco:"accentbar",fresher:false,style:"modern"},
-    t09:{name:"Modern Dotted Minimal",header:"soft",layout:"single",deco:"dots",fresher:false,style:"modern"},
-    t10:{name:"Modern Banded Pro",header:"line",layout:"single",deco:"bands",fresher:false,style:"modern"},
-    t11:{name:"Modern Sidebar Pro",header:"classic",layout:"sidebar",deco:"none",fresher:false,style:"modern"},
-    t12:{name:"Modern Sidebar Accent",header:"line",layout:"sidebar",deco:"accentbar",fresher:false,style:"modern"},
-    t13:{name:"Modern Sidebar Dark",header:"dark",layout:"sidebar",deco:"none",fresher:false,style:"modern"},
-    t14:{name:"Modern Sidebar Gradient",header:"grad",layout:"sidebar",deco:"corner",fresher:false,style:"modern"},
-    t15:{name:"Fresher Full Classic",header:"classic",layout:"single",deco:"corner",fresher:true,style:"modern"},
-    t16:{name:"Fresher Full Accent",header:"line",layout:"single",deco:"accentbar",fresher:true,style:"modern"},
-    t17:{name:"Fresher Full Modern Dark",header:"dark",layout:"single",deco:"wave",fresher:true,style:"modern"},
-    t18:{name:"Fresher Full Gradient",header:"grad",layout:"single",deco:"bands",fresher:true,style:"modern"},
-    t19:{name:"CV Beige Title + Section Bars",header:"classic",layout:"single",deco:"none",fresher:true,style:"cv",cvTitle:"beige"},
-    t20:{name:"CV Underlined Title + Clean Bars",header:"classic",layout:"single",deco:"none",fresher:true,style:"cv",cvTitle:"white"},
+    t01:{name:"Modern Classic ATS",header:"classic",deco:"none",style:"modern"},
+    t02:{name:"Modern Line Accent",header:"line",deco:"corner",style:"modern"},
+    t03:{name:"Modern Dark Header",header:"dark",deco:"none",style:"modern"},
+    t04:{name:"Modern Gradient Header",header:"grad",deco:"corner",style:"modern"},
+    t05:{name:"CV Traditional (Beige Title)",header:"classic",deco:"none",style:"cv"},
   };
 
-  const OBJECTIVES = {
-    o01:"To secure an entry-level role where I can apply strong learning ability, discipline, and communication skills to deliver quality work and grow with the organization.",
-    o02:"To work as a Computer Operator/Data Entry Executive utilizing fast typing, MS Office expertise, and attention to detail to maintain accurate records and support daily operations.",
-    o03:"To obtain an Accountant/Tally Executive position where I can apply Tally Prime, GST billing, voucher entries, and reconciliation skills to ensure compliance and accurate reporting.",
-    o04:"To join as a Graphic Designer where I can create high-impact creatives using Photoshop/CorelDRAW/Illustrator and contribute to branding and marketing growth.",
-    o05:"To work as a Textile/Digital Textile Designer where I can develop production-ready patterns and motifs with strong color sense and design software skills.",
-    o06:"To work as a Video Editor focusing on clean storytelling, smooth transitions, and social-media optimized edits using CapCut/Premiere/After Effects.",
-    o07:"To build a career in Sales/Telecalling where I can leverage persuasion and customer-handling skills to achieve targets and improve customer satisfaction.",
-    o08:"To work as an IT Support/Office Assistant where I can troubleshoot issues, maintain documentation, and ensure smooth day-to-day operations.",
-    o09:"To start my career as a Java/BCA Fresher where I can apply programming fundamentals, problem-solving, and project experience to contribute to development tasks.",
-    o10:"To work as a Teacher/Trainer where I can explain concepts clearly, guide students practically, and help learners build job-ready skills.",
-    o11:"To obtain a role in back-office operations where I can use MS Excel, documentation skills, and process discipline to support business workflows effectively.",
-    o12:"To secure a Front Desk/Reception position where I can manage calls, visitors, and coordination with professionalism and a service mindset.",
-    o13:"To work in retail/customer support where I can assist customers, handle billing, and maintain a positive store experience.",
-    o14:"To join a growing company as an Office Executive where I can handle daily reporting, coordination, and documentation with accuracy.",
-    o15:"To work as a Billing Executive where I can manage invoices, GST billing, and accounts entries accurately and on time.",
-    o16:"To start as a junior designer where I can improve daily through feedback while delivering consistent creative outputs for digital platforms.",
-    o17:"To work as a Social Media Executive where I can plan content, create creatives, and improve engagement through consistent posting.",
-    o18:"To join as a junior accountant where I can support ledger maintenance, voucher entries, and reconciliations with accuracy and confidentiality.",
-    o19:"To work in a reporting/analysis trainee role where I can use Excel functions, charts, and dashboards to support decisions.",
-    o20:"To secure an internship/trainee role to gain hands-on industry exposure while contributing with sincerity and fast learning.",
-    o21:"To work as a Computer Teacher/Instructor where I can train students in basic to advanced computer skills with a practical approach.",
-    o22:"To join as a customer relationship executive where I can build trust and provide quick resolutions to customer queries.",
-    o23:"To work in logistics/admin support where I can maintain records, coordinate tasks, and ensure timely execution.",
-    o24:"To join as a junior web developer (HTML/CSS/JS) where I can contribute to UI building and learn production practices.",
-    o25:"To work as a content editor where I can create clean, error-free documents and presentations with strong formatting skills.",
-    o26:"To work as a junior QA/testing trainee where I can follow processes, document issues, and support software quality.",
-    o27:"To work as an assistant textile/print designer where I can create repeat patterns and colorways for production.",
-    o28:"To join as a junior video creator where I can produce short-form reels and marketing edits to improve brand reach.",
-    o29:"To secure a role where I can combine creativity and computer skills to deliver professional work within deadlines.",
-    o30:"To work in a reputed organization where I can contribute my skills, stay consistent, and grow into higher responsibilities over time."
-  };
-
-  const INDIA_SD_URLS = [
-    "https://raw.githubusercontent.com/sab99r/Indian-States-And-Districts/master/states-and-districts.json",
-    "https://raw.githubusercontent.com/hmpandey/All-Indian-States-With-Districts-JSON-List/master/states-and-districts.json"
+  const OBJECTIVES = [
+    "To secure an entry-level role where I can apply strong learning ability, discipline, and communication skills to deliver quality work and grow with the organization.",
+    "To work as a Computer Operator/Data Entry Executive utilizing fast typing, MS Office expertise, and attention to detail to maintain accurate records and support daily operations.",
+    "To obtain an Accountant/Tally Executive position where I can apply Tally Prime, GST billing, voucher entries, and reconciliation skills to ensure compliance and accurate reporting.",
+    "To join as a Graphic Designer where I can create high-impact creatives using Photoshop/CorelDRAW/Illustrator and contribute to branding and marketing growth.",
+    "To work as a Textile/Digital Textile Designer where I can develop production-ready patterns and motifs with strong color sense and design software skills.",
+    "To work as a Video Editor focusing on clean storytelling, smooth transitions, and social-media optimized edits using professional tools and best practices.",
+    "To work as an IT Support/Office Assistant where I can troubleshoot issues, maintain documentation, and ensure smooth day-to-day operations.",
+    "To start my career as a Java/BCA Fresher where I can apply programming fundamentals, problem-solving, and project experience to contribute to development tasks.",
+    "To work as a Teacher/Trainer where I can explain concepts clearly, guide students practically, and help learners build job-ready skills.",
+    "To join a growing company as an Office Executive where I can handle daily reporting, coordination, and documentation with accuracy."
   ];
-  const PS_SUGGEST = {
-    "Gujarat|Surat":["Varachha","Katargam","Adajan","Sachin","Udhna","Pandesara"],
-    "Gujarat|Ahmedabad":["Navrangpura","Sarkhej","Bapunagar","Maninagar","Vastrapur"],
-    "Bihar|Patna":["Kotwali","Gandhi Maidan","Danapur"],
-    "Uttar Pradesh|Lucknow":["Hazratganj","Gomti Nagar","Aliganj"],
-    "Maharashtra|Pune":["Shivajinagar","Hinjewadi","Kothrud","Hadapsar"]
-  };
-  let INDIA_SD = null;
 
   const state = {
-    template:"t01",
+    template:"t05",
     theme:"blue",
     customAccent:"",
     customAccent2:"",
@@ -726,16 +503,10 @@ Job – Company (Year)
     photoEnabled:true,
     photoDataUrl:"",
 
-    name:"",
-    fatherName:"",
-    role:"",
-    phone:"",
-    email:"",
-    links:"",
+    name:"", fatherName:"",
+    role:"", phone:"", email:"", links:"",
 
-    objectiveTpl:"",
     summary:"",
-
     skills:"",
     education:"",
     experience:"",
@@ -744,24 +515,13 @@ Job – Company (Year)
     langs:"",
     hobbies:"",
 
-    eduTable:false,
-
     toggleExp:true,
     toggleProj:true,
     toggleCert:true,
 
     sameAddress:false,
-
-    c_state_sel:"",c_state_txt:"",
-    c_dist_sel:"",c_dist_txt:"",
-    c_ps_txt:"",c_pin:"",c_village:"",c_full:"",
-
-    p_state_sel:"",p_state_txt:"",
-    p_dist_sel:"",p_dist_txt:"",
-    p_ps_txt:"",p_pin:"",p_village:"",p_full:"",
-
-    place:"",date:"",sigName:"",
-    sigImgDataUrl:""
+    tempAddress:"",
+    permAddress:""
   };
 
   function escapeHtml(s){
@@ -788,91 +548,12 @@ Job – Company (Year)
     try{ Object.assign(state, JSON.parse(raw)); return true; }catch(e){ return false; }
   }
 
-  function loadFromShare(){
-    const url = new URL(window.location.href);
-    const d = url.searchParams.get("d");
-    if(!d) return false;
-    try{
-      const json = decodeURIComponent(escape(atob(d)));
-      Object.assign(state, JSON.parse(json));
-      return true;
-    }catch(e){ return false; }
-  }
-
-  function encodeShareLink(){
-    const data = {...state};
-    data.photoDataUrl = "";
-    data.sigImgDataUrl = "";
-    const json = JSON.stringify(data);
-    const b64 = btoa(unescape(encodeURIComponent(json)));
-    const url = new URL(window.location.href);
-    url.searchParams.set("d", b64);
-    return url.toString();
-  }
-
-  async function fetchIndiaSD(){
-    for(const url of INDIA_SD_URLS){
-      try{
-        const r = await fetch(url, {cache:"force-cache"});
-        if(!r.ok) continue;
-        const j = await r.json();
-        if(Array.isArray(j) && j[0] && (j[0].state || j[0].State || j[0].name)){
-          INDIA_SD = j.map(x=>({
-            state: x.state || x.State || x.name,
-            districts: x.districts || x.Districts || x.district || []
-          }));
-          INDIA_SD.sort((a,b)=>String(a.state).localeCompare(String(b.state)));
-          INDIA_SD.forEach(s => Array.isArray(s.districts) && s.districts.sort((a,b)=>String(a).localeCompare(String(b))));
-          return true;
-        }
-      }catch(e){}
-    }
-    INDIA_SD = null;
-    return false;
-  }
-
-  function fillStateSelect(selId){
-    const sel = $(selId);
-    sel.innerHTML = `<option value="">-- Select (optional) --</option>`;
-    if(!INDIA_SD) return;
-    INDIA_SD.forEach(x=>{
-      const o=document.createElement("option");
-      o.value=x.state; o.textContent=x.state;
-      sel.appendChild(o);
-    });
-  }
-
-  function fillDistrictSelect(stateName, selId){
-    const sel=$(selId);
-    sel.innerHTML = `<option value="">-- Select (optional) --</option>`;
-    if(!INDIA_SD || !stateName) return;
-    const row = INDIA_SD.find(x=>x.state===stateName);
-    const list = (row && Array.isArray(row.districts)) ? row.districts : [];
-    list.forEach(d=>{
-      const o=document.createElement("option");
-      o.value=d; o.textContent=d;
-      sel.appendChild(o);
-    });
-  }
-
-  function fillPSDatalist(stateName, distName){
-    const dl=$("psList");
-    dl.innerHTML="";
-    const key=`${stateName||""}|${distName||""}`;
-    const list=PS_SUGGEST[key] || [];
-    list.forEach(p=>{
-      const o=document.createElement("option");
-      o.value=p; dl.appendChild(o);
-    });
-  }
-
   function setSelectOptions(){
     const tSel = $("template");
     tSel.innerHTML = "";
     Object.entries(TEMPLATES).forEach(([k,v])=>{
       const opt = document.createElement("option");
-      opt.value = k;
-      opt.textContent = v.name;
+      opt.value = k; opt.textContent = v.name;
       tSel.appendChild(opt);
     });
 
@@ -880,20 +561,18 @@ Job – Company (Year)
     thSel.innerHTML = "";
     Object.entries(THEMES).forEach(([k,v])=>{
       const opt = document.createElement("option");
-      opt.value = k;
-      opt.textContent = v.label;
+      opt.value = k; opt.textContent = v.label;
       thSel.appendChild(opt);
     });
 
     const oSel = $("objectiveTpl");
     oSel.innerHTML = "";
     const first = document.createElement("option");
-    first.value = "";
-    first.textContent = "-- Select Objective --";
+    first.value = ""; first.textContent = "-- Select Objective --";
     oSel.appendChild(first);
-    Object.entries(OBJECTIVES).forEach(([k,v], idx)=>{
+    OBJECTIVES.forEach((v, idx)=>{
       const opt = document.createElement("option");
-      opt.value = k;
+      opt.value = String(idx);
       opt.textContent = `${String(idx+1).padStart(2,'0')}) ${v.slice(0, 70)}...`;
       oSel.appendChild(opt);
     });
@@ -923,7 +602,6 @@ Job – Company (Year)
     state.email = $("email").value.trim();
     state.links = $("links").value.trim();
 
-    state.objectiveTpl = $("objectiveTpl").value;
     state.summary = $("summary").value.trim();
 
     state.skills = $("skills").value.trim();
@@ -934,41 +612,25 @@ Job – Company (Year)
     state.langs = $("langs").value.trim();
     state.hobbies = $("hobbies").value.trim();
 
-    state.eduTable = $("eduTable").checked;
-
     state.toggleExp = $("toggleExp").checked;
     state.toggleProj = $("toggleProj").checked;
     state.toggleCert = $("toggleCert").checked;
 
     state.sameAddress = $("sameAddress").checked;
+    state.tempAddress = $("tempAddress").value.trim();
+    state.permAddress = $("permAddress").value.trim();
 
-    state.c_state_sel = $("c_state_sel").value;
-    state.c_state_txt = $("c_state_txt").value.trim();
-    state.c_dist_sel  = $("c_dist_sel").value;
-    state.c_dist_txt  = $("c_dist_txt").value.trim();
-    state.c_ps_txt    = $("c_ps_txt").value.trim();
-    state.c_pin       = $("c_pin").value.trim();
-    state.c_village   = $("c_village").value.trim();
-    state.c_full      = $("c_full").value.trim();
-
-    state.p_state_sel = $("p_state_sel").value;
-    state.p_state_txt = $("p_state_txt").value.trim();
-    state.p_dist_sel  = $("p_dist_sel").value;
-    state.p_dist_txt  = $("p_dist_txt").value.trim();
-    state.p_ps_txt    = $("p_ps_txt").value.trim();
-    state.p_pin       = $("p_pin").value.trim();
-    state.p_village   = $("p_village").value.trim();
-    state.p_full      = $("p_full").value.trim();
-
-    state.place = $("place").value.trim();
-    state.date  = $("date").value;
-    state.sigName = $("sigName").value.trim();
-
-    if(state.sameAddress) syncPermanentFromCurrent();
+    if(state.sameAddress){
+      state.permAddress = state.tempAddress;
+      $("permAddress").value = state.permAddress;
+      $("permAddress").disabled = true;
+    }else{
+      $("permAddress").disabled = false;
+    }
   }
 
   function writeStateToForm(){
-    $("template").value = state.template || "t01";
+    $("template").value = state.template || "t05";
     $("theme").value = state.theme || "blue";
     $("customAccent").value = state.customAccent || "";
     $("customAccent2").value = state.customAccent2 || "";
@@ -986,7 +648,6 @@ Job – Company (Year)
     $("email").value = state.email || "";
     $("links").value = state.links || "";
 
-    $("objectiveTpl").value = state.objectiveTpl || "";
     $("summary").value = state.summary || "";
 
     $("skills").value = state.skills || "";
@@ -997,58 +658,20 @@ Job – Company (Year)
     $("langs").value = state.langs || "";
     $("hobbies").value = state.hobbies || "";
 
-    $("eduTable").checked = !!state.eduTable;
-
     $("toggleExp").checked = !!state.toggleExp;
     $("toggleProj").checked = !!state.toggleProj;
     $("toggleCert").checked = !!state.toggleCert;
 
     $("sameAddress").checked = !!state.sameAddress;
+    $("tempAddress").value = state.tempAddress || "";
+    $("permAddress").value = state.permAddress || "";
 
-    $("c_state_sel").value = state.c_state_sel || "";
-    $("c_state_txt").value = state.c_state_txt || "";
-    $("c_dist_sel").value  = state.c_dist_sel || "";
-    $("c_dist_txt").value  = state.c_dist_txt || "";
-    $("c_ps_txt").value    = state.c_ps_txt || "";
-    $("c_pin").value       = state.c_pin || "";
-    $("c_village").value   = state.c_village || "";
-    $("c_full").value      = state.c_full || "";
-
-    $("p_state_sel").value = state.p_state_sel || "";
-    $("p_state_txt").value = state.p_state_txt || "";
-    $("p_dist_sel").value  = state.p_dist_sel || "";
-    $("p_dist_txt").value  = state.p_dist_txt || "";
-    $("p_ps_txt").value    = state.p_ps_txt || "";
-    $("p_pin").value       = state.p_pin || "";
-    $("p_village").value   = state.p_village || "";
-    $("p_full").value      = state.p_full || "";
-
-    $("place").value = state.place || "";
-    $("date").value = state.date || "";
-    $("sigName").value = state.sigName || "";
-
-    $("permBlock").style.display = state.sameAddress ? "none" : "";
-  }
-
-  function syncPermanentFromCurrent(){
-    state.p_state_sel = state.c_state_sel;
-    state.p_state_txt = state.c_state_txt;
-    state.p_dist_sel  = state.c_dist_sel;
-    state.p_dist_txt  = state.c_dist_txt;
-    state.p_ps_txt    = state.c_ps_txt;
-    state.p_pin       = state.c_pin;
-    state.p_village   = state.c_village;
-    state.p_full      = state.c_full;
-
-    $("p_state_sel").value = state.p_state_sel || "";
-    $("p_state_txt").value = state.p_state_txt || "";
-    fillDistrictSelect(state.p_state_sel, "p_dist_sel");
-    $("p_dist_sel").value = state.p_dist_sel || "";
-    $("p_dist_txt").value = state.p_dist_txt || "";
-    $("p_ps_txt").value = state.p_ps_txt || "";
-    $("p_pin").value = state.p_pin || "";
-    $("p_village").value = state.p_village || "";
-    $("p_full").value = state.p_full || "";
+    if(state.sameAddress){
+      $("permAddress").disabled = true;
+      $("permAddress").value = $("tempAddress").value.trim();
+    }else{
+      $("permAddress").disabled = false;
+    }
   }
 
   function applyThemeVars(pageEl){
@@ -1062,43 +685,6 @@ Job – Company (Year)
     }
     pageEl.style.setProperty("--accent", a);
     pageEl.style.setProperty("--accent2", b);
-  }
-
-  function pickValue(selId, txtId){
-    const t = ($(txtId).value || "").trim();
-    if(t) return t;
-    return ($(selId).value || "").trim();
-  }
-
-  function getCompactLocation(){
-    const dist = pickValue("c_dist_sel","c_dist_txt");
-    const st   = pickValue("c_state_sel","c_state_txt");
-    const parts = [];
-    if(dist) parts.push(dist);
-    if(st) parts.push(st);
-    parts.push("India");
-    return parts.filter(Boolean).join(", ");
-  }
-
-  function getAddressLine(prefix){
-    const full = state[`${prefix}_full`];
-    const village = state[`${prefix}_village`];
-    const ps = state[`${prefix}_ps_txt`];
-
-    const st = (prefix==="c") ? pickValue("c_state_sel","c_state_txt") : pickValue("p_state_sel","p_state_txt");
-    const dist = (prefix==="c") ? pickValue("c_dist_sel","c_dist_txt") : pickValue("p_dist_sel","p_dist_txt");
-
-    const pin = state[`${prefix}_pin`];
-
-    const parts = [];
-    if(full) parts.push(full);
-    if(village) parts.push(village);
-    if(ps) parts.push(`PS: ${ps}`);
-    if(dist) parts.push(dist);
-    if(st) parts.push(st);
-    parts.push("India");
-    if(pin) parts.push(pin);
-    return parts.filter(Boolean).join(", ");
   }
 
   function sectionHTML(title, inner, tpl){
@@ -1143,86 +729,19 @@ Job – Company (Year)
     return arr.map(x=>`<span class="r-skill">${escapeHtml(x)}</span>`).join("");
   }
 
-  function fresherAutoBlocks(tpl){
-    const skillArr = splitComma(state.skills);
-    const strengths = [
-      "Quick learner with consistent work habit",
-      "Good communication and teamwork mindset",
-      "Ability to manage tasks with accuracy and deadlines",
-      "Positive attitude and willingness to learn"
-    ];
-    if(skillArr.length) strengths.unshift(`Strong fundamentals in ${skillArr.slice(0,3).join(", ")}`);
-
-    const strengthsHTML = `<ul class="r-ul">${strengths.slice(0,6).map(s=>`<li>${escapeHtml(s)}</li>`).join("")}</ul>`;
-    const achievements = [
-      "Completed practical assignments/projects with professional format",
-      "Regular practice to improve speed and accuracy",
-      "Comfortable with documentation and clean formatting",
-      "Focused on continuous improvement"
-    ];
-    const achievementsHTML = `<ul class="r-ul">${achievements.map(s=>`<li>${escapeHtml(s)}</li>`).join("")}</ul>`;
-    const declaration = `<p>I hereby declare that the above information is true to the best of my knowledge.</p>`;
-
-    return [
-      sectionHTML("Key Strengths", strengthsHTML, tpl),
-      sectionHTML("Achievements", achievementsHTML, tpl),
-      sectionHTML("Declaration", declaration, tpl),
-    ].join("");
-  }
-
-  function buildPersonalDetails(tpl){
-    const rows = [];
-    if(state.fatherName){
-      rows.push(`<div class="r-item"><div class="head"><strong>Father's Name</strong></div><p>${escapeHtml(state.fatherName)}</p></div>`);
-    }
-    const cur = getAddressLine("c");
-    if(cur){
-      rows.push(`<div class="r-item"><div class="head"><strong>Current Address</strong></div><p>${escapeHtml(cur)}</p></div>`);
-    }
-    const per = state.sameAddress ? cur : getAddressLine("p");
-    if(per){
-      rows.push(`<div class="r-item"><div class="head"><strong>Permanent Address</strong></div><p>${escapeHtml(per)}</p></div>`);
-    }
-    if(!rows.length) return "";
-    return sectionHTML("Personal Details", rows.join(""), tpl);
-  }
-
-  function buildSignatureBlock(){
-    if(!state.place && !state.date && !state.sigName && !state.sigImgDataUrl) return "";
-    const dateStr = state.date ? new Date(state.date).toLocaleDateString("en-GB") : "";
-    const sigLabel = state.sigName || state.name || "Signature";
-    const sigImg = state.sigImgDataUrl ? `<img class="sig-img" src="${state.sigImgDataUrl}" alt="signature"/>` : "";
-    return `
-      <div class="sig-wrap block">
-        <div>
-          ${state.place ? `<div><strong>Place:</strong> ${escapeHtml(state.place)}</div>` : ""}
-          ${dateStr ? `<div><strong>Date:</strong> ${escapeHtml(dateStr)}</div>` : ""}
-        </div>
-        <div class="sig-box">
-          ${sigImg}
-          <div class="sig-line"></div>
-          <div style="margin-top:6px"><strong>${escapeHtml(sigLabel)}</strong></div>
-        </div>
-      </div>
-    `;
-  }
-
   function buildHeader(tpl){
     const useIcons = !state.atsMode;
 
     const meta = [];
     if(state.phone) meta.push((useIcons ? "📞 " : "") + escapeHtml(state.phone));
     if(state.email) meta.push((useIcons ? "✉️ " : "") + escapeHtml(state.email));
-    const loc = getCompactLocation();
-    if(loc) meta.push((useIcons ? "📍 " : "") + escapeHtml(loc));
     splitComma(state.links).forEach(l => meta.push((useIcons ? "🔗 " : "") + escapeHtml(l)));
 
     const showPhoto = (!state.atsMode) && state.photoEnabled && !!state.photoDataUrl;
-
     const photoHTML = showPhoto
       ? `<div class="avatar"><img src="${state.photoDataUrl}" alt="photo"></div>`
       : ((!state.atsMode && state.photoEnabled)
-        ? `<div class="avatar" style="display:grid;place-items:center;color:#9ca3af;font-weight:800;border-radius:12px">PHOTO</div>`
+        ? `<div class="avatar" style="display:grid;place-items:center;color:#9ca3af;font-weight:800">PHOTO</div>`
         : "");
 
     const cls = `hdr ${tpl.header}`;
@@ -1242,41 +761,25 @@ Job – Company (Year)
     `;
   }
 
-  function eduTableHTML(){
-    const ls = lines(state.education);
-    if(!ls.length) return `<p>—</p>`;
-    const rows = ls.map(line=>{
-      const parts = line.split("–").map(x=>x.trim());
-      const left = parts[0] || line;
-      const right = parts[1] || "";
-      const yearMatch = left.match(/\(([^)]+)\)/);
-      const year = yearMatch ? yearMatch[1] : "";
-      const degree = left.replace(/\(([^)]+)\)/, "").trim();
-      return {degree, inst:right, year};
-    });
-    return `
-      <table class="edutab">
-        <thead><tr>
-          <th>Degree/Certificate</th><th>School/College</th><th>Year</th>
-        </tr></thead>
-        <tbody>
-          ${rows.map(r=>`
-            <tr>
-              <td>${escapeHtml(r.degree || "—")}</td>
-              <td>${escapeHtml(r.inst || "—")}</td>
-              <td>${escapeHtml(r.year || "—")}</td>
-            </tr>
-          `).join("")}
-        </tbody>
-      </table>
-    `;
+  function buildPersonalDetails(tpl){
+    const rows = [];
+    if(state.fatherName){
+      rows.push(`<div class="r-item"><div class="head"><strong>Father's Name</strong></div><p>${escapeHtml(state.fatherName)}</p></div>`);
+    }
+    if(state.tempAddress){
+      rows.push(`<div class="r-item"><div class="head"><strong>Temporary Address</strong></div><p>${escapeHtml(state.tempAddress)}</p></div>`);
+    }
+    const perm = state.sameAddress ? state.tempAddress : state.permAddress;
+    if(perm){
+      rows.push(`<div class="r-item"><div class="head"><strong>Permanent Address</strong></div><p>${escapeHtml(perm)}</p></div>`);
+    }
+    if(!rows.length) return "";
+    return sectionHTML("Personal Details", rows.join(""), tpl);
   }
 
   function buildBodyHTML(tpl){
     const objective = sectionHTML("Career Objective", `<p>${escapeHtml(state.summary || "Write a short objective here.")}</p>`, tpl);
-
-    const educationInner = (tpl.style==="cv" && state.eduTable) ? eduTableHTML() : listLinesAsItems(state.education);
-    const education = sectionHTML("Academic Qualifications", educationInner, tpl);
+    const education = sectionHTML("Academic Qualifications", listLinesAsItems(state.education), tpl);
 
     const experience = state.toggleExp ? sectionHTML("Experience", blockItemsHTML(state.experience), tpl) : "";
     const projects = state.toggleProj ? sectionHTML("Projects", blockItemsHTML(state.projects), tpl) : "";
@@ -1295,38 +798,10 @@ Job – Company (Year)
       : `<div class="r-skillwrap">${skillsChips(state.hobbies)}</div>`, tpl);
 
     const personal = buildPersonalDetails(tpl);
-    const signature = buildSignatureBlock();
-
-    const isFresher = !!tpl.fresher;
-    const expEmpty = !state.experience.trim() || state.experience.trim().length < 5;
-
-    if(tpl.layout === "sidebar" && tpl.style !== "cv"){
-      return `
-        <div class="layout-two ${isFresher ? "fresher-fill" : ""} modern">
-          <div class="side">
-            ${skills}
-            <div class="divider"></div>
-            ${langs}
-            <div class="divider"></div>
-            ${hobbies}
-          </div>
-          <div class="main ${isFresher ? "fresher-fill" : ""}">
-            ${objective}
-            ${education}
-            ${experience}
-            ${projects}
-            ${certs}
-            ${personal}
-            ${(isFresher && expEmpty) ? fresherAutoBlocks(tpl) : ""}
-            ${signature}
-          </div>
-        </div>
-      `;
-    }
 
     const wrapClass = tpl.style === "cv" ? "cv" : "modern";
     return `
-      <div class="${wrapClass} ${isFresher ? "fresher-fill" : ""}">
+      <div class="${wrapClass}">
         ${objective}
         ${education}
         ${experience}
@@ -1336,15 +811,13 @@ Job – Company (Year)
         ${langs}
         ${hobbies}
         ${personal}
-        ${(isFresher && expEmpty) ? fresherAutoBlocks(tpl) : ""}
-        ${signature}
       </div>
     `;
   }
 
   function pageShell(pageNo, tpl){
     return `
-      <div class="page" data-page="${pageNo}" data-deco="${escapeHtml(tpl.deco)}" data-style="${escapeHtml(tpl.style)}">
+      <div class="page" data-page="${pageNo}" data-deco="${escapeHtml(tpl.deco)}">
         <div class="inner"><div class="content"></div></div>
         <div class="watermark">${escapeHtml(state.brand || "")}</div>
       </div>
@@ -1353,38 +826,28 @@ Job – Company (Year)
 
   function getEffectiveTemplate(){
     if(state.atsMode){
-      return {name:"ATS",header:"classic",layout:"single",deco:"none",fresher:false,style:"modern"};
+      return {name:"ATS",header:"classic",deco:"none",style:"modern"};
     }
     return TEMPLATES[state.template] || TEMPLATES.t01;
   }
 
-  /* ====== AUTO SPLIT: No Cut + Auto Page 2 ====== */
+  /* Auto split to page2 (no cut) */
   function renderPages(){
     const tpl = getEffectiveTemplate();
     const pagesEl = $("pages");
-
     pagesEl.innerHTML = pageShell(1, tpl) + pageShell(2, tpl);
 
     const p1 = pagesEl.querySelector('[data-page="1"]');
     const p2 = pagesEl.querySelector('[data-page="2"]');
-
-    applyThemeVars(p1);
-    applyThemeVars(p2);
+    applyThemeVars(p1); applyThemeVars(p2);
 
     const p1Content = p1.querySelector(".content");
     const p2Content = p2.querySelector(".content");
-    p1Content.innerHTML = "";
-    p2Content.innerHTML = "";
+    p1Content.innerHTML = ""; p2Content.innerHTML = "";
 
-    const cvTitle = (tpl.style === "cv" && !state.atsMode) ? `
-      <div class="cv-titlebar ${tpl.cvTitle==="white" ? "white" : ""}">
-        CURRICULUM VITAE
-      </div>
-    ` : "";
-
-    if(cvTitle){
-      p1Content.insertAdjacentHTML("beforeend", cvTitle);
-      p2Content.insertAdjacentHTML("beforeend", cvTitle);
+    if(tpl.style === "cv" && !state.atsMode){
+      p1Content.insertAdjacentHTML("beforeend", `<div class="cv-titlebar">CURRICULUM VITAE</div>`);
+      p2Content.insertAdjacentHTML("beforeend", `<div class="cv-titlebar">CURRICULUM VITAE</div>`);
     }
 
     const headerHTML = buildHeader(tpl);
@@ -1399,138 +862,52 @@ Job – Company (Year)
     const tmp = document.createElement("div");
     tmp.innerHTML = buildBodyHTML(tpl);
 
+    // mark all sections as blocks to split safely
+    tmp.querySelectorAll(".r-sec").forEach(el=>el.classList.add("block"));
+
     const blocks = Array.from(tmp.querySelectorAll(".block"));
     const p1Inner = p1.querySelector(".inner");
     const p2Inner = p2.querySelector(".inner");
 
     const overflow = (inner)=> inner.scrollHeight > inner.clientHeight + 1;
 
-    // Split a block to fit page 1 if needed, so nothing gets cut.
-    const splitBlockToFit = (block, targetInner, targetBody) => {
-      // 1) If it fits directly
-      const test = block.cloneNode(true);
-      targetBody.appendChild(test);
-      if(!overflow(targetInner)){
-        targetBody.removeChild(test);
-        return {a:block.cloneNode(true), b:null};
-      }
-      targetBody.removeChild(test);
-
-      // 2) Try splitting by children (safe split for sections)
-      const original = block.cloneNode(true);
-      const kids = Array.from(original.children);
-      if(kids.length <= 1){
-        // Can't split safely -> put whole on next page
-        return {a:null, b:block.cloneNode(true)};
-      }
-
-      const partA = original.cloneNode(false);
-      const partB = original.cloneNode(false);
-      partA.className = original.className;
-      partB.className = original.className;
-
-      const canAddToA = (node)=>{
-        const c = node.cloneNode(true);
-        partA.appendChild(c);
-
-        const probe = partA.cloneNode(true);
-        targetBody.appendChild(probe);
-        const ok = !overflow(targetInner);
-        targetBody.removeChild(probe);
-
-        if(ok) return true;
-        partA.removeChild(c);
-        return false;
-      };
-
-      let i=0;
-      for(; i<kids.length; i++){
-        if(!canAddToA(kids[i])) break;
-      }
-      for(let j=i; j<kids.length; j++){
-        partB.appendChild(kids[j].cloneNode(true));
-      }
-
-      if(!partA.children.length){
-        return {a:null, b:block.cloneNode(true)};
-      }
-      return {a:partA, b:partB.children.length ? partB : null};
-    };
-
-    let needsPage2 = false;
-
-    // Put blocks into page 1; overflow goes to page 2
+    // Try place block in p1 else move to p2
+    let needsP2 = false;
     for(const b of blocks){
-      const res = splitBlockToFit(b, p1Inner, p1Body);
-
-      if(res.a){
-        p1Body.appendChild(res.a);
-      }
-
-      if(res.b){
-        needsPage2 = true;
-        p2Body.appendChild(res.b);
-      }else{
-        // Safety: if last append overflowed, move it
-        if(p1Body.lastElementChild && overflow(p1Inner)){
-          const last = p1Body.lastElementChild;
-          p1Body.removeChild(last);
-          needsPage2 = true;
-          p2Body.appendChild(last);
-        }
+      const clone = b.cloneNode(true);
+      p1Body.appendChild(clone);
+      if(overflow(p1Inner)){
+        p1Body.removeChild(clone);
+        needsP2 = true;
+        p2Body.appendChild(b.cloneNode(true));
       }
     }
 
-    // Auto-enable Page 2 if needed
-    if(needsPage2 && !state.enablePage2){
+    if(needsP2 && !state.enablePage2){
       state.enablePage2 = true;
       $("enablePage2").checked = true;
       saveLocal();
     }
 
-    const showP2 = state.enablePage2 && (p2Body.children.length>0 || needsPage2);
+    const showP2 = state.enablePage2 && p2Body.children.length>0;
     p2.style.display = showP2 ? "" : "none";
-    $("permBlock").style.display = state.sameAddress ? "none" : "";
   }
 
   function renderAll(){ renderPages(); }
 
-  function applyObjective(key){
-    if(!key) return;
+  function applyObjective(idxStr){
+    if(idxStr==="" || idxStr==null) return;
+    const idx = Number(idxStr);
+    if(Number.isNaN(idx)) return;
+    const val = OBJECTIVES[idx] || "";
+    if(!val) return;
     const current = $("summary").value.trim();
     if(!current || confirm("Replace the current Objective text?")){
-      $("summary").value = OBJECTIVES[key];
+      $("summary").value = val;
       readFormToState();
       renderAll();
       saveLocal();
     }
-  }
-
-  function wireAddressCascade(){
-    $("c_state_sel").addEventListener("change", ()=>{
-      const st = $("c_state_sel").value;
-      fillDistrictSelect(st, "c_dist_sel");
-      fillPSDatalist(st, "");
-      readFormToState();
-      if(state.sameAddress){ syncPermanentFromCurrent(); }
-      renderAll(); saveLocal();
-    });
-
-    $("c_dist_sel").addEventListener("change", ()=>{
-      const st = $("c_state_sel").value;
-      const dist = $("c_dist_sel").value;
-      fillPSDatalist(st, dist);
-      readFormToState();
-      if(state.sameAddress){ syncPermanentFromCurrent(); }
-      renderAll(); saveLocal();
-    });
-
-    $("p_state_sel").addEventListener("change", ()=>{
-      const st = $("p_state_sel").value;
-      fillDistrictSelect(st, "p_dist_sel");
-      readFormToState();
-      renderAll(); saveLocal();
-    });
   }
 
   function hookEvents(){
@@ -1538,14 +915,9 @@ Job – Company (Year)
       "template","theme","customAccent","customAccent2","brand","enablePage2",
       "atsMode","photoEnabled",
       "name","fatherName","role","phone","email","links",
-      "objectiveTpl","summary",
-      "skills","education","experience","projects","certs","langs","hobbies",
+      "summary","skills","education","experience","projects","certs","langs","hobbies",
       "toggleExp","toggleProj","toggleCert",
-      "sameAddress",
-      "place","date","sigName",
-      "eduTable",
-      "c_state_sel","c_state_txt","c_dist_sel","c_dist_txt","c_ps_txt","c_pin","c_village","c_full",
-      "p_state_sel","p_state_txt","p_dist_sel","p_dist_txt","p_ps_txt","p_pin","p_village","p_full"
+      "sameAddress","tempAddress","permAddress"
     ];
 
     ids.forEach(id=>{
@@ -1568,22 +940,21 @@ Job – Company (Year)
       reader.readAsDataURL(file);
     });
 
-    $("sigImg").addEventListener("change", (e)=>{
-      const file = e.target.files && e.target.files[0];
-      if(!file) return;
-      const reader = new FileReader();
-      reader.onload = ()=>{
-        state.sigImgDataUrl = reader.result;
-        renderAll(); saveLocal();
-      };
-      reader.readAsDataURL(file);
-    });
-
     $("sameAddress").addEventListener("change", ()=>{
       readFormToState();
-      $("permBlock").style.display = state.sameAddress ? "none" : "";
-      if(state.sameAddress){ syncPermanentFromCurrent(); }
+      if(state.sameAddress){
+        $("permAddress").value = $("tempAddress").value.trim();
+        $("permAddress").disabled = true;
+      }else{
+        $("permAddress").disabled = false;
+      }
       renderAll(); saveLocal();
+    });
+
+    $("tempAddress").addEventListener("input", ()=>{
+      if($("sameAddress").checked){
+        $("permAddress").value = $("tempAddress").value.trim();
+      }
     });
 
     $("btnSave").addEventListener("click", ()=>{ readFormToState(); saveLocal(); alert("Saved ✅"); });
@@ -1592,11 +963,6 @@ Job – Company (Year)
       const ok = loadLocal();
       if(!ok) return alert("No saved data found.");
       writeStateToForm();
-      fillDistrictSelect(state.c_state_sel, "c_dist_sel");
-      fillDistrictSelect(state.p_state_sel, "p_dist_sel");
-      $("c_dist_sel").value = state.c_dist_sel || "";
-      $("p_dist_sel").value = state.p_dist_sel || "";
-      fillPSDatalist(state.c_state_sel, state.c_dist_sel);
       renderAll();
       alert("Loaded ✅");
     });
@@ -1608,7 +974,7 @@ Job – Company (Year)
         if(typeof state[k]==="boolean") state[k]=false;
         else state[k]="";
       });
-      state.template="t01";
+      state.template="t05";
       state.theme="blue";
       state.brand=keepBrand;
       state.enablePage2=true;
@@ -1616,88 +982,60 @@ Job – Company (Year)
       state.photoEnabled=true;
       state.atsMode=false;
       state.sameAddress=false;
-
       writeStateToForm();
-      fillDistrictSelect("", "c_dist_sel");
-      fillDistrictSelect("", "p_dist_sel");
-      $("psList").innerHTML="";
       renderAll();
       saveLocal();
     });
 
     $("btnPrint").addEventListener("click", ()=>window.print());
 
-    /* ===== BEST PDF EXPORT: per-page capture, exact A4, no blank/cut ===== */
     $("btnPDF").addEventListener("click", async ()=>{
-      readFormToState();
-      renderAll();
-
-      // Ensure page 2 is visible if it has any content (auto)
-      const pageEls = Array.from(document.querySelectorAll(".page")).filter(p => p.style.display !== "none");
-
-      // jsPDF is available via html2pdf.bundle
-      const pdf = new jspdf.jsPDF({ unit:"mm", format:"a4", orientation:"portrait" });
-
-      document.body.classList.add("pdf-mode");
-
-      for(let i=0; i<pageEls.length; i++){
-        const pageEl = pageEls[i];
-
-        const canvas = await html2canvas(pageEl, {
-          scale: 3,
-          useCORS: true,
-          backgroundColor: "#ffffff",
-          scrollX: 0,
-          scrollY: 0
-        });
-
-        const imgData = canvas.toDataURL("image/jpeg", 0.98);
-
-        if(i>0) pdf.addPage();
-        pdf.addImage(imgData, "JPEG", 0, 0, 210, 297);
-      }
-
-      const filename = (state.name ? state.name.replace(/\s+/g,"_") : "resume") + "_DS.pdf";
-      pdf.save(filename);
-
-      document.body.classList.remove("pdf-mode");
-    });
-
-    $("btnShare").addEventListener("click", async ()=>{
-      readFormToState();
-      const link = encodeShareLink();
       try{
-        await navigator.clipboard.writeText(link);
-        alert("Share link copied ✅ (photo/sign not included)");
-      }catch(e){
-        prompt("Copy this link:", link);
+        readFormToState();
+        renderAll();
+
+        const { jsPDF } = window.jspdf;
+        const pages = Array.from(document.querySelectorAll(".page")).filter(p => p.style.display !== "none");
+
+        document.body.classList.add("pdf-mode");
+
+        const pdf = new jsPDF({ unit:"mm", format:"a4", orientation:"portrait" });
+
+        for(let i=0; i<pages.length; i++){
+          const pageEl = pages[i];
+
+          const canvas = await html2canvas(pageEl, {
+            scale: 3,
+            useCORS: true,
+            backgroundColor: "#ffffff",
+            scrollX: 0,
+            scrollY: 0
+          });
+
+          const imgData = canvas.toDataURL("image/jpeg", 0.98);
+          if(i>0) pdf.addPage();
+          pdf.addImage(imgData, "JPEG", 0, 0, 210, 297);
+        }
+
+        const filename = (state.name ? state.name.replace(/\s+/g,"_") : "resume") + "_DS.pdf";
+
+        // Try save
+        pdf.save(filename);
+
+        document.body.classList.remove("pdf-mode");
+      }catch(err){
+        document.body.classList.remove("pdf-mode");
+        console.error(err);
+        alert("PDF download blocked/failed. Try Chrome/Edge and allow downloads. If still issue, use Print -> Save as PDF.");
       }
     });
   }
 
   async function main(){
     setSelectOptions();
-
-    const fromShare = loadFromShare();
-    if(!fromShare) loadLocal();
-
-    await fetchIndiaSD();
-
-    fillStateSelect("c_state_sel");
-    fillStateSelect("p_state_sel");
-
+    loadLocal();
     writeStateToForm();
-
-    fillDistrictSelect(state.c_state_sel, "c_dist_sel");
-    fillDistrictSelect(state.p_state_sel, "p_dist_sel");
-    $("c_dist_sel").value = state.c_dist_sel || "";
-    $("p_dist_sel").value = state.p_dist_sel || "";
-
-    fillPSDatalist(state.c_state_sel, state.c_dist_sel);
-
-    wireAddressCascade();
     hookEvents();
-
     renderAll();
     saveLocal();
   }
