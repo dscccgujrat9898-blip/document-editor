@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>DS Computer Resume Builder</title>
 
-  <!-- PDF download library -->
   <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
 
   <style>
@@ -18,6 +17,7 @@
       --btn:#2b5cff;
       --btn2:#1b2a4a;
       --danger:#ff4d4d;
+
       --a4w:210mm;
       --a4h:297mm;
       --pad:12mm;
@@ -39,12 +39,13 @@
     header .title{display:flex;flex-direction:column;gap:2px}
     header h1{margin:0;font-size:16px;letter-spacing:.2px}
     header p{margin:0;color:var(--muted);font-size:12px}
+
     .wrap{
       display:grid;
-      grid-template-columns: 440px 1fr;
+      grid-template-columns: 470px 1fr;
       gap:14px;
       padding:14px;
-      max-width:1500px;
+      max-width:1550px;
       margin:0 auto;
     }
     .panel{
@@ -60,8 +61,6 @@
     }
     .panel .head b{font-size:13px}
     .panel .body{padding:12px}
-    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
     label{display:block;font-size:12px;color:var(--muted);margin:10px 0 6px}
     input, textarea, select{
       width:100%;
@@ -72,8 +71,10 @@
       color:var(--txt);
       outline:none;
     }
-    textarea{min-height:90px;resize:vertical}
+    textarea{min-height:84px;resize:vertical}
     select{cursor:pointer}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
     .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
     .btns{display:flex;gap:10px;flex-wrap:wrap}
     button{
@@ -89,6 +90,8 @@
     button.secondary{background:var(--btn2);border:1px solid var(--line)}
     button.danger{background:var(--danger)}
     .hint{color:var(--muted);font-size:12px;line-height:1.4}
+    .divider{margin:12px 0;height:1px;background:var(--line)}
+
     .chipbox{
       border:1px solid var(--line);
       border-radius:12px;
@@ -98,17 +101,9 @@
       grid-template-columns: 1fr 1fr;
       gap:8px 10px;
     }
-    .chip{
-      display:flex;align-items:center;gap:8px;
-      font-size:12px;color:var(--txt);
-    }
+    .chip{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--txt)}
     .chip input{width:auto;transform:scale(1.05)}
-    .divider{
-      margin:12px 0;
-      height:1px;background:var(--line);
-    }
 
-    /* Preview */
     .previewWrap{
       padding:12px;
       background:rgba(15,27,52,.38);
@@ -118,7 +113,6 @@
       min-height:calc(100vh - 96px);
     }
 
-    /* A4 pages */
     .pages{display:flex;flex-direction:column;gap:14px;align-items:center}
     .page{
       width:var(--a4w);
@@ -130,78 +124,76 @@
       overflow:hidden;
       position:relative;
     }
-    .page .content{
-      height:100%;
-      padding:var(--pad);
-    }
+    .page .content{height:100%;padding:var(--pad)}
 
-    /* Resume inside page */
-    .resumeHeader{
-      display:flex;gap:12px;align-items:flex-start;justify-content:space-between;
-      border-bottom:1px solid #e6e6e6;
-      padding-bottom:8px;
-      margin-bottom:10px;
-    }
-    .name{
-      font-size:24px;font-weight:800;margin:0;line-height:1.1;
-    }
-    .role{margin:4px 0 0;font-size:12.5px;color:#333;font-weight:600}
-    .contact{
-      text-align:right;font-size:11.5px;color:#333;line-height:1.4;
-      max-width:42%;word-break:break-word;
-    }
+    /* Common resume text */
+    .r-hdr{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+    .r-name{margin:0;font-weight:900;line-height:1.05}
+    .r-role{margin:6px 0 0;color:#333;font-weight:700}
+    .r-contact{font-size:11.5px;color:#333;line-height:1.45;text-align:right;max-width:46%;word-break:break-word}
     .section{margin:10px 0 0}
-    .section h3{
-      margin:0 0 6px;
-      font-size:12px;
-      letter-spacing:.7px;
-      text-transform:uppercase;
-      color:#111;
-      border-left:3px solid #111;
-      padding-left:8px;
-    }
-    .section p, .section li{
-      margin:0;
-      font-size:12px;
-      color:#222;
-      line-height:1.5;
-    }
+    .section p,.section li{font-size:12px;color:#222;line-height:1.55;margin:0}
     ul{margin:0;padding-left:18px}
-    .twoCol{display:grid;grid-template-columns: 1.2fr .8fr;gap:12px}
+    .twoCol{display:grid;grid-template-columns: 1.2fr .8fr;gap:14px}
     .pillRow{display:flex;flex-wrap:wrap;gap:6px}
-    .pill{
-      font-size:11px;
-      border:1px solid #d9d9d9;
-      padding:4px 8px;
-      border-radius:999px;
-      background:#fafafa;
-    }
-    .kv{display:grid;grid-template-columns: 110px 1fr;gap:6px 10px}
-    .kv div{font-size:12px;color:#222;line-height:1.5}
-    .kv b{color:#111}
+    .pill{font-size:11px;border:1px solid #d9d9d9;padding:4px 8px;border-radius:999px;background:#fafafa}
+    .kv{display:grid;grid-template-columns: 120px 1fr;gap:6px 10px}
+    .kv b{font-size:12px;color:#111}
+    .kv div{font-size:12px;color:#222}
 
-    /* Pagination blocks */
+    /* Styles (templates like your images) */
+    .styleA .r-name{font-size:30px;letter-spacing:.4px}
+    .styleA .r-role{font-size:13px}
+    .styleA .topLine{height:1px;background:#111;margin:10px 0 8px;opacity:.25}
+    .styleA .h3{font-size:12px;letter-spacing:.7px;text-transform:uppercase;margin:0 0 6px}
+    .styleA .rule{height:1px;background:#111;opacity:.18;margin:8px 0 10px}
+
+    .styleB .r-name{font-size:28px;color:#0b3c6f}
+    .styleB .bar{background:#0b3c6f;color:#fff;padding:6px 10px;border-radius:4px;
+      font-size:12px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;margin:12px 0 8px}
+    .styleB .sub{font-size:12px;color:#222;line-height:1.55}
+
+    .styleC .r-name{font-size:28px}
+    .styleC .headRule{height:2px;background:#111;opacity:.2;margin:8px 0 12px}
+    .styleC .h3{font-size:12px;letter-spacing:.7px;text-transform:uppercase;margin:0 0 6px}
+    .styleC .shade{background:#f2f2f2;padding:8px;border-radius:6px;border:1px solid #e5e5e5}
+
+    .styleD .r-name{font-size:26px}
+    .styleD .boxH{display:inline-block;border:2px solid #111;padding:4px 8px;font-size:12px;
+      font-weight:900;letter-spacing:.6px;text-transform:uppercase;margin:12px 0 8px}
+    .styleD .thin{height:1px;background:#111;opacity:.15;margin:10px 0}
+
+    /* Pagination */
     .block{break-inside:avoid; page-break-inside:avoid}
-    .small{font-size:11px;color:#333}
 
     /* Print */
-    @page { size: A4; margin: 0; }
+    @page{size:A4;margin:0}
     @media print{
       body{background:white}
-      header, .panel{display:none !important}
+      header,.panel{display:none!important}
       .wrap{display:block;padding:0;margin:0}
       .previewWrap{border:0;padding:0;min-height:auto}
       .pages{gap:0}
-      .page{
-        box-shadow:none;border-radius:0;
-        width:210mm;height:297mm;
-        page-break-after:always;
-      }
+      .page{box-shadow:none;border-radius:0;width:210mm;height:297mm;page-break-after:always}
       .page:last-child{page-break-after:auto}
     }
-    @media (max-width: 1100px){
+    @media (max-width: 1150px){
       .wrap{grid-template-columns:1fr}
       .previewWrap{min-height:auto}
+    }
+
+    /* Custom sections UI */
+    .secCard{
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:10px;
+      background:rgba(10,16,32,.35);
+      margin-top:10px;
+    }
+    .secCard .top{display:flex;justify-content:space-between;gap:10px;align-items:center}
+    .secCard .top b{font-size:12px}
+    .secCard .miniBtn{
+      padding:6px 10px;border-radius:10px;font-size:12px
     }
   </style>
 </head>
@@ -210,7 +202,7 @@
 <header>
   <div class="title">
     <h1>DS Computer Resume Builder</h1>
-    <p>A4 Print/PDF perfect • GitHub Pages + Google Sites embed ready</p>
+    <p>A4 Print/PDF perfect • Multi-page • Custom sections • Templates full-page</p>
   </div>
   <div class="btns">
     <button class="secondary" id="btnReset">Reset</button>
@@ -220,50 +212,51 @@
 </header>
 
 <div class="wrap">
-  <!-- LEFT PANEL -->
+  <!-- LEFT -->
   <div class="panel">
     <div class="head">
       <b>Resume Details</b>
-      <span class="hint">Template & Summary select → auto fill (editable)</span>
+      <span class="hint">Template → full-page; Target pages → 1–4</span>
     </div>
 
     <div class="body">
-      <label>Choose Template</label>
-      <select id="templateSelect">
-        <option value="">-- Select Template --</option>
-        <optgroup label="Fresher (10)">
-          <option value="F1">Fresher 1 - Student / BCA</option>
-          <option value="F2">Fresher 2 - Data Entry</option>
-          <option value="F3">Fresher 3 - Computer Operator</option>
-          <option value="F4">Fresher 4 - Sales/Office</option>
-          <option value="F5">Fresher 5 - Graphic/Design Basic</option>
-          <option value="F6">Fresher 6 - Front Office</option>
-          <option value="F7">Fresher 7 - Internship Focus</option>
-          <option value="F8">Fresher 8 - Banking/Back Office</option>
-          <option value="F9">Fresher 9 - Teaching Assistant</option>
-          <option value="F10">Fresher 10 - IT Support Basic</option>
-        </optgroup>
-
-        <optgroup label="Experienced (10)">
-          <option value="E1">Experienced 1 - Data Entry Executive</option>
-          <option value="E2">Experienced 2 - Accountant (Tally)</option>
-          <option value="E3">Experienced 3 - Office Admin</option>
-          <option value="E4">Experienced 4 - Computer Teacher</option>
-          <option value="E5">Experienced 5 - Sales Coordinator</option>
-          <option value="E6">Experienced 6 - Graphic Designer</option>
-          <option value="E7">Experienced 7 - Customer Support</option>
-          <option value="E8">Experienced 8 - Store/Inventory</option>
-          <option value="E9">Experienced 9 - HR Assistant</option>
-          <option value="E10">Experienced 10 - IT Technician</option>
-        </optgroup>
-      </select>
-
-      <label>Summary Presets (about 20)</label>
-      <select id="summarySelect">
-        <option value="">-- Select Summary --</option>
-      </select>
-
-      <div class="divider"></div>
+      <div class="grid2">
+        <div>
+          <label>Template Style (8)</label>
+          <select id="styleSelect">
+            <option value="">-- Select Template Style --</option>
+            <optgroup label="A: Minimal (2)">
+              <option value="A1">A1 Minimal Center</option>
+              <option value="A2">A2 Minimal Wide</option>
+            </optgroup>
+            <optgroup label="B: Blue Bars (2)">
+              <option value="B1">B1 Blue Bar Classic</option>
+              <option value="B2">B2 Blue Bar Strong</option>
+            </optgroup>
+            <optgroup label="C: Gray Professional (2)">
+              <option value="C1">C1 Gray Competencies</option>
+              <option value="C2">C2 Gray Balanced</option>
+            </optgroup>
+            <optgroup label="D: Classic Box (2)">
+              <option value="D1">D1 Classic Box</option>
+              <option value="D2">D2 Classic Two Page</option>
+            </optgroup>
+          </select>
+        </div>
+        <div>
+          <label>Target Pages</label>
+          <select id="targetPages">
+            <option value="1">1 Page</option>
+            <option value="2">2 Pages</option>
+            <option value="3">3 Pages</option>
+            <option value="4">4 Pages</option>
+          </select>
+          <div class="row" style="margin-top:8px">
+            <input type="checkbox" id="autoFillPages" checked />
+            <span class="hint">Auto-fill to target pages (template mode)</span>
+          </div>
+        </div>
+      </div>
 
       <label>Show / Hide Sections</label>
       <div class="chipbox" id="sectionToggles"></div>
@@ -277,7 +270,7 @@
         </div>
         <div>
           <label>Professional Title</label>
-          <input id="jobTitle" placeholder="e.g., Data Entry Executive" value="" />
+          <input id="jobTitle" placeholder="e.g., Accountant / Web Developer" value="" />
         </div>
       </div>
 
@@ -297,51 +290,51 @@
 
       <div class="grid2">
         <div>
-          <label>Permanent Address (manual)</label>
+          <label>Permanent Address</label>
           <textarea id="addrPermanent" placeholder="Type address here..."></textarea>
         </div>
         <div>
-          <label>Temporary Address (manual)</label>
+          <label>Temporary Address</label>
           <textarea id="addrTemp" placeholder="Type address here..."></textarea>
           <div class="row" style="margin-top:8px">
             <input type="checkbox" id="sameAddr" />
-            <span class="small">Same as Permanent</span>
+            <span class="hint">Same as Permanent</span>
           </div>
         </div>
       </div>
 
       <label>Summary / Objective</label>
-      <textarea id="summary" placeholder="Write summary or objective..."></textarea>
+      <textarea id="summary" placeholder="Write summary..."></textarea>
 
       <div class="grid2">
         <div>
           <label>Education (one item per line)</label>
-          <textarea id="education" placeholder="e.g. 2025: BCA - University - %"></textarea>
+          <textarea id="education" placeholder="e.g. BCA - 2022-2025 - College - %"></textarea>
         </div>
         <div>
           <label>Experience (one item per line)</label>
-          <textarea id="experience" placeholder="e.g. 2023–2025: Company - Role - Work"></textarea>
+          <textarea id="experience" placeholder="e.g. 2021-2024: Company - Role - Work"></textarea>
         </div>
       </div>
 
       <label>Projects / Achievements (one per line)</label>
-      <textarea id="projects" placeholder="e.g. Excel reports automation, class project..."></textarea>
+      <textarea id="projects" placeholder="e.g. Built Excel report system..."></textarea>
 
       <div class="grid2">
         <div>
           <label>Skills (comma separated)</label>
-          <textarea id="skills" placeholder="MS Office, Excel, Tally, Typing..."></textarea>
+          <textarea id="skills" placeholder="Excel, Tally, Communication..."></textarea>
         </div>
         <div>
-          <label>Strengths (comma separated)</label>
-          <textarea id="strengths" placeholder="Discipline, Communication, Teamwork..."></textarea>
+          <label>Core Competencies (comma separated)</label>
+          <textarea id="competencies" placeholder="Operations, Reporting, Team handling..."></textarea>
         </div>
       </div>
 
       <div class="grid2">
         <div>
           <label>Certifications (one per line)</label>
-          <textarea id="certs" placeholder="e.g. MS Office Course - DS Computer Classes"></textarea>
+          <textarea id="certs" placeholder="e.g. Tally + GST - Institute"></textarea>
         </div>
         <div>
           <label>Training / Internship (one per line)</label>
@@ -351,27 +344,23 @@
 
       <div class="grid3">
         <div>
-          <label>Languages (comma separated)</label>
+          <label>Languages</label>
           <input id="langs" placeholder="Hindi, English, Gujarati" value="" />
         </div>
         <div>
-          <label>Hobbies (comma separated)</label>
-          <input id="hobbies" placeholder="Reading, Sports, Learning..." value="" />
+          <label>Hobbies</label>
+          <input id="hobbies" placeholder="Reading, Sports..." value="" />
         </div>
         <div>
-          <label>Declaration (optional)</label>
-          <input id="declare" placeholder="Short declaration line" value="" />
+          <label>Declaration</label>
+          <input id="declare" placeholder="Optional declaration line" value="" />
         </div>
       </div>
 
       <label>Personal Details</label>
       <div class="grid2">
-        <div>
-          <input id="fatherName" placeholder="Father's Name" value="" />
-        </div>
-        <div>
-          <input id="dob" placeholder="Date of Birth (DD/MM/YYYY)" value="" />
-        </div>
+        <div><input id="fatherName" placeholder="Father's Name" value="" /></div>
+        <div><input id="dob" placeholder="Date of Birth (DD/MM/YYYY)" value="" /></div>
       </div>
       <div class="grid3">
         <div><input id="gender" placeholder="Gender" value="" /></div>
@@ -379,13 +368,21 @@
         <div><input id="nationality" placeholder="Nationality" value="" /></div>
       </div>
 
+      <div class="divider"></div>
+
+      <div class="row" style="justify-content:space-between;align-items:center">
+        <b style="font-size:13px">Custom Sections (User can add)</b>
+        <button class="secondary" id="addSectionBtn" type="button">+ Add Section</button>
+      </div>
+      <div id="customSections"></div>
+
       <div class="hint" style="margin-top:12px">
-        Print tip: Chrome → Ctrl+P → Destination: Save as PDF → Margins: None → Scale: Default
+        Print tip: Chrome → Ctrl+P → Save as PDF → Margins: None → Scale: Default
       </div>
     </div>
   </div>
 
-  <!-- RIGHT PREVIEW -->
+  <!-- RIGHT -->
   <div class="previewWrap">
     <div class="pages" id="pages"></div>
   </div>
@@ -394,422 +391,34 @@
 <script>
   const $ = (id)=>document.getElementById(id);
 
-  // --- Summary presets (20) ---
-  const SUMMARY_PRESETS = [
-    "Dedicated and responsible candidate with strong computer knowledge and good communication. Ready to learn and support daily office work with accuracy.",
-    "Focused on building a career in office/administration. Skilled in MS Office and typing, with a careful approach to documentation and records.",
-    "Motivated fresher with practical computer skills and a positive work attitude. Looking for an opportunity to grow through real work exposure.",
-    "Hard-working candidate with good learning speed and discipline. Interested in data entry, back office, and documentation work.",
-    "Reliable team member with basic accounting and MS Office knowledge. Ready to handle routine tasks, reports, and office coordination.",
-    "Self-disciplined candidate with strong typing and accuracy. Comfortable with Excel sheets, document formatting, and record maintenance.",
-    "Career-oriented candidate with good communication and customer handling. Interested in front office and support roles.",
-    "Detail-focused worker with experience in preparing reports, maintaining files, and handling emails. Comfortable with deadlines and daily follow-ups.",
-    "Organized professional with strong admin support skills. Capable of handling office coordination, documentation, and basic accounts.",
-    "Experienced in data entry and reporting. Skilled in Excel formulas, data cleaning, and maintaining daily/weekly reports.",
-    "Accounts-focused candidate with practical Tally and GST basics. Strong in billing, ledger entries, and day-to-day accounting work.",
-    "Computer teacher/trainer with structured teaching approach. Comfortable with MS Office, basics of internet, and student guidance.",
-    "Sales/office coordinator with experience in follow-ups, billing support, and team coordination. Strong communication and reporting skills.",
-    "Customer support professional with polite communication and problem solving. Comfortable with calling, ticket handling, and updates.",
-    "IT support candidate with basic troubleshooting skills. Can handle system setup, software installs, and routine maintenance.",
-    "Graphic/design beginner with interest in creative work. Comfortable with basic tools and clean layout sense for posters and documents.",
-    "Back office candidate with good speed and accuracy. Comfortable with verification, forms, and record updates.",
-    "Responsible and punctual worker with strong discipline. Ready to support office operations and handle assigned tasks carefully.",
-    "Organized fresher with internship/project exposure. Interested in learning workplace process and delivering quality output.",
-    "Professional with experience in inventory/store records. Skilled in billing support, stock entries, and daily registers."
-  ];
-
-  // --- Section toggles ---
   const SECTION_KEYS = [
     {key:"summary", label:"Summary / Objective"},
     {key:"address", label:"Address"},
-    {key:"personal", label:"Personal Details"},
+    {key:"personal", label:"Personal Details (Only 1st page)"},
     {key:"education", label:"Education"},
-    {key:"experience", label:"Experience"},
+    {key:"experience", label:"Work Experience"},
     {key:"projects", label:"Projects / Achievements"},
     {key:"skills", label:"Skills"},
-    {key:"strengths", label:"Strengths"},
+    {key:"competencies", label:"Core Competencies"},
     {key:"certs", label:"Certifications"},
     {key:"training", label:"Training / Internship"},
     {key:"languages", label:"Languages"},
     {key:"hobbies", label:"Hobbies"},
-    {key:"declaration", label:"Declaration"}
+    {key:"declaration", label:"Declaration"},
+    {key:"custom", label:"Custom Sections"}
   ];
-
-  const DEFAULT_ENABLED = {
-    summary:true, address:true, personal:true, education:true, experience:true,
-    projects:true, skills:true, strengths:true, certs:true, training:true,
-    languages:true, hobbies:true, declaration:true
+  const sectionState = {
+    summary:true,address:true,personal:true,education:true,experience:true,projects:true,
+    skills:true,competencies:true,certs:true,training:true,languages:true,hobbies:true,declaration:true,custom:true
   };
 
-  // --- Templates (10 Fresher + 10 Experienced) ---
-  // NOTE: These are "ready to use" but NOT AI-sounding; simple practical lines.
-  const TEMPLATES = {
-    // Fresher (5 of these are designed to fill a full page even with less content)
-    F1:{
-      jobTitle:"Fresher - Computer/Office",
-      summary: SUMMARY_PRESETS[2],
-      education:[
-        "BCA (Running) - Semester __ - University/College Name",
-        "12th - Board - Year - %",
-        "10th - Board - Year - %"
-      ],
-      experience:[],
-      projects:[
-        "College/Institute Project: Resume Builder (HTML/CSS/JS)",
-        "Excel practice: Reports, tables, basic formulas",
-        "Documentation: Letters, applications, formatting"
-      ],
-      skills:"MS Office, Excel, PowerPoint, Internet, Email, Typing, Basic Computer",
-      strengths:"Discipline, Fast learning, Responsibility, Time management, Teamwork",
-      certs:[
-        "MS Office Course - Institute Name",
-        "Typing Course - Institute Name"
-      ],
-      training:[
-        "Computer Lab Practice - 4 Weeks - System handling & file management"
-      ],
-      langs:"Hindi, English, Gujarati",
-      hobbies:"Learning new skills, Reading, Practice on computer",
-      declare:"I declare that the above details are true to the best of my knowledge."
-    },
-    F2:{
-      jobTitle:"Fresher - Data Entry",
-      summary: SUMMARY_PRESETS[3],
-      education:["12th - Board - Year - %","10th - Board - Year - %"],
-      projects:[
-        "Excel data entry practice with accuracy",
-        "Making daily report formats in Excel",
-        "Typing practice with speed improvement"
-      ],
-      skills:"Typing, MS Word, Excel, Google Drive, Email, Data accuracy",
-      strengths:"Attention to detail, Patience, Consistency, Focus",
-      certs:["Data Entry Course - Institute Name"],
-      training:["Office documentation practice - 2 Weeks"],
-      langs:"Hindi, English",
-      hobbies:"Practice typing, Learning computer shortcuts",
-      declare:"I declare that the above details are true to the best of my knowledge."
-    },
-    F3:{
-      jobTitle:"Fresher - Computer Operator",
-      summary: SUMMARY_PRESETS[0],
-      education:["12th - Board - Year - %","10th - Board - Year - %"],
-      projects:["Document typing & formatting work","Printing/scanning practice","Email and file handling practice"],
-      skills:"MS Word, Excel, Printer/Scanner, Internet, Typing",
-      strengths:"Responsibility, Accuracy, Good work habits",
-      certs:["Basic Computer Course - Institute Name"],
-      training:["Computer operator practice - 1 Month"],
-      langs:"Hindi, English, Gujarati",
-      hobbies:"Learning computer, Reading",
-      declare:"I declare that the above details are true to the best of my knowledge."
-    },
-    F4:{
-      jobTitle:"Fresher - Office Assistant",
-      summary: SUMMARY_PRESETS[1],
-      education:["12th - Board - Year - %","10th - Board - Year - %"],
-      projects:["File arrangement & record format practice","Excel register formats","Letter/application drafting practice"],
-      skills:"MS Office, Internet, Email, Communication, Typing",
-      strengths:"Good communication, Punctual, Helpful, Calm nature",
-      certs:["Office Assistant Course - Institute Name"],
-      training:["Front desk practice - 2 Weeks"],
-      langs:"Hindi, English",
-      hobbies:"Learning office work, Reading",
-      declare:"I declare that the above details are true to the best of my knowledge."
-    },
-    F5:{
-      jobTitle:"Fresher - Basic Design/Graphics",
-      summary: SUMMARY_PRESETS[15],
-      education:["BCA/BA/BCom (optional) - Year - College Name","12th - Board - Year - %"],
-      projects:["Poster layouts practice","Social media banner practice","Basic photo editing practice"],
-      skills:"Canva, Basic Photoshop, MS PowerPoint, Creativity, Layout sense",
-      strengths:"Creativity, Patience, Clean work style",
-      certs:["Basic Graphic Design - Institute Name"],
-      training:["Design practice - 4 Weeks - Posters & banners"],
-      langs:"Hindi, English",
-      hobbies:"Design practice, Learning new tools",
-      declare:"I declare that the above details are true to the best of my knowledge."
-    },
-    F6:{ jobTitle:"Fresher - Front Office", summary:SUMMARY_PRESETS[6],
-      education:["12th - Board - Year - %","10th - Board - Year - %"],
-      projects:["Reception handling practice","Calling & appointment notes practice","Basic Excel register formats"],
-      skills:"Communication, MS Word, Excel, Email, Front desk handling",
-      strengths:"Polite nature, Confidence, Listening skills",
-      certs:["Front Office Course - Institute Name"],
-      training:["Reception practice - 3 Weeks"],
-      langs:"Hindi, English, Gujarati",
-      hobbies:"Talking practice, Reading",
-      declare:"I declare that the above details are true to the best of my knowledge."
-    },
-    F7:{ jobTitle:"Fresher - Internship Focus", summary:SUMMARY_PRESETS[18],
-      education:["BCA (Running) - Semester __ - College Name","12th - Board - Year - %"],
-      projects:["Mini project: Attendance system in Excel","Mini project: Basic portfolio webpage","Documentation: reports & notes"],
-      skills:"MS Office, Excel, Internet, Basics of HTML, Typing",
-      strengths:"Fast learning, Hardworking, Problem solving",
-      certs:["MS Office - Institute Name"],
-      training:["Internship/Training: __ - Duration __ - Work: __"],
-      langs:"Hindi, English",
-      hobbies:"Learning tech, Practice",
-      declare:"I declare that the above details are true to the best of my knowledge."
-    },
-    F8:{ jobTitle:"Fresher - Back Office", summary:SUMMARY_PRESETS[16],
-      education:["12th - Board - Year - %","10th - Board - Year - %"],
-      projects:["Form filling & verification practice","Excel sheets: sorting, filtering practice","Email communication practice"],
-      skills:"Excel, Word, Data verification, Typing, Accuracy",
-      strengths:"Focus, Consistency, Confidential handling",
-      certs:["Back Office Course - Institute Name"],
-      training:["Back office practice - 1 Month"],
-      langs:"Hindi, English, Gujarati",
-      hobbies:"Learning office process",
-      declare:"I declare that the above details are true to the best of my knowledge."
-    },
-    F9:{ jobTitle:"Fresher - Teaching Assistant", summary:SUMMARY_PRESETS[0],
-      education:["BCA/BA/BCom - Year - College Name","12th - Board - Year - %"],
-      projects:["Helping juniors in MS Office practice","Creating notes and handouts","Lab assistance practice"],
-      skills:"MS Office, Teaching support, Communication, Patience",
-      strengths:"Clear speaking, Helpful, Responsible",
-      certs:["Basic Computer - Institute Name"],
-      training:["Teaching support practice - 2 Weeks"],
-      langs:"Hindi, English, Gujarati",
-      hobbies:"Teaching, Reading",
-      declare:"I declare that the above details are true to the best of my knowledge."
-    },
-    F10:{ jobTitle:"Fresher - IT Support Basic", summary:SUMMARY_PRESETS[14],
-      education:["BCA/ITI/Diploma - Year - Institute Name","12th/10th - Board - Year - %"],
-      projects:["Windows install practice","Software install & setup practice","Basic troubleshooting practice"],
-      skills:"Windows, Installations, Printer setup, Antivirus basics, Hardware basics",
-      strengths:"Problem solving, Patience, Quick learning",
-      certs:["Hardware/Networking Basic - Institute Name"],
-      training:["System support practice - 4 Weeks"],
-      langs:"Hindi, English",
-      hobbies:"Learning computers, Troubleshooting",
-      declare:"I declare that the above details are true to the best of my knowledge."
-    },
-
-    // Experienced
-    E1:{
-      jobTitle:"Data Entry Executive",
-      summary: SUMMARY_PRESETS[9],
-      education:["12th - Board - Year - %","10th - Board - Year - %"],
-      experience:[
-        "2023–2025: Company Name - Data Entry Executive - Daily entry, verification, reports",
-        "2022–2023: Company Name - Office Support - Files, email, printing"
-      ],
-      projects:["Excel report formats and weekly summaries","Data cleaning & formatting for reports"],
-      skills:"Excel (basic formulas), Word, Typing, Data accuracy, Email",
-      strengths:"Accuracy, Speed, Reliability, Time management",
-      certs:["Advanced Excel (optional) - Institute Name"],
-      training:[],
-      langs:"Hindi, English, Gujarati",
-      hobbies:"Reading, Learning new skills",
-      declare:"I declare that the above details are true to the best of my knowledge."
-    },
-    E2:{
-      jobTitle:"Accountant (Tally)",
-      summary: SUMMARY_PRESETS[10],
-      education:["BCom - Year - College Name","12th - Board - Year - %"],
-      experience:[
-        "2022–2025: Firm/Company - Accountant - Billing, entries, ledgers, reports",
-        "2021–2022: Firm/Company - Accounts Assistant - Vouchers, follow-up"
-      ],
-      projects:["Monthly sales/purchase summary","GST basic working and filing support"],
-      skills:"Tally, Excel, Billing, Ledger entries, GST basics",
-      strengths:"Responsibility, Confidential handling, Accuracy",
-      certs:["Tally & GST Course - Institute Name"],
-      training:[],
-      langs:"Hindi, English, Gujarati",
-      hobbies:"Reading, Accounts practice",
-      declare:"I declare that the above details are true to the best of my knowledge."
-    },
-    E3:{
-      jobTitle:"Office Administrator",
-      summary: SUMMARY_PRESETS[8],
-      education:["Graduation - Year - College Name","12th - Board - Year - %"],
-      experience:[
-        "2021–2025: Company - Office Admin - Documentation, coordination, vendor follow-ups",
-        "2020–2021: Company - Office Assistant - Record maintenance"
-      ],
-      projects:["Office file system improvement","Daily register formats & reporting"],
-      skills:"MS Office, Coordination, Email, Documentation, Team support",
-      strengths:"Organized, Communication, Leadership support",
-      certs:["MS Office Advanced (optional) - Institute Name"],
-      training:[],
-      langs:"Hindi, English, Gujarati",
-      hobbies:"Reading, Learning new tools",
-      declare:"I declare that the above details are true to the best of my knowledge."
-    },
-    E4:{
-      jobTitle:"Computer Teacher / Trainer",
-      summary: SUMMARY_PRESETS[11],
-      education:["Graduation - Year - College Name","12th - Board - Year - %"],
-      experience:[
-        "2022–2025: Institute - Computer Teacher - MS Office, basics, practical training",
-        "2021–2022: Institute - Lab Assistant - Support and guidance"
-      ],
-      projects:["Batch notes and practical assignments preparation","Student progress tracking in Excel"],
-      skills:"Teaching, MS Office, Internet, Communication, Classroom handling",
-      strengths:"Patience, Clear explanation, Discipline",
-      certs:["Computer Teacher Training (optional) - Institute Name"],
-      training:[],
-      langs:"Hindi, English, Gujarati",
-      hobbies:"Teaching, Reading",
-      declare:"I declare that the above details are true to the best of my knowledge."
-    },
-    E5:{ jobTitle:"Sales Coordinator", summary:SUMMARY_PRESETS[12],
-      education:["Graduation - Year - College Name"],
-      experience:["2021–2025: Company - Sales Coordinator - Follow-ups, reports, billing support"],
-      projects:["Sales report formats and daily follow-ups","Customer updates and coordination logs"],
-      skills:"Communication, Excel, Email, Follow-ups, Billing support",
-      strengths:"Good communication, Target focus, Calm nature",
-      certs:[],
-      training:[],
-      langs:"Hindi, English, Gujarati",
-      hobbies:"Reading",
-      declare:"I declare that the above details are true to the best of my knowledge."
-    },
-    E6:{ jobTitle:"Graphic Designer", summary:SUMMARY_PRESETS[15],
-      education:["Diploma/Graduation - Year - Institute Name"],
-      experience:["2022–2025: Company - Designer - Posters, banners, social media creatives"],
-      projects:["Brand poster sets","Event banners and print-ready files"],
-      skills:"Photoshop, CorelDRAW (optional), Canva, Layout, Typography basics",
-      strengths:"Creativity, Clean work style, Time management",
-      certs:["Graphic Design Course - Institute Name"],
-      training:[],
-      langs:"Hindi, English",
-      hobbies:"Design practice",
-      declare:"I declare that the above details are true to the best of my knowledge."
-    },
-    E7:{ jobTitle:"Customer Support Executive", summary:SUMMARY_PRESETS[13],
-      education:["Graduation - Year - College Name"],
-      experience:["2021–2025: Company - Support Executive - Calls, queries, follow-ups, updates"],
-      projects:["Daily call log + issue tracking format","Customer feedback summaries"],
-      skills:"Communication, Calling, Email, Basic Excel, Problem solving",
-      strengths:"Polite nature, Listening skills, Quick response",
-      certs:[],
-      training:[],
-      langs:"Hindi, English, Gujarati",
-      hobbies:"Reading",
-      declare:"I declare that the above details are true to the best of my knowledge."
-    },
-    E8:{ jobTitle:"Store / Inventory Executive", summary:SUMMARY_PRESETS[19],
-      education:["12th/Graduation - Year - Board/College"],
-      experience:["2020–2025: Company - Inventory - Stock entries, billing support, records"],
-      projects:["Stock register formats in Excel","Weekly stock summary and reporting"],
-      skills:"Inventory, Excel, Billing basics, Record keeping",
-      strengths:"Responsibility, Accuracy, Discipline",
-      certs:[],
-      training:[],
-      langs:"Hindi, English, Gujarati",
-      hobbies:"Reading",
-      declare:"I declare that the above details are true to the best of my knowledge."
-    },
-    E9:{ jobTitle:"HR Assistant", summary:SUMMARY_PRESETS[8],
-      education:["Graduation - Year - College Name"],
-      experience:["2022–2025: Company - HR Assistant - Attendance, documentation, calling, records"],
-      projects:["Attendance sheet automation in Excel","Employee file system maintenance"],
-      skills:"Excel, Documentation, Calling, Coordination, Confidential handling",
-      strengths:"Organized, Communication, Responsibility",
-      certs:[],
-      training:[],
-      langs:"Hindi, English, Gujarati",
-      hobbies:"Reading",
-      declare:"I declare that the above details are true to the best of my knowledge."
-    },
-    E10:{ jobTitle:"IT Technician", summary:SUMMARY_PRESETS[14],
-      education:["Diploma/ITI - Year - Institute Name"],
-      experience:["2021–2025: Company - IT Technician - System support, installs, troubleshooting"],
-      projects:["PC setup & maintenance logs","Software installation checklist for office"],
-      skills:"Windows, Networking basics, Installations, Printer setup, Hardware basics",
-      strengths:"Problem solving, Patience, Fast response",
-      certs:["Hardware/Networking - Institute Name"],
-      training:[],
-      langs:"Hindi, English",
-      hobbies:"Troubleshooting",
-      declare:"I declare that the above details are true to the best of my knowledge."
-    }
+  const state = {
+    templateMode: false,
+    style: "",
+    targetPages: 1,
+    autoFillPages: true,
+    customSections: [] // {id, title, type, content}
   };
-
-  // --- DOM references ---
-  const refs = {
-    templateSelect: $("templateSelect"),
-    summarySelect: $("summarySelect"),
-    sectionToggles: $("sectionToggles"),
-
-    fullName: $("fullName"),
-    jobTitle: $("jobTitle"),
-    mobile: $("mobile"),
-    email: $("email"),
-    link: $("link"),
-    addrPermanent: $("addrPermanent"),
-    addrTemp: $("addrTemp"),
-    sameAddr: $("sameAddr"),
-
-    summary: $("summary"),
-    education: $("education"),
-    experience: $("experience"),
-    projects: $("projects"),
-    skills: $("skills"),
-    strengths: $("strengths"),
-    certs: $("certs"),
-    training: $("training"),
-    langs: $("langs"),
-    hobbies: $("hobbies"),
-    declare: $("declare"),
-
-    fatherName: $("fatherName"),
-    dob: $("dob"),
-    gender: $("gender"),
-    marital: $("marital"),
-    nationality: $("nationality"),
-
-    pages: $("pages"),
-    btnPrint: $("btnPrint"),
-    btnPdf: $("btnPdf"),
-    btnReset: $("btnReset")
-  };
-
-  // --- Build summary dropdown ---
-  function initSummaryDropdown(){
-    SUMMARY_PRESETS.forEach((s, idx)=>{
-      const opt = document.createElement("option");
-      opt.value = String(idx);
-      opt.textContent = (idx+1) + ". " + s.slice(0, 55) + (s.length>55 ? "..." : "");
-      refs.summarySelect.appendChild(opt);
-    });
-  }
-
-  // --- Build section toggles ---
-  const sectionState = {...DEFAULT_ENABLED};
-  function initSectionToggles(){
-    refs.sectionToggles.innerHTML = "";
-    SECTION_KEYS.forEach(item=>{
-      const wrap = document.createElement("label");
-      wrap.className = "chip";
-      wrap.innerHTML = `
-        <input type="checkbox" data-key="${item.key}" ${sectionState[item.key] ? "checked" : ""} />
-        <span>${item.label}</span>
-      `;
-      refs.sectionToggles.appendChild(wrap);
-    });
-
-    refs.sectionToggles.addEventListener("change",(e)=>{
-      const t = e.target;
-      if(t && t.matches("input[type='checkbox'][data-key]")){
-        sectionState[t.dataset.key] = t.checked;
-        render();
-      }
-    });
-  }
-
-  // --- Helpers ---
-  function safeLines(text){
-    return (text||"").split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
-  }
-  function safeCSV(text){
-    return (text||"").split(",").map(s=>s.trim()).filter(Boolean);
-  }
-  function setLines(el, arr){
-    el.value = (arr && arr.length) ? arr.join("\n") : "";
-  }
-  function setVal(el, v){ el.value = v || ""; }
 
   function escapeHtml(str){
     return String(str || "")
@@ -819,96 +428,408 @@
       .replaceAll('"',"&quot;")
       .replaceAll("'","&#039;");
   }
+  function safeLines(text){
+    return (text||"").split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+  }
+  function safeCSV(text){
+    return (text||"").split(",").map(s=>s.trim()).filter(Boolean);
+  }
 
-  // --- Apply template (fills form but editable) ---
-  function applyTemplate(code){
-    const t = TEMPLATES[code];
-    if(!t) return;
+  // --- UI: section toggles
+  function initSectionToggles(){
+    const box = $("sectionToggles");
+    box.innerHTML = "";
+    SECTION_KEYS.forEach(item=>{
+      const wrap = document.createElement("label");
+      wrap.className = "chip";
+      wrap.innerHTML = `
+        <input type="checkbox" data-key="${item.key}" ${sectionState[item.key] ? "checked" : ""}/>
+        <span>${item.label}</span>
+      `;
+      box.appendChild(wrap);
+    });
+    box.addEventListener("change",(e)=>{
+      const t = e.target;
+      if(t && t.matches("input[type='checkbox'][data-key]")){
+        sectionState[t.dataset.key] = t.checked;
+        render();
+      }
+    });
+  }
 
-    setVal(refs.jobTitle, t.jobTitle);
-    setVal(refs.summary, t.summary);
-
-    setLines(refs.education, t.education || []);
-    setLines(refs.experience, t.experience || []);
-    setLines(refs.projects, t.projects || []);
-
-    setVal(refs.skills, t.skills || "");
-    setVal(refs.strengths, t.strengths || "");
-
-    setLines(refs.certs, t.certs || []);
-    setLines(refs.training, t.training || []);
-
-    setVal(refs.langs, t.langs || "");
-    setVal(refs.hobbies, t.hobbies || "");
-    setVal(refs.declare, t.declare || "");
-
-    // Keep name/contact empty (user asked default empty; template should not force personal)
-    // We won't touch fullName/mobile/email/link/fatherName etc.
+  // --- Custom sections manager
+  function addCustomSection(prefill){
+    const id = "cs_" + Math.random().toString(16).slice(2);
+    state.customSections.push({
+      id,
+      title: (prefill && prefill.title) || "Additional Section",
+      type: (prefill && prefill.type) || "bullets", // bullets | paragraph
+      content: (prefill && prefill.content) || ""
+    });
+    drawCustomSectionsUI();
     render();
   }
 
-  // --- Build blocks for pagination ---
+  function drawCustomSectionsUI(){
+    const wrap = $("customSections");
+    wrap.innerHTML = "";
+    state.customSections.forEach((s, idx)=>{
+      const card = document.createElement("div");
+      card.className = "secCard";
+      card.innerHTML = `
+        <div class="top">
+          <b>Section ${idx+1}</b>
+          <div class="row">
+            <button class="secondary miniBtn" type="button" data-up="${s.id}">Up</button>
+            <button class="secondary miniBtn" type="button" data-down="${s.id}">Down</button>
+            <button class="danger miniBtn" type="button" data-del="${s.id}">Delete</button>
+          </div>
+        </div>
+        <label>Title</label>
+        <input data-title="${s.id}" value="${escapeHtml(s.title)}" />
+        <label>Type</label>
+        <select data-type="${s.id}">
+          <option value="bullets" ${s.type==="bullets"?"selected":""}>Bullets</option>
+          <option value="paragraph" ${s.type==="paragraph"?"selected":""}>Paragraph</option>
+        </select>
+        <label>Content</label>
+        <textarea data-content="${s.id}" placeholder="Write content...">${escapeHtml(s.content)}</textarea>
+      `;
+      wrap.appendChild(card);
+    });
+
+    wrap.querySelectorAll("input[data-title]").forEach(el=>{
+      el.addEventListener("input", ()=>{
+        const id = el.getAttribute("data-title");
+        const s = state.customSections.find(x=>x.id===id);
+        if(s){ s.title = el.value; render(); }
+      });
+    });
+    wrap.querySelectorAll("select[data-type]").forEach(el=>{
+      el.addEventListener("change", ()=>{
+        const id = el.getAttribute("data-type");
+        const s = state.customSections.find(x=>x.id===id);
+        if(s){ s.type = el.value; render(); }
+      });
+    });
+    wrap.querySelectorAll("textarea[data-content]").forEach(el=>{
+      el.addEventListener("input", ()=>{
+        const id = el.getAttribute("data-content");
+        const s = state.customSections.find(x=>x.id===id);
+        if(s){ s.content = el.value; render(); }
+      });
+    });
+
+    wrap.querySelectorAll("button[data-del]").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const id = btn.getAttribute("data-del");
+        state.customSections = state.customSections.filter(x=>x.id!==id);
+        drawCustomSectionsUI(); render();
+      });
+    });
+    wrap.querySelectorAll("button[data-up]").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const id = btn.getAttribute("data-up");
+        const i = state.customSections.findIndex(x=>x.id===id);
+        if(i>0){
+          const tmp = state.customSections[i-1];
+          state.customSections[i-1] = state.customSections[i];
+          state.customSections[i] = tmp;
+          drawCustomSectionsUI(); render();
+        }
+      });
+    });
+    wrap.querySelectorAll("button[data-down]").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const id = btn.getAttribute("data-down");
+        const i = state.customSections.findIndex(x=>x.id===id);
+        if(i>=0 && i<state.customSections.length-1){
+          const tmp = state.customSections[i+1];
+          state.customSections[i+1] = state.customSections[i];
+          state.customSections[i] = tmp;
+          drawCustomSectionsUI(); render();
+        }
+      });
+    });
+  }
+
+  // --- Templates: (full-page & multi-page content packs)
+  // NOTE: Personal fields (name/mobile/email) never forced.
+  function templatePack(style, pages){
+    // packs are made “realistic” and non-AI sounding; just clean, professional sample lines.
+    const base = {
+      jobTitle: "Professional Title",
+      summary: "Write a short professional summary highlighting your role, strengths, and key experience.",
+      education: [
+        "Degree / Course - College/University - Year",
+        "12th - Board - Year",
+        "10th - Board - Year"
+      ],
+      experience: [
+        "Company Name - Role | Year–Year: Key responsibility (reporting, coordination, documentation)",
+        "Company Name - Role | Year–Year: Key responsibility (client handling, follow-ups, records)"
+      ],
+      projects: [
+        "Project/Work: Reporting format creation and weekly summary preparation",
+        "Project/Work: Documentation, email communication, and file management system"
+      ],
+      skills: "MS Office, Excel, Email, Documentation, Typing, Communication",
+      competencies: "Reporting, Coordination, Record Management, Problem Solving, Time Management",
+      certs: [
+        "Course/Certificate - Institute - Year",
+        "Course/Certificate - Institute - Year"
+      ],
+      training: [
+        "Training/Internship - Organization - Duration - Work handled"
+      ],
+      langs: "Hindi, English, Gujarati",
+      hobbies: "Reading, Learning new skills",
+      declare: "I declare that the above information is true to the best of my knowledge."
+    };
+
+    // Expand content by pages
+    const long2 = {
+      summary: "Results-focused professional with experience in documentation, reporting, coordination, and daily operations support. Strong in Excel-based reports, accurate record maintenance, and clear communication. Comfortable with deadlines, follow-ups, and structured work.",
+      experience: [
+        "Company Name - Senior Role | Year–Present: Manage daily operations support, reporting, and coordination with teams.",
+        "Company Name - Role | Year–Year: Prepare Excel reports, maintain records, verify entries, and handle documentation.",
+        "Company Name - Role | Year–Year: Customer coordination, follow-ups, email updates, and file management."
+      ],
+      projects: [
+        "Created weekly/monthly reporting formats and improved documentation flow.",
+        "Managed client/service logs and ensured timely updates to stakeholders.",
+        "Built simple Excel trackers for attendance, inventory, or billing support."
+      ],
+      certs: [
+        "Advanced Excel - Institute - Year",
+        "Tally/GST Basics - Institute - Year",
+        "Typing / Computer Operator - Institute - Year"
+      ],
+      training: [
+        "Professional training - Duration - Focus: reporting, documentation, coordination",
+        "Internship/On-job training - Duration - Work: data handling & verification"
+      ],
+      competencies: "Operations Support, Reporting, Documentation, Coordination, Communication, Accuracy"
+    };
+
+    const long3 = {
+      experience: [
+        "Company Name - Role | Year–Present: Lead reporting, documentation flow, and team coordination for daily operations.",
+        "Company Name - Role | Year–Year: Maintain files, registers, customer updates, and structured follow-ups.",
+        "Company Name - Role | Year–Year: Handle data verification, entry accuracy, and weekly reporting.",
+        "Company Name - Role | Year–Year: Support billing/records and maintain daily/weekly registers."
+      ],
+      projects: [
+        "Standardized reporting formats to reduce errors and improve delivery time.",
+        "Prepared compliance-ready documentation sets and maintained record accuracy.",
+        "Built trackers for workflow updates, follow-ups, and approvals.",
+        "Created templates for letters, forms, and official documentation."
+      ],
+      education: [
+        "Degree / Course - College/University - Year - (optional %",
+        "Diploma/Certification - Institute - Year",
+        "12th - Board - Year",
+        "10th - Board - Year"
+      ],
+      certs: [
+        "Advanced Excel + MIS Reporting - Institute - Year",
+        "Tally Prime / Accounting - Institute - Year",
+        "Soft Skills / Communication - Institute - Year",
+        "Computer Operator/Office Automation - Institute - Year"
+      ],
+      competencies: "Leadership Support, MIS Reporting, Operations, Process Improvement, Team Coordination, Accuracy"
+    };
+
+    const long4 = {
+      projects: [
+        "Process improvement: redesigned report formats and reduced manual errors.",
+        "Operations reporting: created weekly/monthly dashboards for leadership updates.",
+        "Documentation system: arranged records and introduced naming standards.",
+        "Client support: maintained call/email logs and ensured timely follow-ups.",
+        "Training support: created handouts/notes and supported junior staff."
+      ],
+      training: [
+        "Leadership support training - Duration - Focus: reporting & coordination",
+        "Operations training - Duration - Focus: process, documentation, workflow",
+        "Quality & accuracy training - Duration - Focus: verification & compliance"
+      ],
+      competencies: "Process Improvement, MIS, Documentation, Compliance Support, Coordination, Stakeholder Handling"
+    };
+
+    // Style-specific titles
+    const styleTitleMap = {
+      A1:"Professional Resume", A2:"Professional Resume",
+      B1:"Professional Summary", B2:"Professional Summary",
+      C1:"Profile Summary", C2:"Profile Summary",
+      D1:"Objectives", D2:"Objectives"
+    };
+
+    // Merge based on pages
+    let pack = {...base};
+    if(pages>=2) pack = deepMerge(pack, long2);
+    if(pages>=3) pack = deepMerge(pack, long3);
+    if(pages>=4) pack = deepMerge(pack, long4);
+
+    // Slight style tweaks
+    if(style.startsWith("B")){
+      pack.jobTitle = "Web Developer / Software Role";
+      pack.skills = "Front-end, Back-end basics, Source control, Communication, Documentation";
+      pack.competencies = "Web Development, Architecture basics, Agile, Testing basics, Performance";
+    }
+    if(style.startsWith("C")){
+      pack.jobTitle = "Operations / Manager Role";
+      pack.competencies = "Operations, KPIs, Stakeholder handling, Cost reduction, Process management";
+    }
+    if(style.startsWith("D")){
+      pack.jobTitle = "Student / Fresher Resume";
+      pack.summary = "To obtain a responsible position where I can utilize my skills and contribute to organizational growth while improving my knowledge and work experience.";
+    }
+
+    pack._styleTitle = styleTitleMap[style] || "Summary";
+    return pack;
+  }
+
+  function deepMerge(a,b){
+    const out = {...a};
+    Object.keys(b||{}).forEach(k=>{
+      if(Array.isArray(b[k])) out[k] = b[k].slice();
+      else if(typeof b[k]==="object" && b[k] && typeof a[k]==="object") out[k]=deepMerge(a[k],b[k]);
+      else out[k]=b[k];
+    });
+    return out;
+  }
+
+  // --- Apply selected template
+  function applyTemplate(){
+    const style = $("styleSelect").value;
+    if(!style) return;
+    state.style = style;
+    state.templateMode = true;
+
+    const pages = parseInt($("targetPages").value,10) || 1;
+    state.targetPages = pages;
+    state.autoFillPages = $("autoFillPages").checked;
+
+    const pack = templatePack(style, pages);
+
+    // fill only professional fields (NOT personal identity)
+    $("jobTitle").value = pack.jobTitle || "";
+    $("summary").value = pack.summary || "";
+    $("education").value = (pack.education||[]).join("\n");
+    $("experience").value = (pack.experience||[]).join("\n");
+    $("projects").value = (pack.projects||[]).join("\n");
+    $("skills").value = pack.skills || "";
+    $("competencies").value = pack.competencies || "";
+    $("certs").value = (pack.certs||[]).join("\n");
+    $("training").value = (pack.training||[]).join("\n");
+    $("langs").value = pack.langs || "";
+    $("hobbies").value = pack.hobbies || "";
+    $("declare").value = pack.declare || "";
+
+    // Add 1-2 custom sections in template mode for fuller pages
+    state.customSections = [];
+    if(pages>=2){
+      addCustomSection({title:"Areas of Expertise", type:"bullets", content:
+`• Reporting & documentation
+• Team coordination & follow-ups
+• Excel trackers & summaries
+• Record maintenance & accuracy`});
+    }
+    if(pages>=3){
+      addCustomSection({title:"Additional Information", type:"bullets", content:
+`• Willing to relocate (if required)
+• Comfortable with deadlines and routine reporting
+• Open to learning new systems and tools`});
+    }
+    if(pages>=4){
+      addCustomSection({title:"Key Highlights", type:"bullets", content:
+`• Improved reporting format and reduced errors
+• Maintained structured records and timely updates
+• Supported workflow coordination across teams`});
+    }
+
+    drawCustomSectionsUI();
+    render();
+  }
+
+  // --- Build section blocks with style
+  function sectionTitleHtml(style, title){
+    if(style.startsWith("A")){
+      return `<div class="h3">${escapeHtml(title)}</div>`;
+    }
+    if(style.startsWith("B")){
+      return `<div class="bar">${escapeHtml(title)}</div>`;
+    }
+    if(style.startsWith("C")){
+      return `<div class="h3">${escapeHtml(title)}</div>`;
+    }
+    if(style.startsWith("D")){
+      return `<div class="boxH">${escapeHtml(title)}</div>`;
+    }
+    return `<div class="h3">${escapeHtml(title)}</div>`;
+  }
+
   function buildBlocks(data){
     const blocks = [];
+    const style = data.style || "A1";
+    const rootClass = style.startsWith("A") ? "styleA" : style.startsWith("B") ? "styleB" : style.startsWith("C") ? "styleC" : "styleD";
 
-    // Header
+    // Header (ONLY ON FIRST PAGE; block appears once)
     blocks.push(`
-      <div class="block">
-        <div class="resumeHeader">
+      <div class="block ${rootClass}">
+        <div class="r-hdr">
           <div>
-            <p class="name">${escapeHtml(data.fullName || "Full Name")}</p>
-            <p class="role">${escapeHtml(data.jobTitle || "")}</p>
+            <h2 class="r-name">${escapeHtml(data.fullName || "FULL NAME")}</h2>
+            ${data.jobTitle ? `<div class="r-role">${escapeHtml(data.jobTitle)}</div>` : ``}
           </div>
-          <div class="contact">
+          <div class="r-contact">
             ${data.mobile ? `<div>${escapeHtml(data.mobile)}</div>` : ``}
             ${data.email ? `<div>${escapeHtml(data.email)}</div>` : ``}
             ${data.link ? `<div>${escapeHtml(data.link)}</div>` : ``}
+            ${data.addrPermanent ? `<div style="margin-top:6px">${escapeHtml(data.addrPermanent)}</div>` : ``}
           </div>
         </div>
+        ${style.startsWith("A") ? `<div class="topLine"></div>` : style.startsWith("C") ? `<div class="headRule"></div>` : style.startsWith("D") ? `<div class="thin"></div>` : ``}
       </div>
     `);
 
     // Summary
     if(sectionState.summary && data.summary){
       blocks.push(`
-        <div class="block section">
-          <h3>Summary</h3>
-          <p>${escapeHtml(data.summary)}</p>
-        </div>
-      `);
-    }
-
-    // Address
-    if(sectionState.address && (data.addrPermanent || data.addrTemp)){
-      blocks.push(`
-        <div class="block section">
-          <h3>Address</h3>
-          ${data.addrPermanent ? `<p><b>Permanent:</b> ${escapeHtml(data.addrPermanent)}</p>` : ``}
-          ${data.addrTemp ? `<p style="margin-top:4px"><b>Temporary:</b> ${escapeHtml(data.addrTemp)}</p>` : ``}
-        </div>
-      `);
-    }
-
-    // Personal details
-    const pd = [];
-    if(data.fatherName) pd.push(["Father's Name", data.fatherName]);
-    if(data.dob) pd.push(["Date of Birth", data.dob]);
-    if(data.gender) pd.push(["Gender", data.gender]);
-    if(data.marital) pd.push(["Marital Status", data.marital]);
-    if(data.nationality) pd.push(["Nationality", data.nationality]);
-
-    if(sectionState.personal && pd.length){
-      blocks.push(`
-        <div class="block section">
-          <h3>Personal Details</h3>
-          <div class="kv">
-            ${pd.map(([k,v])=>`<b>${escapeHtml(k)}</b><div>${escapeHtml(v)}</div>`).join("")}
+        <div class="block ${rootClass}">
+          ${sectionTitleHtml(style, style.startsWith("D") ? "Objectives" : "Summary")}
+          <div class="${style.startsWith("C") ? "shade" : ""}">
+            <p>${escapeHtml(data.summary)}</p>
           </div>
+          ${style.startsWith("A") ? `<div class="rule"></div>` : ``}
         </div>
       `);
     }
 
-    // Lists
+    // Personal details (still only once, not per page)
+    if(sectionState.personal){
+      const pd = [];
+      if(data.fatherName) pd.push(["Father's Name", data.fatherName]);
+      if(data.dob) pd.push(["Date of Birth", data.dob]);
+      if(data.gender) pd.push(["Gender", data.gender]);
+      if(data.marital) pd.push(["Marital Status", data.marital]);
+      if(data.nationality) pd.push(["Nationality", data.nationality]);
+
+      if(pd.length){
+        blocks.push(`
+          <div class="block ${rootClass}">
+            ${sectionTitleHtml(style, "Personal Details")}
+            <div class="${style.startsWith("C") ? "shade" : ""}">
+              <div class="kv">
+                ${pd.map(([k,v])=>`<b>${escapeHtml(k)}</b><div>${escapeHtml(v)}</div>`).join("")}
+              </div>
+            </div>
+            ${style.startsWith("A") ? `<div class="rule"></div>` : ``}
+          </div>
+        `);
+      }
+    }
+
     const edu = safeLines(data.education);
     const exp = safeLines(data.experience);
     const proj = safeLines(data.projects);
@@ -916,109 +837,130 @@
     const training = safeLines(data.training);
 
     const skills = safeCSV(data.skills);
-    const strengths = safeCSV(data.strengths);
+    const comps = safeCSV(data.competencies);
     const langs = safeCSV(data.langs);
     const hobbies = safeCSV(data.hobbies);
 
-    // Two column main area
-    const leftParts = [];
-    const rightParts = [];
+    const left = [];
+    const right = [];
 
     if(sectionState.education && edu.length){
-      leftParts.push(`
+      left.push(`
         <div class="section">
-          <h3>Education</h3>
+          ${sectionTitleHtml(style, "Education")}
           <ul>${edu.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul>
         </div>
       `);
     }
 
     if(sectionState.experience && exp.length){
-      leftParts.push(`
-        <div class="section" style="margin-top:10px">
-          <h3>Experience</h3>
+      left.push(`
+        <div class="section">
+          ${sectionTitleHtml(style, "Work Experience")}
           <ul>${exp.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul>
         </div>
       `);
     }
 
     if(sectionState.projects && proj.length){
-      leftParts.push(`
-        <div class="section" style="margin-top:10px">
-          <h3>Projects / Achievements</h3>
+      left.push(`
+        <div class="section">
+          ${sectionTitleHtml(style, "Projects / Achievements")}
           <ul>${proj.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul>
         </div>
       `);
     }
 
     if(sectionState.certs && certs.length){
-      leftParts.push(`
-        <div class="section" style="margin-top:10px">
-          <h3>Certifications</h3>
+      left.push(`
+        <div class="section">
+          ${sectionTitleHtml(style, "Certifications")}
           <ul>${certs.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul>
         </div>
       `);
     }
 
     if(sectionState.training && training.length){
-      leftParts.push(`
-        <div class="section" style="margin-top:10px">
-          <h3>Training / Internship</h3>
+      left.push(`
+        <div class="section">
+          ${sectionTitleHtml(style, "Training / Internship")}
           <ul>${training.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul>
         </div>
       `);
     }
 
     if(sectionState.skills && skills.length){
-      rightParts.push(`
+      right.push(`
         <div class="section">
-          <h3>Skills</h3>
+          ${sectionTitleHtml(style, "Skills")}
           <div class="pillRow">${skills.map(x=>`<span class="pill">${escapeHtml(x)}</span>`).join("")}</div>
         </div>
       `);
     }
 
-    if(sectionState.strengths && strengths.length){
-      rightParts.push(`
-        <div class="section" style="margin-top:10px">
-          <h3>Strengths</h3>
-          <p>${strengths.map(escapeHtml).join(", ")}</p>
+    if(sectionState.competencies && comps.length){
+      const block = style.startsWith("C") ? "shade" : "";
+      right.push(`
+        <div class="section">
+          ${sectionTitleHtml(style, "Core Competencies")}
+          <div class="${block}">
+            <p>${comps.map(escapeHtml).join(" • ")}</p>
+          </div>
         </div>
       `);
     }
 
     if(sectionState.languages && langs.length){
-      rightParts.push(`
-        <div class="section" style="margin-top:10px">
-          <h3>Languages</h3>
+      right.push(`
+        <div class="section">
+          ${sectionTitleHtml(style, "Languages")}
           <p>${langs.map(escapeHtml).join(", ")}</p>
         </div>
       `);
     }
 
     if(sectionState.hobbies && hobbies.length){
-      rightParts.push(`
-        <div class="section" style="margin-top:10px">
-          <h3>Hobbies</h3>
+      right.push(`
+        <div class="section">
+          ${sectionTitleHtml(style, "Hobbies")}
           <p>${hobbies.map(escapeHtml).join(", ")}</p>
         </div>
       `);
     }
 
-    if(leftParts.length || rightParts.length){
+    if(left.length || right.length){
       blocks.push(`
-        <div class="block twoCol" style="margin-top:10px">
-          <div>${leftParts.join("")}</div>
-          <div>${rightParts.join("")}</div>
+        <div class="block ${ (style.startsWith("A")?"styleA":style.startsWith("B")?"styleB":style.startsWith("C")?"styleC":"styleD") }">
+          <div class="twoCol">
+            <div>${left.join("")}</div>
+            <div>${right.join("")}</div>
+          </div>
         </div>
       `);
+    }
+
+    // Custom sections
+    if(sectionState.custom && state.customSections.length){
+      state.customSections.forEach(sec=>{
+        const lines = safeLines(sec.content);
+        const isBullets = sec.type === "bullets";
+        blocks.push(`
+          <div class="block ${ (style.startsWith("A")?"styleA":style.startsWith("B")?"styleB":style.startsWith("C")?"styleC":"styleD") }">
+            ${sectionTitleHtml(style, sec.title || "Section")}
+            ${isBullets
+              ? `<ul>${lines.map(x=>`<li>${escapeHtml(x.replace(/^•\s?/,""))}</li>`).join("")}</ul>`
+              : `<p>${escapeHtml(sec.content)}</p>`
+            }
+          </div>
+        `);
+      });
     }
 
     // Declaration
     if(sectionState.declaration && data.declare){
       blocks.push(`
-        <div class="block section" style="margin-top:10px">
-          <h3>Declaration</h3>
+        <div class="block ${ (style.startsWith("A")?"styleA":style.startsWith("B")?"styleB":style.startsWith("C")?"styleC":"styleD") }">
+          ${sectionTitleHtml(style, "Declaration")}
           <p>${escapeHtml(data.declare)}</p>
         </div>
       `);
@@ -1027,7 +969,7 @@
     return blocks;
   }
 
-  // --- Pagination rendering ---
+  // --- Pagination
   function newPage(){
     const page = document.createElement("div");
     page.className = "page";
@@ -1036,51 +978,49 @@
   }
 
   function render(){
-    // Same address checkbox
-    if(refs.sameAddr.checked){
-      refs.addrTemp.value = refs.addrPermanent.value;
-      refs.addrTemp.setAttribute("readonly","readonly");
-      refs.addrTemp.style.opacity = "0.9";
-    } else {
-      refs.addrTemp.removeAttribute("readonly");
-      refs.addrTemp.style.opacity = "1";
+    // same address
+    if($("sameAddr").checked){
+      $("addrTemp").value = $("addrPermanent").value;
+      $("addrTemp").setAttribute("readonly","readonly");
+      $("addrTemp").style.opacity="0.9";
+    }else{
+      $("addrTemp").removeAttribute("readonly");
+      $("addrTemp").style.opacity="1";
     }
 
     const data = {
-      fullName: refs.fullName.value.trim(),
-      jobTitle: refs.jobTitle.value.trim(),
-      mobile: refs.mobile.value.trim(),
-      email: refs.email.value.trim(),
-      link: refs.link.value.trim(),
-      addrPermanent: refs.addrPermanent.value.trim(),
-      addrTemp: refs.addrTemp.value.trim(),
-
-      summary: refs.summary.value.trim(),
-      education: refs.education.value,
-      experience: refs.experience.value,
-      projects: refs.projects.value,
-      skills: refs.skills.value,
-      strengths: refs.strengths.value,
-      certs: refs.certs.value,
-      training: refs.training.value,
-      langs: refs.langs.value.trim(),
-      hobbies: refs.hobbies.value.trim(),
-      declare: refs.declare.value.trim(),
-
-      fatherName: refs.fatherName.value.trim(),
-      dob: refs.dob.value.trim(),
-      gender: refs.gender.value.trim(),
-      marital: refs.marital.value.trim(),
-      nationality: refs.nationality.value.trim()
+      style: state.style || $("styleSelect").value || "A1",
+      fullName: $("fullName").value.trim(),
+      jobTitle: $("jobTitle").value.trim(),
+      mobile: $("mobile").value.trim(),
+      email: $("email").value.trim(),
+      link: $("link").value.trim(),
+      addrPermanent: $("addrPermanent").value.trim(),
+      summary: $("summary").value.trim(),
+      education: $("education").value,
+      experience: $("experience").value,
+      projects: $("projects").value,
+      skills: $("skills").value,
+      competencies: $("competencies").value,
+      certs: $("certs").value,
+      training: $("training").value,
+      langs: $("langs").value.trim(),
+      hobbies: $("hobbies").value.trim(),
+      declare: $("declare").value.trim(),
+      fatherName: $("fatherName").value.trim(),
+      dob: $("dob").value.trim(),
+      gender: $("gender").value.trim(),
+      marital: $("marital").value.trim(),
+      nationality: $("nationality").value.trim()
     };
 
-    const pagesEl = refs.pages;
+    const pagesEl = $("pages");
     pagesEl.innerHTML = "";
 
     let page = newPage();
     pagesEl.appendChild(page);
-    const contentEl = page.querySelector(".content");
-    const maxH = contentEl.clientHeight;
+    let contentEl = page.querySelector(".content");
+    let maxH = contentEl.clientHeight;
 
     const blocks = buildBlocks(data).map(html=>{
       const div = document.createElement("div");
@@ -1094,18 +1034,39 @@
         contentEl.removeChild(block);
         page = newPage();
         pagesEl.appendChild(page);
-        page.querySelector(".content").appendChild(block);
+        contentEl = page.querySelector(".content");
+        maxH = contentEl.clientHeight;
+        contentEl.appendChild(block);
+      }
+    }
+
+    // If template mode + autoFillPages → ensure pages count >= target
+    if(state.templateMode && $("autoFillPages").checked){
+      const target = parseInt($("targetPages").value,10) || 1;
+      while(pagesEl.children.length < target){
+        // add extra filler section (professional, not AI-sounding)
+        addCustomSection({
+          title: "Additional Points",
+          type: "bullets",
+          content: `• Responsible and punctual work style
+• Comfortable with structured reporting
+• Good coordination and follow-up habits
+• Ready to learn new systems/tools`
+        });
+        // re-render once after adding (break loop naturally)
+        // (render is called by addCustomSection)
+        break;
       }
     }
   }
 
-  // --- Events ---
+  // --- Bind inputs
   function bindAutoRender(){
     const ids = [
       "fullName","jobTitle","mobile","email","link",
       "addrPermanent","addrTemp","sameAddr",
       "summary","education","experience","projects",
-      "skills","strengths","certs","training",
+      "skills","competencies","certs","training",
       "langs","hobbies","declare",
       "fatherName","dob","gender","marital","nationality"
     ];
@@ -1116,47 +1077,44 @@
     });
   }
 
-  refs.templateSelect.addEventListener("change", ()=>{
-    const code = refs.templateSelect.value;
-    if(code) applyTemplate(code);
-  });
-
-  refs.summarySelect.addEventListener("change", ()=>{
-    const v = refs.summarySelect.value;
-    if(v === "") return;
-    const idx = parseInt(v, 10);
-    if(!Number.isNaN(idx) && SUMMARY_PRESETS[idx]){
-      refs.summary.value = SUMMARY_PRESETS[idx];
-      render();
-    }
-  });
-
-  refs.btnPrint.addEventListener("click", ()=>window.print());
-
-  refs.btnPdf.addEventListener("click", async ()=>{
+  // Buttons
+  $("btnPrint").addEventListener("click", ()=>window.print());
+  $("btnPdf").addEventListener("click", async ()=>{
     const element = document.getElementById("pages");
     const opt = {
-      margin:       0,
-      filename:     'resume.pdf',
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2, useCORS: true },
-      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak:    { mode: ['css', 'legacy'] }
+      margin: 0,
+      filename: 'resume.pdf',
+      image: { type:'jpeg', quality:0.98 },
+      html2canvas: { scale:2, useCORS:true },
+      jsPDF: { unit:'mm', format:'a4', orientation:'portrait' },
+      pagebreak: { mode:['css','legacy'] }
     };
     await html2pdf().set(opt).from(element).save();
   });
 
-  refs.btnReset.addEventListener("click", ()=>{
+  $("btnReset").addEventListener("click", ()=>{
     if(confirm("Reset all fields?")){
-      // Keep section toggles default enabled
       location.reload();
     }
   });
 
-  // --- Init ---
-  initSummaryDropdown();
+  $("addSectionBtn").addEventListener("click", ()=>addCustomSection());
+
+  // Template controls
+  $("styleSelect").addEventListener("change", applyTemplate);
+  $("targetPages").addEventListener("change", ()=>{
+    if($("styleSelect").value) applyTemplate();
+    else render();
+  });
+  $("autoFillPages").addEventListener("change", ()=>{
+    state.autoFillPages = $("autoFillPages").checked;
+    render();
+  });
+
+  // Init
   initSectionToggles();
   bindAutoRender();
+  drawCustomSectionsUI();
   render();
 </script>
 </body>
