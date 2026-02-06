@@ -192,9 +192,7 @@
     }
     .secCard .top{display:flex;justify-content:space-between;gap:10px;align-items:center}
     .secCard .top b{font-size:12px}
-    .secCard .miniBtn{
-      padding:6px 10px;border-radius:10px;font-size:12px
-    }
+    .secCard .miniBtn{padding:6px 10px;border-radius:10px;font-size:12px}
   </style>
 </head>
 
@@ -202,7 +200,7 @@
 <header>
   <div class="title">
     <h1>DS Computer Resume Builder</h1>
-    <p>A4 Print/PDF perfect • Multi-page • Custom sections • Templates full-page</p>
+    <p>A4 Print/PDF perfect • Multi-page • Custom sections • More templates + 30 objectives</p>
   </div>
   <div class="btns">
     <button class="secondary" id="btnReset">Reset</button>
@@ -216,7 +214,7 @@
   <div class="panel">
     <div class="head">
       <b>Resume Details</b>
-      <span class="hint">Template → full-page; Target pages → 1–4</span>
+      <span class="hint">Style = design • Template = content • Objective presets = 30</span>
     </div>
 
     <div class="body">
@@ -257,6 +255,42 @@
           </div>
         </div>
       </div>
+
+      <label>Content Template (Fresher + Experienced = 20)</label>
+      <select id="contentTemplate">
+        <option value="">-- Select Content Template --</option>
+        <optgroup label="Fresher (10)">
+          <option value="F1">Fresher 1 - Office Assistant</option>
+          <option value="F2">Fresher 2 - Data Entry</option>
+          <option value="F3">Fresher 3 - Computer Operator</option>
+          <option value="F4">Fresher 4 - Front Office</option>
+          <option value="F5">Fresher 5 - Accounts Basic</option>
+          <option value="F6">Fresher 6 - Sales/Back Office</option>
+          <option value="F7">Fresher 7 - Web/IT Basics</option>
+          <option value="F8">Fresher 8 - Graphic Basics</option>
+          <option value="F9">Fresher 9 - Store/Inventory</option>
+          <option value="F10">Fresher 10 - Teaching Assistant</option>
+        </optgroup>
+        <optgroup label="Experienced (10)">
+          <option value="E1">Experienced 1 - Data Entry Executive</option>
+          <option value="E2">Experienced 2 - Accountant (Tally)</option>
+          <option value="E3">Experienced 3 - Office Admin</option>
+          <option value="E4">Experienced 4 - Computer Teacher</option>
+          <option value="E5">Experienced 5 - Sales Coordinator</option>
+          <option value="E6">Experienced 6 - Customer Support</option>
+          <option value="E7">Experienced 7 - Inventory Executive</option>
+          <option value="E8">Experienced 8 - HR Assistant</option>
+          <option value="E9">Experienced 9 - Graphic Designer</option>
+          <option value="E10">Experienced 10 - IT Technician</option>
+        </optgroup>
+      </select>
+
+      <label>Objective / Summary Presets (30)</label>
+      <select id="objectiveSelect">
+        <option value="">-- Select Objective --</option>
+      </select>
+
+      <div class="divider"></div>
 
       <label>Show / Hide Sections</label>
       <div class="chipbox" id="sectionToggles"></div>
@@ -417,7 +451,7 @@
     style: "",
     targetPages: 1,
     autoFillPages: true,
-    customSections: [] // {id, title, type, content}
+    customSections: []
   };
 
   function escapeHtml(str){
@@ -433,6 +467,50 @@
   }
   function safeCSV(text){
     return (text||"").split(",").map(s=>s.trim()).filter(Boolean);
+  }
+
+  // --- 30 Objectives (each 4+ lines)
+  const OBJECTIVES = [
+`To obtain a responsible position where I can apply my computer skills.\nTo support daily office work with accuracy and discipline.\nTo learn practical systems and improve my performance regularly.\nTo contribute to the organization through sincere and timely work.`,
+`To start my career in a growth-oriented organization.\nTo use my MS Office and typing knowledge in real work.\nTo maintain records, files, and reports with proper accuracy.\nTo learn and improve with guidance and experience.`,
+`To secure a position as a Data Entry / Back Office staff.\nTo ensure correct entries and careful verification of data.\nTo prepare daily and weekly reports as per work requirements.\nTo grow my skills with consistency and responsibility.`,
+`To work as an Office Assistant and support operations.\nTo handle documentation, emails, and basic coordination.\nTo maintain files and registers in an organized way.\nTo deliver assigned work on time with quality.`,
+`To join as a Computer Operator and manage office tasks.\nTo handle printing, scanning, emails, and file management.\nTo format documents and maintain proper reporting.\nTo improve speed and accuracy with regular practice.`,
+`To build a career in Accounts support and billing.\nTo use Tally basics and Excel knowledge in daily work.\nTo learn GST and improve accounting accuracy.\nTo support the team with discipline and confidentiality.`,
+`To work in Front Office and customer handling.\nTo maintain polite communication and proper coordination.\nTo support scheduling, calling, and office documentation.\nTo learn and improve service quality through practice.`,
+`To secure a role in Sales/Support coordination.\nTo handle follow-ups, updates, and report preparation.\nTo maintain records and assist billing or documentation.\nTo contribute through clear communication and punctuality.`,
+`To begin my career in IT support / technician role.\nTo handle basic troubleshooting and system setup.\nTo assist users with practical solutions and patience.\nTo learn advanced skills through real work exposure.`,
+`To obtain a position in Store/Inventory management.\nTo maintain stock records and entry registers accurately.\nTo support billing and reporting when required.\nTo work with honesty and careful attention to detail.`,
+`To work as a Computer Teacher / Assistant.\nTo support students with basics of MS Office and internet.\nTo prepare notes and practical assignments properly.\nTo grow teaching skills with discipline and consistency.`,
+`To join as a Customer Support Executive.\nTo handle calls, queries, and ticket updates politely.\nTo maintain logs and ensure timely follow-ups.\nTo deliver a positive customer experience with patience.`,
+`To start as an HR Assistant / Admin support.\nTo maintain attendance, records, and documentation.\nTo support coordination and communication tasks.\nTo improve my skills while supporting team operations.`,
+`To work in Documentation and reporting role.\nTo format letters, applications, and office documents.\nTo prepare Excel sheets and maintain file structure.\nTo contribute with accuracy and responsibility.`,
+`To obtain a role in Back Office operations.\nTo manage forms, verification, and data updates.\nTo support reports and maintain organized records.\nTo learn work processes and improve output quality.`,
+`To work in a Computer Center / Office environment.\nTo utilize MS Office, typing, and internet knowledge.\nTo support day-to-day office work with discipline.\nTo build long-term career growth through consistent work.`,
+`To join as an Accountant (Tally) and handle entries.\nTo prepare vouchers, billing, ledgers, and summaries.\nTo maintain accuracy and confidentiality in accounts.\nTo support the organization with reliable accounting work.`,
+`To work as an Admin/Coordinator.\nTo manage documentation and office coordination smoothly.\nTo prepare reports and track follow-ups.\nTo contribute through organized working style.`,
+`To start a career in Graphic/Design basics.\nTo create clean posters, banners, and simple layouts.\nTo learn professional design workflow step by step.\nTo deliver neat work with consistency and practice.`,
+`To work as a Web/IT beginner.\nTo support basic website updates and documentation.\nTo learn tools and improve development skills.\nTo contribute with sincerity and continuous learning.`,
+`To join a reputed organization as office staff.\nTo maintain registers and prepare routine reports.\nTo support team with file and document management.\nTo ensure timely completion of assigned tasks.`,
+`To secure a role in MIS/Reporting.\nTo create Excel-based reports and maintain accuracy.\nTo support data handling and verification work.\nTo improve reporting skills with regular practice.`,
+`To work as a Reception/Front desk staff.\nTo handle visitors, calling, and basic coordination.\nTo keep records and schedule tasks properly.\nTo support office operations with polite behavior.`,
+`To join as a Billing/Accounts assistant.\nTo prepare bills and maintain customer records.\nTo support daily entries and reporting.\nTo learn advanced accounts and grow professionally.`,
+`To work in customer relations and support.\nTo ensure clear communication and proper follow-up.\nTo maintain logs and handle basic documentation.\nTo contribute to team success with discipline.`,
+`To start career in office automation.\nTo use Word, Excel, and PowerPoint effectively.\nTo maintain documentation and files in order.\nTo improve speed, accuracy, and work quality.`,
+`To secure a responsible role with growth.\nTo use my strengths in accuracy and teamwork.\nTo learn new systems and improve my skills.\nTo contribute with honesty and punctuality.`,
+`To work as a helper/support staff in office.\nTo manage daily documentation and basic tasks.\nTo support coordination and reporting work.\nTo learn and deliver quality output regularly.`,
+`To join as a data/record executive.\nTo maintain correct and complete records.\nTo prepare summaries and support reports.\nTo work with focus, patience, and discipline.`,
+`To begin my career and gain practical exposure.\nTo apply my skills in real workplace tasks.\nTo learn from seniors and improve steadily.\nTo support the organization with consistent effort.`
+  ];
+
+  function initObjectiveDropdown(){
+    const sel = $("objectiveSelect");
+    OBJECTIVES.forEach((txt, i)=>{
+      const opt = document.createElement("option");
+      opt.value = String(i);
+      opt.textContent = (i+1) + ". " + txt.split("\n")[0].slice(0, 60) + (txt.length>60 ? "..." : "");
+      sel.appendChild(opt);
+    });
   }
 
   // --- UI: section toggles
@@ -463,7 +541,7 @@
     state.customSections.push({
       id,
       title: (prefill && prefill.title) || "Additional Section",
-      type: (prefill && prefill.type) || "bullets", // bullets | paragraph
+      type: (prefill && prefill.type) || "bullets",
       content: (prefill && prefill.content) || ""
     });
     drawCustomSectionsUI();
@@ -553,142 +631,278 @@
     });
   }
 
-  // --- Templates: (full-page & multi-page content packs)
-  // NOTE: Personal fields (name/mobile/email) never forced.
-  function templatePack(style, pages){
-    // packs are made “realistic” and non-AI sounding; just clean, professional sample lines.
-    const base = {
-      jobTitle: "Professional Title",
-      summary: "Write a short professional summary highlighting your role, strengths, and key experience.",
-      education: [
-        "Degree / Course - College/University - Year",
-        "12th - Board - Year",
-        "10th - Board - Year"
-      ],
-      experience: [
-        "Company Name - Role | Year–Year: Key responsibility (reporting, coordination, documentation)",
-        "Company Name - Role | Year–Year: Key responsibility (client handling, follow-ups, records)"
-      ],
-      projects: [
-        "Project/Work: Reporting format creation and weekly summary preparation",
-        "Project/Work: Documentation, email communication, and file management system"
-      ],
-      skills: "MS Office, Excel, Email, Documentation, Typing, Communication",
-      competencies: "Reporting, Coordination, Record Management, Problem Solving, Time Management",
-      certs: [
-        "Course/Certificate - Institute - Year",
-        "Course/Certificate - Institute - Year"
-      ],
-      training: [
-        "Training/Internship - Organization - Duration - Work handled"
-      ],
-      langs: "Hindi, English, Gujarati",
-      hobbies: "Reading, Learning new skills",
-      declare: "I declare that the above information is true to the best of my knowledge."
-    };
+  // --- Content Templates (20)
+  const CONTENT_TEMPLATES = {
+    // Fresher (10)
+    F1:{
+      jobTitle:"Fresher - Office Assistant",
+      summary: OBJECTIVES[1],
+      education:["BCA / BCom / BA (Optional) - College - Year","12th - Board - Year","10th - Board - Year"],
+      experience:[],
+      projects:["Document formatting practice","Excel register formats","Email and file handling"],
+      skills:"MS Office, Excel, Typing, Email, Internet, Documentation",
+      competencies:"Record keeping, Coordination, Accuracy, Time management",
+      certs:["Basic Computer - Institute - Year","MS Office - Institute - Year"],
+      training:["Office practice - Duration - Work: files & documentation"],
+      langs:"Hindi, English, Gujarati",
+      hobbies:"Reading, Learning new skills",
+      declare:"I declare that the above information is true to the best of my knowledge."
+    },
+    F2:{
+      jobTitle:"Fresher - Data Entry",
+      summary: OBJECTIVES[2],
+      education:["12th - Board - Year","10th - Board - Year"],
+      experience:[],
+      projects:["Typing speed improvement practice","Excel sheet entry and verification","Daily report format practice"],
+      skills:"Typing, Excel, Word, Google Drive, Email, Accuracy",
+      competencies:"Speed with accuracy, Focus, Consistency, Verification",
+      certs:["Data Entry Course - Institute - Year"],
+      training:["Data entry practice - Duration - Work: entry + verification"],
+      langs:"Hindi, English",
+      hobbies:"Typing practice, Learning shortcuts",
+      declare:"I declare that the above information is true to the best of my knowledge."
+    },
+    F3:{
+      jobTitle:"Fresher - Computer Operator",
+      summary: OBJECTIVES[4],
+      education:["12th - Board - Year","10th - Board - Year"],
+      experience:[],
+      projects:["Printing/scanning practice","Document typing & formatting","Email attachments and file structure"],
+      skills:"MS Word, Excel, Printer/Scanner, Typing, Internet",
+      competencies:"Documentation, Neat work, Responsibility, Accuracy",
+      certs:["Basic Computer - Institute - Year"],
+      training:["Computer operator practice - Duration - Work: documents & printing"],
+      langs:"Hindi, English, Gujarati",
+      hobbies:"Learning computer work",
+      declare:"I declare that the above information is true to the best of my knowledge."
+    },
+    F4:{
+      jobTitle:"Fresher - Front Office",
+      summary: OBJECTIVES[6],
+      education:["12th - Board - Year","10th - Board - Year"],
+      experience:[],
+      projects:["Reception handling practice","Calling & appointment notes","Visitor register and file management"],
+      skills:"Communication, MS Word, Excel, Email, Front desk handling",
+      competencies:"Polite communication, Coordination, Listening, Record keeping",
+      certs:["Front Office Course - Institute - Year"],
+      training:["Front desk practice - Duration - Work: calling & coordination"],
+      langs:"Hindi, English, Gujarati",
+      hobbies:"Reading, Communication practice",
+      declare:"I declare that the above information is true to the best of my knowledge."
+    },
+    F5:{
+      jobTitle:"Fresher - Accounts Basic",
+      summary: OBJECTIVES[5],
+      education:["BCom (Optional) - College - Year","12th - Board - Year"],
+      experience:[],
+      projects:["Billing format practice","Ledger entry practice (basic)","Monthly summary in Excel"],
+      skills:"Tally basics, Excel, Billing basics, Documentation",
+      competencies:"Accuracy, Confidential handling, Discipline",
+      certs:["Tally Basics - Institute - Year"],
+      training:["Accounts practice - Duration - Work: billing + entries"],
+      langs:"Hindi, English, Gujarati",
+      hobbies:"Accounts practice, Reading",
+      declare:"I declare that the above information is true to the best of my knowledge."
+    },
+    F6:{
+      jobTitle:"Fresher - Sales/Back Office",
+      summary: OBJECTIVES[7],
+      education:["12th - Board - Year","10th - Board - Year"],
+      experience:[],
+      projects:["Follow-up log format","Customer data & report practice","Email drafting practice"],
+      skills:"Communication, Excel, Email, Typing, Follow-ups",
+      competencies:"Coordination, Reporting, Team support, Discipline",
+      certs:["MS Office - Institute - Year"],
+      training:["Back office practice - Duration - Work: logs & reporting"],
+      langs:"Hindi, English, Gujarati",
+      hobbies:"Learning office process",
+      declare:"I declare that the above information is true to the best of my knowledge."
+    },
+    F7:{
+      jobTitle:"Fresher - Web/IT Basics",
+      summary: OBJECTIVES[19],
+      education:["BCA (Running) - Semester - College","12th - Board - Year"],
+      experience:[],
+      projects:["Basic website page practice","Documentation and reports","System setup practice"],
+      skills:"HTML/CSS basics, MS Office, Internet, Documentation",
+      competencies:"Learning speed, Problem solving, Responsibility",
+      certs:["Web Basics - Institute - Year"],
+      training:["IT practice - Duration - Work: basics + documentation"],
+      langs:"Hindi, English",
+      hobbies:"Learning tech, Practice",
+      declare:"I declare that the above information is true to the best of my knowledge."
+    },
+    F8:{
+      jobTitle:"Fresher - Graphic Basics",
+      summary: OBJECTIVES[18],
+      education:["12th/Graduation - Year - College"],
+      experience:[],
+      projects:["Poster layouts practice","Banner practice (print ready)","Basic photo editing"],
+      skills:"Canva, Basic Photoshop, Typography basics, Layout sense",
+      competencies:"Creativity, Neat work, Time management",
+      certs:["Basic Graphic Course - Institute - Year"],
+      training:["Design practice - Duration - Work: posters & banners"],
+      langs:"Hindi, English",
+      hobbies:"Design practice",
+      declare:"I declare that the above information is true to the best of my knowledge."
+    },
+    F9:{
+      jobTitle:"Fresher - Store/Inventory",
+      summary: OBJECTIVES[9],
+      education:["12th - Board - Year","10th - Board - Year"],
+      experience:[],
+      projects:["Stock register in Excel","Entry and verification practice","Weekly stock summary practice"],
+      skills:"Excel, Record keeping, Basic billing support",
+      competencies:"Accuracy, Responsibility, Consistency",
+      certs:["Excel Basics - Institute - Year"],
+      training:["Store practice - Duration - Work: stock entry"],
+      langs:"Hindi, English, Gujarati",
+      hobbies:"Reading",
+      declare:"I declare that the above information is true to the best of my knowledge."
+    },
+    F10:{
+      jobTitle:"Fresher - Teaching Assistant",
+      summary: OBJECTIVES[10],
+      education:["Graduation/BCA - Year - College","12th - Board - Year"],
+      experience:[],
+      projects:["Notes & assignments preparation","Helping students in lab","Attendance sheet practice"],
+      skills:"MS Office, Communication, Teaching support, Patience",
+      competencies:"Clear explanation, Discipline, Responsibility",
+      certs:["Basic Computer - Institute - Year"],
+      training:["Teaching support practice - Duration - Work: notes & lab"],
+      langs:"Hindi, English, Gujarati",
+      hobbies:"Teaching, Reading",
+      declare:"I declare that the above information is true to the best of my knowledge."
+    },
 
-    // Expand content by pages
-    const long2 = {
-      summary: "Results-focused professional with experience in documentation, reporting, coordination, and daily operations support. Strong in Excel-based reports, accurate record maintenance, and clear communication. Comfortable with deadlines, follow-ups, and structured work.",
-      experience: [
-        "Company Name - Senior Role | Year–Present: Manage daily operations support, reporting, and coordination with teams.",
-        "Company Name - Role | Year–Year: Prepare Excel reports, maintain records, verify entries, and handle documentation.",
-        "Company Name - Role | Year–Year: Customer coordination, follow-ups, email updates, and file management."
-      ],
-      projects: [
-        "Created weekly/monthly reporting formats and improved documentation flow.",
-        "Managed client/service logs and ensured timely updates to stakeholders.",
-        "Built simple Excel trackers for attendance, inventory, or billing support."
-      ],
-      certs: [
-        "Advanced Excel - Institute - Year",
-        "Tally/GST Basics - Institute - Year",
-        "Typing / Computer Operator - Institute - Year"
-      ],
-      training: [
-        "Professional training - Duration - Focus: reporting, documentation, coordination",
-        "Internship/On-job training - Duration - Work: data handling & verification"
-      ],
-      competencies: "Operations Support, Reporting, Documentation, Coordination, Communication, Accuracy"
-    };
-
-    const long3 = {
-      experience: [
-        "Company Name - Role | Year–Present: Lead reporting, documentation flow, and team coordination for daily operations.",
-        "Company Name - Role | Year–Year: Maintain files, registers, customer updates, and structured follow-ups.",
-        "Company Name - Role | Year–Year: Handle data verification, entry accuracy, and weekly reporting.",
-        "Company Name - Role | Year–Year: Support billing/records and maintain daily/weekly registers."
-      ],
-      projects: [
-        "Standardized reporting formats to reduce errors and improve delivery time.",
-        "Prepared compliance-ready documentation sets and maintained record accuracy.",
-        "Built trackers for workflow updates, follow-ups, and approvals.",
-        "Created templates for letters, forms, and official documentation."
-      ],
-      education: [
-        "Degree / Course - College/University - Year - (optional %",
-        "Diploma/Certification - Institute - Year",
-        "12th - Board - Year",
-        "10th - Board - Year"
-      ],
-      certs: [
-        "Advanced Excel + MIS Reporting - Institute - Year",
-        "Tally Prime / Accounting - Institute - Year",
-        "Soft Skills / Communication - Institute - Year",
-        "Computer Operator/Office Automation - Institute - Year"
-      ],
-      competencies: "Leadership Support, MIS Reporting, Operations, Process Improvement, Team Coordination, Accuracy"
-    };
-
-    const long4 = {
-      projects: [
-        "Process improvement: redesigned report formats and reduced manual errors.",
-        "Operations reporting: created weekly/monthly dashboards for leadership updates.",
-        "Documentation system: arranged records and introduced naming standards.",
-        "Client support: maintained call/email logs and ensured timely follow-ups.",
-        "Training support: created handouts/notes and supported junior staff."
-      ],
-      training: [
-        "Leadership support training - Duration - Focus: reporting & coordination",
-        "Operations training - Duration - Focus: process, documentation, workflow",
-        "Quality & accuracy training - Duration - Focus: verification & compliance"
-      ],
-      competencies: "Process Improvement, MIS, Documentation, Compliance Support, Coordination, Stakeholder Handling"
-    };
-
-    // Style-specific titles
-    const styleTitleMap = {
-      A1:"Professional Resume", A2:"Professional Resume",
-      B1:"Professional Summary", B2:"Professional Summary",
-      C1:"Profile Summary", C2:"Profile Summary",
-      D1:"Objectives", D2:"Objectives"
-    };
-
-    // Merge based on pages
-    let pack = {...base};
-    if(pages>=2) pack = deepMerge(pack, long2);
-    if(pages>=3) pack = deepMerge(pack, long3);
-    if(pages>=4) pack = deepMerge(pack, long4);
-
-    // Slight style tweaks
-    if(style.startsWith("B")){
-      pack.jobTitle = "Web Developer / Software Role";
-      pack.skills = "Front-end, Back-end basics, Source control, Communication, Documentation";
-      pack.competencies = "Web Development, Architecture basics, Agile, Testing basics, Performance";
+    // Experienced (10)
+    E1:{ jobTitle:"Data Entry Executive", summary:OBJECTIVES[21],
+      education:["12th/Graduation - Year - College"],
+      experience:["2022–2025: Company - Data Entry Executive - Entries, verification, reporting",
+                  "2021–2022: Company - Office Support - Files, email, printing"],
+      projects:["Excel reporting formats and weekly summaries","Data cleaning and formatting for reports"],
+      skills:"Excel (formulas), Word, Typing, Data accuracy, Email",
+      competencies:"MIS reporting, Accuracy, Time management, Coordination",
+      certs:["Advanced Excel - Institute - Year"],
+      training:["Reporting practice - Duration - Work: daily/weekly reports"],
+      langs:"Hindi, English, Gujarati",
+      hobbies:"Reading, Learning",
+      declare:"I declare that the above information is true to the best of my knowledge."
+    },
+    E2:{ jobTitle:"Accountant (Tally)", summary:OBJECTIVES[16],
+      education:["BCom - Year - College","12th - Board - Year"],
+      experience:["2021–2025: Firm - Accountant - Billing, vouchers, ledgers, reports",
+                  "2020–2021: Firm - Accounts Assistant - Follow-ups, entries"],
+      projects:["Monthly sales/purchase summary","GST basics and billing support"],
+      skills:"Tally, Excel, Billing, Ledger entries, GST basics",
+      competencies:"Confidential handling, Accuracy, Discipline",
+      certs:["Tally + GST - Institute - Year"],
+      training:["Accounts training - Duration - Work: billing + entries"],
+      langs:"Hindi, English, Gujarati",
+      hobbies:"Accounts practice",
+      declare:"I declare that the above information is true to the best of my knowledge."
+    },
+    E3:{ jobTitle:"Office Administrator", summary:OBJECTIVES[17],
+      education:["Graduation - Year - College"],
+      experience:["2021–2025: Company - Office Admin - Documentation, coordination, follow-ups",
+                  "2020–2021: Company - Office Assistant - Records, file maintenance"],
+      projects:["Office file system improvement","Daily register formats and reporting"],
+      skills:"MS Office, Coordination, Email, Documentation",
+      competencies:"Organized working, Reporting, Team support",
+      certs:["MS Office Advanced - Institute - Year"],
+      training:[],
+      langs:"Hindi, English, Gujarati",
+      hobbies:"Reading",
+      declare:"I declare that the above information is true to the best of my knowledge."
+    },
+    E4:{ jobTitle:"Computer Teacher / Trainer", summary:OBJECTIVES[15],
+      education:["Graduation - Year - College"],
+      experience:["2022–2025: Institute - Trainer - MS Office, internet, practical training",
+                  "2021–2022: Institute - Lab Assistant - Support and guidance"],
+      projects:["Assignment preparation and student tracking","Notes/handouts creation"],
+      skills:"Teaching, MS Office, Internet, Communication",
+      competencies:"Patience, Clear explanation, Discipline",
+      certs:["Computer Teacher Course - Institute - Year"],
+      training:[],
+      langs:"Hindi, English, Gujarati",
+      hobbies:"Teaching, Reading",
+      declare:"I declare that the above information is true to the best of my knowledge."
+    },
+    E5:{ jobTitle:"Sales Coordinator", summary:OBJECTIVES[7],
+      education:["Graduation - Year - College"],
+      experience:["2021–2025: Company - Sales Coordinator - Follow-ups, reports, billing support"],
+      projects:["Sales report formats and follow-up logs","Customer updates and coordination notes"],
+      skills:"Communication, Excel, Email, Follow-ups",
+      competencies:"Coordination, Reporting, Target focus",
+      certs:[],
+      training:[],
+      langs:"Hindi, English, Gujarati",
+      hobbies:"Reading",
+      declare:"I declare that the above information is true to the best of my knowledge."
+    },
+    E6:{ jobTitle:"Customer Support Executive", summary:OBJECTIVES[11],
+      education:["Graduation - Year - College"],
+      experience:["2022–2025: Company - Support Executive - Calls, queries, updates, follow-ups"],
+      projects:["Daily call log + issue tracking format","Customer feedback summaries"],
+      skills:"Calling, Email, Basic Excel, Communication",
+      competencies:"Problem solving, Patience, Quick response",
+      certs:[],
+      training:[],
+      langs:"Hindi, English, Gujarati",
+      hobbies:"Reading",
+      declare:"I declare that the above information is true to the best of my knowledge."
+    },
+    E7:{ jobTitle:"Inventory Executive", summary:OBJECTIVES[24],
+      education:["12th/Graduation - Year - College"],
+      experience:["2020–2025: Company - Inventory - Stock entries, billing support, records"],
+      projects:["Stock register formats in Excel","Weekly stock summary and reporting"],
+      skills:"Inventory, Excel, Record keeping, Billing basics",
+      competencies:"Accuracy, Discipline, Responsibility",
+      certs:[],
+      training:[],
+      langs:"Hindi, English, Gujarati",
+      hobbies:"Reading",
+      declare:"I declare that the above information is true to the best of my knowledge."
+    },
+    E8:{ jobTitle:"HR Assistant", summary:OBJECTIVES[12],
+      education:["Graduation - Year - College"],
+      experience:["2022–2025: Company - HR Assistant - Attendance, documentation, calling, records"],
+      projects:["Attendance sheet in Excel","Employee file system maintenance"],
+      skills:"Excel, Documentation, Calling, Coordination",
+      competencies:"Organized, Confidential handling, Responsibility",
+      certs:[],
+      training:[],
+      langs:"Hindi, English, Gujarati",
+      hobbies:"Reading",
+      declare:"I declare that the above information is true to the best of my knowledge."
+    },
+    E9:{ jobTitle:"Graphic Designer", summary:OBJECTIVES[18],
+      education:["Diploma/Graduation - Year - Institute"],
+      experience:["2022–2025: Company - Designer - Posters, banners, social media creatives"],
+      projects:["Print-ready banner sets","Event poster formats"],
+      skills:"Photoshop, Canva, Layout, Typography basics",
+      competencies:"Creativity, Time management, Clean work style",
+      certs:["Graphic Design - Institute - Year"],
+      training:[],
+      langs:"Hindi, English",
+      hobbies:"Design practice",
+      declare:"I declare that the above information is true to the best of my knowledge."
+    },
+    E10:{ jobTitle:"IT Technician", summary:OBJECTIVES[8],
+      education:["Diploma/ITI - Year - Institute"],
+      experience:["2021–2025: Company - IT Technician - Installs, troubleshooting, support"],
+      projects:["PC setup & maintenance logs","Software installation checklist"],
+      skills:"Windows, Installations, Printer setup, Hardware basics",
+      competencies:"Problem solving, Patience, Fast response",
+      certs:["Hardware/Networking - Institute - Year"],
+      training:[],
+      langs:"Hindi, English",
+      hobbies:"Troubleshooting",
+      declare:"I declare that the above information is true to the best of my knowledge."
     }
-    if(style.startsWith("C")){
-      pack.jobTitle = "Operations / Manager Role";
-      pack.competencies = "Operations, KPIs, Stakeholder handling, Cost reduction, Process management";
-    }
-    if(style.startsWith("D")){
-      pack.jobTitle = "Student / Fresher Resume";
-      pack.summary = "To obtain a responsible position where I can utilize my skills and contribute to organizational growth while improving my knowledge and work experience.";
-    }
+  };
 
-    pack._styleTitle = styleTitleMap[style] || "Summary";
-    return pack;
-  }
-
+  // --- Template pack (Style + Pages auto filler - same as before)
   function deepMerge(a,b){
     const out = {...a};
     Object.keys(b||{}).forEach(k=>{
@@ -699,8 +913,118 @@
     return out;
   }
 
-  // --- Apply selected template
-  function applyTemplate(){
+  function templatePack(style, pages){
+    const base = {
+      jobTitle: "Professional Title",
+      summary: "Write a short professional summary highlighting your role, strengths, and key experience.",
+      education: ["Degree / Course - College/University - Year","12th - Board - Year","10th - Board - Year"],
+      experience: ["Company Name - Role | Year–Year: Reporting, coordination, documentation",
+                   "Company Name - Role | Year–Year: Client updates, follow-ups, record maintenance"],
+      projects: ["Reporting format creation and weekly summary","Documentation and file management system"],
+      skills: "MS Office, Excel, Email, Documentation, Typing, Communication",
+      competencies: "Reporting, Coordination, Record Management, Problem Solving, Time Management",
+      certs: ["Course/Certificate - Institute - Year","Course/Certificate - Institute - Year"],
+      training: ["Training/Internship - Organization - Duration - Work handled"],
+      langs: "Hindi, English, Gujarati",
+      hobbies: "Reading, Learning new skills",
+      declare: "I declare that the above information is true to the best of my knowledge."
+    };
+
+    const long2 = {
+      summary: "Results-focused professional with experience in documentation, reporting, coordination, and daily operations support.\nStrong in Excel-based reports, accurate record maintenance, and clear communication.\nComfortable with deadlines, follow-ups, and structured work.\nReady to learn and deliver consistent quality output.",
+      experience: [
+        "Company Name - Senior Role | Year–Present: Manage reporting, coordination, and daily operations support.",
+        "Company Name - Role | Year–Year: Prepare Excel reports, verify entries, and handle documentation.",
+        "Company Name - Role | Year–Year: Customer coordination, follow-ups, email updates, and file management."
+      ],
+      projects: [
+        "Created weekly/monthly reporting formats and improved documentation flow.",
+        "Managed service/client logs and ensured timely updates to stakeholders.",
+        "Built Excel trackers for attendance, inventory, or billing support."
+      ],
+      certs: ["Advanced Excel - Institute - Year","Tally/GST Basics - Institute - Year","Typing / Office Automation - Institute - Year"],
+      training: ["Professional training - Duration - Focus: reporting & coordination","On-job training - Duration - Work: data verification"],
+      competencies: "Operations Support, Reporting, Documentation, Coordination, Communication, Accuracy"
+    };
+
+    const long3 = {
+      experience: [
+        "Company Name - Role | Year–Present: Lead reporting and coordination for daily operations.",
+        "Company Name - Role | Year–Year: Maintain files, registers, and structured follow-ups.",
+        "Company Name - Role | Year–Year: Handle verification, entries, and weekly reporting.",
+        "Company Name - Role | Year–Year: Support billing/records and daily registers."
+      ],
+      projects: [
+        "Standardized reporting formats to reduce errors and improve delivery time.",
+        "Prepared compliance-ready documentation sets and maintained record accuracy.",
+        "Built trackers for workflow updates, follow-ups, and approvals.",
+        "Created templates for letters, forms, and official documentation."
+      ],
+      certs: ["Advanced Excel + MIS Reporting - Institute - Year","Tally Prime / Accounting - Institute - Year","Soft Skills - Institute - Year","Office Automation - Institute - Year"],
+      competencies: "Leadership Support, MIS Reporting, Operations, Process Improvement, Team Coordination, Accuracy"
+    };
+
+    const long4 = {
+      projects: [
+        "Process improvement: redesigned report formats and reduced manual errors.",
+        "Operations reporting: created weekly/monthly summaries for updates.",
+        "Documentation system: arranged records and introduced naming standards.",
+        "Client support: maintained logs and ensured timely follow-ups.",
+        "Training support: created notes/handouts and supported junior staff."
+      ],
+      training: [
+        "Leadership support training - Duration - Focus: reporting & coordination",
+        "Operations training - Duration - Focus: process, documentation, workflow",
+        "Quality & accuracy training - Duration - Focus: verification & compliance"
+      ],
+      competencies: "Process Improvement, MIS, Documentation, Compliance Support, Coordination, Stakeholder Handling"
+    };
+
+    let pack = {...base};
+    if(pages>=2) pack = deepMerge(pack, long2);
+    if(pages>=3) pack = deepMerge(pack, long3);
+    if(pages>=4) pack = deepMerge(pack, long4);
+
+    if(style.startsWith("B")){
+      pack.jobTitle = "Web Developer / Software Role";
+      pack.skills = "Front-end basics, Back-end basics, Source control, Communication, Documentation";
+      pack.competencies = "Web Development, Architecture basics, Agile, Testing basics, Performance";
+    }
+    if(style.startsWith("C")){
+      pack.jobTitle = "Operations / Manager Role";
+      pack.competencies = "Operations, KPIs, Stakeholder handling, Cost reduction, Process management";
+    }
+    if(style.startsWith("D")){
+      pack.jobTitle = "Student / Fresher Resume";
+      pack.summary = OBJECTIVES[0];
+    }
+    return pack;
+  }
+
+  // --- Apply content template
+  function applyContentTemplate(code){
+    const t = CONTENT_TEMPLATES[code];
+    if(!t) return;
+
+    $("jobTitle").value = t.jobTitle || "";
+    $("summary").value = t.summary || "";
+    $("education").value = (t.education||[]).join("\n");
+    $("experience").value = (t.experience||[]).join("\n");
+    $("projects").value = (t.projects||[]).join("\n");
+    $("skills").value = t.skills || "";
+    $("competencies").value = t.competencies || "";
+    $("certs").value = (t.certs||[]).join("\n");
+    $("training").value = (t.training||[]).join("\n");
+    $("langs").value = t.langs || "";
+    $("hobbies").value = t.hobbies || "";
+    $("declare").value = t.declare || "";
+
+    state.templateMode = true;
+    render();
+  }
+
+  // --- Apply style template (design + auto filler)
+  function applyStyleTemplate(){
     const style = $("styleSelect").value;
     if(!style) return;
     state.style = style;
@@ -712,69 +1036,60 @@
 
     const pack = templatePack(style, pages);
 
-    // fill only professional fields (NOT personal identity)
-    $("jobTitle").value = pack.jobTitle || "";
-    $("summary").value = pack.summary || "";
-    $("education").value = (pack.education||[]).join("\n");
-    $("experience").value = (pack.experience||[]).join("\n");
-    $("projects").value = (pack.projects||[]).join("\n");
-    $("skills").value = pack.skills || "";
-    $("competencies").value = pack.competencies || "";
-    $("certs").value = (pack.certs||[]).join("\n");
-    $("training").value = (pack.training||[]).join("\n");
-    $("langs").value = pack.langs || "";
-    $("hobbies").value = pack.hobbies || "";
-    $("declare").value = pack.declare || "";
+    // Fill only work fields (NOT personal identity)
+    $("jobTitle").value = $("jobTitle").value || (pack.jobTitle || "");
+    if(!$("summary").value) $("summary").value = pack.summary || "";
+    if(!$("education").value) $("education").value = (pack.education||[]).join("\n");
+    if(!$("experience").value) $("experience").value = (pack.experience||[]).join("\n");
+    if(!$("projects").value) $("projects").value = (pack.projects||[]).join("\n");
+    if(!$("skills").value) $("skills").value = pack.skills || "";
+    if(!$("competencies").value) $("competencies").value = pack.competencies || "";
+    if(!$("certs").value) $("certs").value = (pack.certs||[]).join("\n");
+    if(!$("training").value) $("training").value = (pack.training||[]).join("\n");
+    if(!$("langs").value) $("langs").value = pack.langs || "";
+    if(!$("hobbies").value) $("hobbies").value = pack.hobbies || "";
+    if(!$("declare").value) $("declare").value = pack.declare || "";
 
-    // Add 1-2 custom sections in template mode for fuller pages
-    state.customSections = [];
-    if(pages>=2){
+    // Optional filler custom sections based on pages
+    if(state.customSections.length === 0 && pages>=2){
       addCustomSection({title:"Areas of Expertise", type:"bullets", content:
 `• Reporting & documentation
 • Team coordination & follow-ups
 • Excel trackers & summaries
 • Record maintenance & accuracy`});
     }
-    if(pages>=3){
+    if(pages>=3 && state.customSections.length < 2){
       addCustomSection({title:"Additional Information", type:"bullets", content:
-`• Willing to relocate (if required)
-• Comfortable with deadlines and routine reporting
-• Open to learning new systems and tools`});
+`• Comfortable with deadlines and routine reporting
+• Open to learning new systems and tools
+• Maintains clean documentation and records`});
     }
-    if(pages>=4){
+    if(pages>=4 && state.customSections.length < 3){
       addCustomSection({title:"Key Highlights", type:"bullets", content:
-`• Improved reporting format and reduced errors
-• Maintained structured records and timely updates
-• Supported workflow coordination across teams`});
+`• Improved report formats and reduced errors
+• Maintained structured logs and timely updates
+• Supported coordination across teams`});
     }
 
     drawCustomSectionsUI();
     render();
   }
 
-  // --- Build section blocks with style
+  // --- Section heading html
   function sectionTitleHtml(style, title){
-    if(style.startsWith("A")){
-      return `<div class="h3">${escapeHtml(title)}</div>`;
-    }
-    if(style.startsWith("B")){
-      return `<div class="bar">${escapeHtml(title)}</div>`;
-    }
-    if(style.startsWith("C")){
-      return `<div class="h3">${escapeHtml(title)}</div>`;
-    }
-    if(style.startsWith("D")){
-      return `<div class="boxH">${escapeHtml(title)}</div>`;
-    }
+    if(style.startsWith("A")) return `<div class="h3">${escapeHtml(title)}</div>`;
+    if(style.startsWith("B")) return `<div class="bar">${escapeHtml(title)}</div>`;
+    if(style.startsWith("C")) return `<div class="h3">${escapeHtml(title)}</div>`;
+    if(style.startsWith("D")) return `<div class="boxH">${escapeHtml(title)}</div>`;
     return `<div class="h3">${escapeHtml(title)}</div>`;
   }
 
+  // --- Blocks build
   function buildBlocks(data){
     const blocks = [];
     const style = data.style || "A1";
     const rootClass = style.startsWith("A") ? "styleA" : style.startsWith("B") ? "styleB" : style.startsWith("C") ? "styleC" : "styleD";
 
-    // Header (ONLY ON FIRST PAGE; block appears once)
     blocks.push(`
       <div class="block ${rootClass}">
         <div class="r-hdr">
@@ -793,20 +1108,18 @@
       </div>
     `);
 
-    // Summary
     if(sectionState.summary && data.summary){
       blocks.push(`
         <div class="block ${rootClass}">
           ${sectionTitleHtml(style, style.startsWith("D") ? "Objectives" : "Summary")}
           <div class="${style.startsWith("C") ? "shade" : ""}">
-            <p>${escapeHtml(data.summary)}</p>
+            <p>${escapeHtml(data.summary).replaceAll("\n","<br/>")}</p>
           </div>
           ${style.startsWith("A") ? `<div class="rule"></div>` : ``}
         </div>
       `);
     }
 
-    // Personal details (still only once, not per page)
     if(sectionState.personal){
       const pd = [];
       if(data.fatherName) pd.push(["Father's Name", data.fatherName]);
@@ -845,92 +1158,38 @@
     const right = [];
 
     if(sectionState.education && edu.length){
-      left.push(`
-        <div class="section">
-          ${sectionTitleHtml(style, "Education")}
-          <ul>${edu.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul>
-        </div>
-      `);
+      left.push(`<div class="section">${sectionTitleHtml(style, "Education")}<ul>${edu.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul></div>`);
     }
-
     if(sectionState.experience && exp.length){
-      left.push(`
-        <div class="section">
-          ${sectionTitleHtml(style, "Work Experience")}
-          <ul>${exp.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul>
-        </div>
-      `);
+      left.push(`<div class="section">${sectionTitleHtml(style, "Work Experience")}<ul>${exp.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul></div>`);
     }
-
     if(sectionState.projects && proj.length){
-      left.push(`
-        <div class="section">
-          ${sectionTitleHtml(style, "Projects / Achievements")}
-          <ul>${proj.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul>
-        </div>
-      `);
+      left.push(`<div class="section">${sectionTitleHtml(style, "Projects / Achievements")}<ul>${proj.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul></div>`);
     }
-
     if(sectionState.certs && certs.length){
-      left.push(`
-        <div class="section">
-          ${sectionTitleHtml(style, "Certifications")}
-          <ul>${certs.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul>
-        </div>
-      `);
+      left.push(`<div class="section">${sectionTitleHtml(style, "Certifications")}<ul>${certs.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul></div>`);
     }
-
     if(sectionState.training && training.length){
-      left.push(`
-        <div class="section">
-          ${sectionTitleHtml(style, "Training / Internship")}
-          <ul>${training.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul>
-        </div>
-      `);
+      left.push(`<div class="section">${sectionTitleHtml(style, "Training / Internship")}<ul>${training.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul></div>`);
     }
 
     if(sectionState.skills && skills.length){
-      right.push(`
-        <div class="section">
-          ${sectionTitleHtml(style, "Skills")}
-          <div class="pillRow">${skills.map(x=>`<span class="pill">${escapeHtml(x)}</span>`).join("")}</div>
-        </div>
-      `);
+      right.push(`<div class="section">${sectionTitleHtml(style, "Skills")}<div class="pillRow">${skills.map(x=>`<span class="pill">${escapeHtml(x)}</span>`).join("")}</div></div>`);
     }
-
     if(sectionState.competencies && comps.length){
       const block = style.startsWith("C") ? "shade" : "";
-      right.push(`
-        <div class="section">
-          ${sectionTitleHtml(style, "Core Competencies")}
-          <div class="${block}">
-            <p>${comps.map(escapeHtml).join(" • ")}</p>
-          </div>
-        </div>
-      `);
+      right.push(`<div class="section">${sectionTitleHtml(style, "Core Competencies")}<div class="${block}"><p>${comps.map(escapeHtml).join(" • ")}</p></div></div>`);
     }
-
     if(sectionState.languages && langs.length){
-      right.push(`
-        <div class="section">
-          ${sectionTitleHtml(style, "Languages")}
-          <p>${langs.map(escapeHtml).join(", ")}</p>
-        </div>
-      `);
+      right.push(`<div class="section">${sectionTitleHtml(style, "Languages")}<p>${langs.map(escapeHtml).join(", ")}</p></div>`);
     }
-
     if(sectionState.hobbies && hobbies.length){
-      right.push(`
-        <div class="section">
-          ${sectionTitleHtml(style, "Hobbies")}
-          <p>${hobbies.map(escapeHtml).join(", ")}</p>
-        </div>
-      `);
+      right.push(`<div class="section">${sectionTitleHtml(style, "Hobbies")}<p>${hobbies.map(escapeHtml).join(", ")}</p></div>`);
     }
 
     if(left.length || right.length){
       blocks.push(`
-        <div class="block ${ (style.startsWith("A")?"styleA":style.startsWith("B")?"styleB":style.startsWith("C")?"styleC":"styleD") }">
+        <div class="block ${rootClass}">
           <div class="twoCol">
             <div>${left.join("")}</div>
             <div>${right.join("")}</div>
@@ -939,27 +1198,22 @@
       `);
     }
 
-    // Custom sections
     if(sectionState.custom && state.customSections.length){
       state.customSections.forEach(sec=>{
         const lines = safeLines(sec.content);
         const isBullets = sec.type === "bullets";
         blocks.push(`
-          <div class="block ${ (style.startsWith("A")?"styleA":style.startsWith("B")?"styleB":style.startsWith("C")?"styleC":"styleD") }">
+          <div class="block ${rootClass}">
             ${sectionTitleHtml(style, sec.title || "Section")}
-            ${isBullets
-              ? `<ul>${lines.map(x=>`<li>${escapeHtml(x.replace(/^•\s?/,""))}</li>`).join("")}</ul>`
-              : `<p>${escapeHtml(sec.content)}</p>`
-            }
+            ${isBullets ? `<ul>${lines.map(x=>`<li>${escapeHtml(x.replace(/^•\s?/,""))}</li>`).join("")}</ul>` : `<p>${escapeHtml(sec.content).replaceAll("\n","<br/>")}</p>`}
           </div>
         `);
       });
     }
 
-    // Declaration
     if(sectionState.declaration && data.declare){
       blocks.push(`
-        <div class="block ${ (style.startsWith("A")?"styleA":style.startsWith("B")?"styleB":style.startsWith("C")?"styleC":"styleD") }">
+        <div class="block ${rootClass}">
           ${sectionTitleHtml(style, "Declaration")}
           <p>${escapeHtml(data.declare)}</p>
         </div>
@@ -978,7 +1232,6 @@
   }
 
   function render(){
-    // same address
     if($("sameAddr").checked){
       $("addrTemp").value = $("addrPermanent").value;
       $("addrTemp").setAttribute("readonly","readonly");
@@ -1040,27 +1293,22 @@
       }
     }
 
-    // If template mode + autoFillPages → ensure pages count >= target
+    // Ensure pages reach target (template mode)
     if(state.templateMode && $("autoFillPages").checked){
       const target = parseInt($("targetPages").value,10) || 1;
-      while(pagesEl.children.length < target){
-        // add extra filler section (professional, not AI-sounding)
+      if(pagesEl.children.length < target){
         addCustomSection({
           title: "Additional Points",
           type: "bullets",
           content: `• Responsible and punctual work style
-• Comfortable with structured reporting
-• Good coordination and follow-up habits
-• Ready to learn new systems/tools`
+• Comfortable with deadlines and routine reporting
+• Maintains clean documentation and records
+• Ready to learn new tools and systems`
         });
-        // re-render once after adding (break loop naturally)
-        // (render is called by addCustomSection)
-        break;
       }
     }
   }
 
-  // --- Bind inputs
   function bindAutoRender(){
     const ids = [
       "fullName","jobTitle","mobile","email","link",
@@ -1091,27 +1339,32 @@
     };
     await html2pdf().set(opt).from(element).save();
   });
-
-  $("btnReset").addEventListener("click", ()=>{
-    if(confirm("Reset all fields?")){
-      location.reload();
-    }
-  });
+  $("btnReset").addEventListener("click", ()=>{ if(confirm("Reset all fields?")) location.reload(); });
 
   $("addSectionBtn").addEventListener("click", ()=>addCustomSection());
 
-  // Template controls
-  $("styleSelect").addEventListener("change", applyTemplate);
-  $("targetPages").addEventListener("change", ()=>{
-    if($("styleSelect").value) applyTemplate();
-    else render();
+  // Dropdown events
+  $("styleSelect").addEventListener("change", applyStyleTemplate);
+  $("targetPages").addEventListener("change", ()=>{ if($("styleSelect").value) applyStyleTemplate(); else render(); });
+  $("autoFillPages").addEventListener("change", ()=>{ state.autoFillPages = $("autoFillPages").checked; render(); });
+
+  $("contentTemplate").addEventListener("change", ()=>{
+    const code = $("contentTemplate").value;
+    if(code) applyContentTemplate(code);
   });
-  $("autoFillPages").addEventListener("change", ()=>{
-    state.autoFillPages = $("autoFillPages").checked;
-    render();
+
+  $("objectiveSelect").addEventListener("change", ()=>{
+    const v = $("objectiveSelect").value;
+    if(v === "") return;
+    const idx = parseInt(v, 10);
+    if(!Number.isNaN(idx) && OBJECTIVES[idx]){
+      $("summary").value = OBJECTIVES[idx];
+      render();
+    }
   });
 
   // Init
+  initObjectiveDropdown();
   initSectionToggles();
   bindAutoRender();
   drawCustomSectionsUI();
